@@ -66,7 +66,7 @@ Print::~Print()
 string Print::init(string fullRun, string ID, int noCells)
 {
     run = ID;
-    path = "/home/dmccusker/remote/jamming_cluster/output/"+fullRun;
+    path = "/home/dmccusker/remote/jamming-dynamics/output/"+fullRun;
     const char *p = path.c_str();
     N = noCells;
     sqrtN = sqrt(N);
