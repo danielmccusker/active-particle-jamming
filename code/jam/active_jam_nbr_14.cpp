@@ -1207,7 +1207,7 @@ int main(int argc, char *argv[])
         engine.start();
     }
     
-    int check = system(("/home/dmccusker/remote/jamming_cluster/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir).c_str());
+    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir).c_str());
     if( check != 0 )
         cout << "An error occurred while plotting (one of) the graphs\n";
     return 0;
