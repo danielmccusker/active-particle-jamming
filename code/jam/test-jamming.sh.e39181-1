@@ -1,0 +1,33 @@
+mkdir: cannot create directory ‘/home/dmccusker/remote/jamming-dynamics/output/test’: File exists
+cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/test/GNFvis.gnu’: File exists
+cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/test/MSDvis.gnu’: File exists
+cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/test/postprocessing.py’: File exists
+cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/test/jam.html’: File exists
+cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/test/jquery.js’: File exists
+Max. number of data points scaled up to: 3072
+Max. number of data points scaled up to: 4608
+Max. number of data points scaled up to: 6912
+Max. number of data points scaled up to: 10368
+Max. number of data points scaled up to: 15552
+Max. number of data points scaled up to: 23328
+Max. number of data points scaled up to: 34992
+Max. number of data points scaled up to: 52488
+Max. number of data points scaled up to: 78732
+Max. number of data points scaled up to: 3072
+Max. number of data points scaled up to: 4608
+Max. number of data points scaled up to: 6912
+Max. number of data points scaled up to: 10368
+Max. number of data points scaled up to: 15552
+Max. number of data points scaled up to: 23328
+Max. number of data points scaled up to: 34992
+Max. number of data points scaled up to: 52488
+Max. number of data points scaled up to: 78732
+Max. number of data points scaled up to: 3072
+Max. number of data points scaled up to: 4608
+Max. number of data points scaled up to: 6912
+Max. number of data points scaled up to: 10368
+Max. number of data points scaled up to: 15552
+Max. number of data points scaled up to: 23328
+Max. number of data points scaled up to: 34992
+Max. number of data points scaled up to: 52488
+Max. number of data points scaled up to: 78732
