@@ -15,7 +15,7 @@
 gnuplot << EOF
 
 set terminal postscript eps color enhanced "Helvetica" 20
-directory = '/home/dmccusker/remote/jamming_cluster/output/'.'$2/'
+directory = '/home/dmccusker/remote/jamming-dynamics/output/'.'$2/'
 filein  = directory.'$1/dat/data.dat'
 fileout = directory.'$1/eps/order.eps'
 
