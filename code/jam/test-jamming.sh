@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=10
+#PBS -l nodes=1:ppn=5
 
 parameters=$(sed -n -e "${PBS_ARRAYID}p" /home/dmccusker/remote/jamming-dynamics/code/jam/input.txt)
 parameterArray=($parameters)
