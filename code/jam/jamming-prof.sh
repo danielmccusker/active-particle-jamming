@@ -12,4 +12,4 @@ lambda_s=${parameterArray[4]}
 lambda_n=${parameterArray[5]}
 rho=${parameterArray[6]}
 
-/home/dmccusker/remote/jamming_cluster/code/jam/a-prof.out $ID $currentRun $noSteps $stepsPerTime $lambda_s $lambda_n $rho
+gprof /home/dmccusker/remote/jamming_cluster/code/jam/a-prof.out $ID $currentRun $noSteps $stepsPerTime $lambda_s $lambda_n $rho
