@@ -75,21 +75,26 @@ string Print::init(string fullRun, string ID, int noCells)
     int check = 0;
     DIR* dir = opendir(p); 
 	cout << "the value of dir is " << dir << endl;
-    if(dir){
+    if(!dir){
+	system(("mkdir "+path).c_str());
+    	cout <<"This message should only appear once" << endl;
+	check += system(("cp /home/dmccusker/remote/jamming-dynamics/code/postprocessing/* "+path).c_str());
+	if( check < 0 ) cout << "The postprocessing code was not copied to the output folder\n";
+	check += system(("mkdir "+path+"/"+run).c_str());
+	check += system(("mkdir "+path+"/"+run+"/dat").c_str());
+	check += system(("mkdir "+path+"/"+run+"/eps").c_str());
+	check += system(("mkdir "+path+"/"+run+"/vid").c_str());
+	if(check < 0){ cout << "Failed to create folders. Status 715\n"; exit(715); }
+	check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/jam.html "+path+"/"+run+"/vid/jam.html").c_str());
+	check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/{jam.html,jquery.js} "+path+"/").c_str());
+	if(check < 0){ cout << "Failed to copy files to vid/. Status 716\n"; exit(716); }
+	closedir(dir); 
+    } else if(dir){
 	cout << "this message should appear every other time" << endl;
-	 closedir(dir); //check if fullRun directory exists, it should only be created on the first run 
-    } else if(!dir){
-	 system(("mkdir "+path).c_str());
-    	 cout <<"This message should only appear once" << endl;
-    }
-    ifstream test;
-    test.open((path+"/"+run+"/vid/jam.html").c_str());
-    
-    if(test.fail())
-    {
-		check += system(("cp /home/dmccusker/remote/jamming-dynamics/code/postprocessing/* "+path).c_str());
-		if( check < 0 ) cout << "The postprocessing code was not copied to the output folder\n";
-    
+	closedir(dir); 
+	ifstream test;
+    	test.open((path+"/"+run+"/vid/jam.html").c_str());
+    	if(test.fail()) {
 	        check += system(("mkdir "+path+"/"+run).c_str());
       	        check += system(("mkdir "+path+"/"+run+"/dat").c_str());
 		check += system(("mkdir "+path+"/"+run+"/eps").c_str());
@@ -99,13 +104,14 @@ string Print::init(string fullRun, string ID, int noCells)
 		check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/jam.html "+path+"/"+run+"/vid/jam.html").c_str());
 		check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/{jam.html,jquery.js} "+path+"/").c_str());
 		if(check < 0){ cout << "Failed to copy files to vid/. Status 716\n"; exit(716); }
-    } else {
+    	} else {
 		test.close();
         	cout << "This action will overwrite old data. Press \'9\' to continue.\n";
         	cin >> check;
         	if(check!=9) exit(9);
-    }
-
+    	} 
+    } 
+    
     data.open((path+"/"+run+"/dat/data.dat").c_str());
     positions.open((path+"/"+run+"/dat/positions.dat").c_str());
     JavaScriptVid.open((path+"/"+run+"/vid/data.js").c_str());
