@@ -184,6 +184,18 @@ set logscale xy
 
 plot filein u 1:2:3 w errorbars t '$1', f(x) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
+#------------------------------------------------------------------------------------------ #
+
+fileout = directory.'$1/eps/logMSD.eps'
+set output fileout
+
+set title "log-lin MSD"
+set xlabel "lagtime [steps]"
+set ylabel "log <(x({/Symbol t}) - x(0))^2>"
+unset logscale xy
+
+plot filein u 1:(log($2)) t '$1', log(f(x)) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
+
 # ------------------------------------------------------------------------------------------ #
 
 fileout = directory.'$1/eps/vaf.eps'
