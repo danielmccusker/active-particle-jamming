@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -l nodes=1:ppn=2
 
-parameters=$(sed -n -e "${PBS_ARRAYID}p" /home/dmccusker/remote/jamming_cluster/code/jam/input-prof.txt)
+parameters=$(sed -n -e "${PBS_ARRAYID}p" /home/dmccusker/remote/jamming-dynamics/code/jam/input-prof.txt)
 parameterArray=($parameters)
 
 ID=${parameterArray[0]}
@@ -12,4 +12,4 @@ lambda_s=${parameterArray[4]}
 lambda_n=${parameterArray[5]}
 rho=${parameterArray[6]}
 
-gprof /home/dmccusker/remote/jamming_cluster/code/jam/a-prof.out $ID $currentRun $noSteps $stepsPerTime $lambda_s $lambda_n $rho
+gprof /home/dmccusker/remote/jamming-dynamics/code/jam/a-prof.out $ID $currentRun $noSteps $stepsPerTime $lambda_s $lambda_n $rho

@@ -1,0 +1,7 @@
+Run ID:                     	run0
+Number of Cells:            	512
+Number of Steps:            	10000000
+Steps per unit time:        	10
+lambda_s (self-propulsion): 	0.003
+lambda_n (noise):           	0.01
+rho (density):              	0.84

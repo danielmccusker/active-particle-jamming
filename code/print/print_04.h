@@ -76,7 +76,7 @@ string Print::init(string fullRun, string ID, int noCells)
 	cout << "the value of dir is " << dir << endl;
     if(dir){
 	cout << "this message should appear every other time" << endl;
-	 closedir(dir); //check if run directory exists, it should only be created on the first run 
+	 closedir(dir); //check if fullRun directory exists, it should only be created on the first run 
     } else if(!dir){
 	 system(("mkdir "+path).c_str());
     	 cout <<"This message should only appear once" << endl;
@@ -86,7 +86,7 @@ string Print::init(string fullRun, string ID, int noCells)
     
     if(test.fail())
     {
-		check += system(("cp /home/dmccusker/remote/jamming_cluster/code/postprocessing/* "+path).c_str());
+		check += system(("cp /home/dmccusker/remote/jamming-dynamics/code/postprocessing/* "+path).c_str());
 		if( check < 0 ) cout << "The postprocessing code was not copied to the output folder\n";
     
 	        check += system(("mkdir "+path+"/"+run).c_str());
@@ -95,8 +95,8 @@ string Print::init(string fullRun, string ID, int noCells)
 		check += system(("mkdir "+path+"/"+run+"/vid").c_str());
 		if(check < 0){ cout << "Failed to create folders. Status 715\n"; exit(715); }
         
-		check += system(("cp /home/dmccusker/remote/jamming_cluster/output/jam.html "+path+"/"+run+"/vid/jam.html").c_str());
-		check += system(("cp /home/dmccusker/remote/jamming_cluster/output/{jam.html,jquery.js} "+path+"/").c_str());
+		check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/jam.html "+path+"/"+run+"/vid/jam.html").c_str());
+		check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/{jam.html,jquery.js} "+path+"/").c_str());
 		if(check < 0){ cout << "Failed to copy files to vid/. Status 716\n"; exit(716); }
     } else {
 		test.close();

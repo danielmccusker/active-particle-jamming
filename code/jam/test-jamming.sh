@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=4
+#PBS -l nodes=1:ppn=10
 
 parameters=$(sed -n -e "${PBS_ARRAYID}p" /home/dmccusker/remote/jamming-dynamics/code/jam/input.txt)
 parameterArray=($parameters)
@@ -12,4 +12,4 @@ lambda_s=${parameterArray[4]}
 lambda_n=${parameterArray[5]}
 rho=${parameterArray[6]}
 
-/home/dmccusker/remote/jamming-dynamics/code/jam/a.out $ID $currentRun $noSteps $stepsPerTime $lambda_s $lambda_n $rho
+/home/dmccusker/remote/jamming-dynamics/code/jam/test.out $ID $currentRun $noSteps $stepsPerTime $lambda_s $lambda_n $rho
