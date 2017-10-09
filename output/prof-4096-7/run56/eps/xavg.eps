@@ -1,0 +1,1708 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: /home/dmccusker/remote/jamming-dynamics/output/prof-4096-7/run56/eps/xavg.eps
+%%Creator: gnuplot 4.6 patchlevel 2
+%%CreationDate: Sat Oct  7 14:07:24 2017
+%%DocumentFonts: (atend)
+%%BoundingBox: 50 50 410 302
+%%EndComments
+%%BeginProlog
+/gnudict 256 dict def
+gnudict begin
+%
+% The following true/false flags may be edited by hand if desired.
+% The unit line width and grayscale image gamma correction may also be changed.
+%
+/Color true def
+/Blacktext false def
+/Solid false def
+/Dashlength 1 def
+/Landscape false def
+/Level1 false def
+/Rounded false def
+/ClipToBoundingBox false def
+/SuppressPDFMark false def
+/TransparentPatterns false def
+/gnulinewidth 5.000 def
+/userlinewidth gnulinewidth def
+/Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
+%
+/vshift -66 def
+/dl1 {
+  10.0 Dashlength mul mul
+  Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
+} def
+/dl2 {
+  10.0 Dashlength mul mul
+  Rounded { currentlinewidth 0.75 mul add } if
+} def
+/hpt_ 31.5 def
+/vpt_ 31.5 def
+/hpt hpt_ def
+/vpt vpt_ def
+/doclip {
+  ClipToBoundingBox {
+    newpath 50 50 moveto 410 50 lineto 410 302 lineto 50 302 lineto closepath
+    clip
+  } if
+} def
+%
+% Gnuplot Prolog Version 4.6 (September 2012)
+%
+%/SuppressPDFMark true def
+%
+/M {moveto} bind def
+/L {lineto} bind def
+/R {rmoveto} bind def
+/V {rlineto} bind def
+/N {newpath moveto} bind def
+/Z {closepath} bind def
+/C {setrgbcolor} bind def
+/f {rlineto fill} bind def
+/g {setgray} bind def
+/Gshow {show} def   % May be redefined later in the file to support UTF-8
+/vpt2 vpt 2 mul def
+/hpt2 hpt 2 mul def
+/Lshow {currentpoint stroke M 0 vshift R 
+	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+/Rshow {currentpoint stroke M dup stringwidth pop neg vshift R
+	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+/Cshow {currentpoint stroke M dup stringwidth pop -2 div vshift R 
+	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+/UP {dup vpt_ mul /vpt exch def hpt_ mul /hpt exch def
+  /hpt2 hpt 2 mul def /vpt2 vpt 2 mul def} def
+/DL {Color {setrgbcolor Solid {pop []} if 0 setdash}
+ {pop pop pop 0 setgray Solid {pop []} if 0 setdash} ifelse} def
+/BL {stroke userlinewidth 2 mul setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+/AL {stroke userlinewidth 2 div setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+/UL {dup gnulinewidth mul /userlinewidth exch def
+	dup 1 lt {pop 1} if 10 mul /udl exch def} def
+/PL {stroke userlinewidth setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
+% Default Line colors
+/LCw {1 1 1} def
+/LCb {0 0 0} def
+/LCa {0 0 0} def
+/LC0 {1 0 0} def
+/LC1 {0 1 0} def
+/LC2 {0 0 1} def
+/LC3 {1 0 1} def
+/LC4 {0 1 1} def
+/LC5 {1 1 0} def
+/LC6 {0 0 0} def
+/LC7 {1 0.3 0} def
+/LC8 {0.5 0.5 0.5} def
+% Default Line Types
+/LTw {PL [] 1 setgray} def
+/LTb {BL [] LCb DL} def
+/LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
+/LT0 {PL [] LC0 DL} def
+/LT1 {PL [4 dl1 2 dl2] LC1 DL} def
+/LT2 {PL [2 dl1 3 dl2] LC2 DL} def
+/LT3 {PL [1 dl1 1.5 dl2] LC3 DL} def
+/LT4 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
+/LT5 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC5 DL} def
+/LT6 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC6 DL} def
+/LT7 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC7 DL} def
+/LT8 {PL [2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 4 dl2] LC8 DL} def
+/Pnt {stroke [] 0 setdash gsave 1 setlinecap M 0 0 V stroke grestore} def
+/Dia {stroke [] 0 setdash 2 copy vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath stroke
+  Pnt} def
+/Pls {stroke [] 0 setdash vpt sub M 0 vpt2 V
+  currentpoint stroke M
+  hpt neg vpt neg R hpt2 0 V stroke
+ } def
+/Box {stroke [] 0 setdash 2 copy exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath stroke
+  Pnt} def
+/Crs {stroke [] 0 setdash exch hpt sub exch vpt add M
+  hpt2 vpt2 neg V currentpoint stroke M
+  hpt2 neg 0 R hpt2 vpt2 V stroke} def
+/TriU {stroke [] 0 setdash 2 copy vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath stroke
+  Pnt} def
+/Star {2 copy Pls Crs} def
+/BoxF {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath fill} def
+/TriUF {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath fill} def
+/TriD {stroke [] 0 setdash 2 copy vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath stroke
+  Pnt} def
+/TriDF {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath fill} def
+/DiaF {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath fill} def
+/Pent {stroke [] 0 setdash 2 copy gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath stroke grestore Pnt} def
+/PentF {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath fill grestore} def
+/Circle {stroke [] 0 setdash 2 copy
+  hpt 0 360 arc stroke Pnt} def
+/CircleF {stroke [] 0 setdash hpt 0 360 arc fill} def
+/C0 {BL [] 0 setdash 2 copy moveto vpt 90 450 arc} bind def
+/C1 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C2 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C3 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C4 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 180 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C5 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc
+	2 copy moveto
+	2 copy vpt 180 270 arc closepath fill
+	vpt 0 360 arc} bind def
+/C6 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C7 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C8 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 270 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C9 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 270 450 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C10 {BL [] 0 setdash 2 copy 2 copy moveto vpt 270 360 arc closepath fill
+	2 copy moveto
+	2 copy vpt 90 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C11 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 180 arc closepath fill
+	2 copy moveto
+	2 copy vpt 270 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C12 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 180 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C13 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc closepath fill
+	2 copy moveto
+	2 copy vpt 180 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C14 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 360 arc closepath fill
+	vpt 0 360 arc} bind def
+/C15 {BL [] 0 setdash 2 copy vpt 0 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/Rec {newpath 4 2 roll moveto 1 index 0 rlineto 0 exch rlineto
+	neg 0 rlineto closepath} bind def
+/Square {dup Rec} bind def
+/Bsquare {vpt sub exch vpt sub exch vpt2 Square} bind def
+/S0 {BL [] 0 setdash 2 copy moveto 0 vpt rlineto BL Bsquare} bind def
+/S1 {BL [] 0 setdash 2 copy vpt Square fill Bsquare} bind def
+/S2 {BL [] 0 setdash 2 copy exch vpt sub exch vpt Square fill Bsquare} bind def
+/S3 {BL [] 0 setdash 2 copy exch vpt sub exch vpt2 vpt Rec fill Bsquare} bind def
+/S4 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt Square fill Bsquare} bind def
+/S5 {BL [] 0 setdash 2 copy 2 copy vpt Square fill
+	exch vpt sub exch vpt sub vpt Square fill Bsquare} bind def
+/S6 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt vpt2 Rec fill Bsquare} bind def
+/S7 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt vpt2 Rec fill
+	2 copy vpt Square fill Bsquare} bind def
+/S8 {BL [] 0 setdash 2 copy vpt sub vpt Square fill Bsquare} bind def
+/S9 {BL [] 0 setdash 2 copy vpt sub vpt vpt2 Rec fill Bsquare} bind def
+/S10 {BL [] 0 setdash 2 copy vpt sub vpt Square fill 2 copy exch vpt sub exch vpt Square fill
+	Bsquare} bind def
+/S11 {BL [] 0 setdash 2 copy vpt sub vpt Square fill 2 copy exch vpt sub exch vpt2 vpt Rec fill
+	Bsquare} bind def
+/S12 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill Bsquare} bind def
+/S13 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill
+	2 copy vpt Square fill Bsquare} bind def
+/S14 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill
+	2 copy exch vpt sub exch vpt Square fill Bsquare} bind def
+/S15 {BL [] 0 setdash 2 copy Bsquare fill Bsquare} bind def
+/D0 {gsave translate 45 rotate 0 0 S0 stroke grestore} bind def
+/D1 {gsave translate 45 rotate 0 0 S1 stroke grestore} bind def
+/D2 {gsave translate 45 rotate 0 0 S2 stroke grestore} bind def
+/D3 {gsave translate 45 rotate 0 0 S3 stroke grestore} bind def
+/D4 {gsave translate 45 rotate 0 0 S4 stroke grestore} bind def
+/D5 {gsave translate 45 rotate 0 0 S5 stroke grestore} bind def
+/D6 {gsave translate 45 rotate 0 0 S6 stroke grestore} bind def
+/D7 {gsave translate 45 rotate 0 0 S7 stroke grestore} bind def
+/D8 {gsave translate 45 rotate 0 0 S8 stroke grestore} bind def
+/D9 {gsave translate 45 rotate 0 0 S9 stroke grestore} bind def
+/D10 {gsave translate 45 rotate 0 0 S10 stroke grestore} bind def
+/D11 {gsave translate 45 rotate 0 0 S11 stroke grestore} bind def
+/D12 {gsave translate 45 rotate 0 0 S12 stroke grestore} bind def
+/D13 {gsave translate 45 rotate 0 0 S13 stroke grestore} bind def
+/D14 {gsave translate 45 rotate 0 0 S14 stroke grestore} bind def
+/D15 {gsave translate 45 rotate 0 0 S15 stroke grestore} bind def
+/DiaE {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath stroke} def
+/BoxE {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath stroke} def
+/TriUE {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath stroke} def
+/TriDE {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath stroke} def
+/PentE {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath stroke grestore} def
+/CircE {stroke [] 0 setdash 
+  hpt 0 360 arc stroke} def
+/Opaque {gsave closepath 1 setgray fill grestore 0 setgray closepath} def
+/DiaW {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V Opaque stroke} def
+/BoxW {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V Opaque stroke} def
+/TriUW {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V Opaque stroke} def
+/TriDW {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V Opaque stroke} def
+/PentW {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  Opaque stroke grestore} def
+/CircW {stroke [] 0 setdash 
+  hpt 0 360 arc Opaque stroke} def
+/BoxFill {gsave Rec 1 setgray fill grestore} def
+/Density {
+  /Fillden exch def
+  currentrgbcolor
+  /ColB exch def /ColG exch def /ColR exch def
+  /ColR ColR Fillden mul Fillden sub 1 add def
+  /ColG ColG Fillden mul Fillden sub 1 add def
+  /ColB ColB Fillden mul Fillden sub 1 add def
+  ColR ColG ColB setrgbcolor} def
+/BoxColFill {gsave Rec PolyFill} def
+/PolyFill {gsave Density fill grestore grestore} def
+/h {rlineto rlineto rlineto gsave closepath fill grestore} bind def
+%
+% PostScript Level 1 Pattern Fill routine for rectangles
+% Usage: x y w h s a XX PatternFill
+%	x,y = lower left corner of box to be filled
+%	w,h = width and height of box
+%	  a = angle in degrees between lines and x-axis
+%	 XX = 0/1 for no/yes cross-hatch
+%
+/PatternFill {gsave /PFa [ 9 2 roll ] def
+  PFa 0 get PFa 2 get 2 div add PFa 1 get PFa 3 get 2 div add translate
+  PFa 2 get -2 div PFa 3 get -2 div PFa 2 get PFa 3 get Rec
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+  clip
+  currentlinewidth 0.5 mul setlinewidth
+  /PFs PFa 2 get dup mul PFa 3 get dup mul add sqrt def
+  0 0 M PFa 5 get rotate PFs -2 div dup translate
+  0 1 PFs PFa 4 get div 1 add floor cvi
+	{PFa 4 get mul 0 M 0 PFs V} for
+  0 PFa 6 get ne {
+	0 1 PFs PFa 4 get div 1 add floor cvi
+	{PFa 4 get mul 0 2 1 roll M PFs 0 V} for
+ } if
+  stroke grestore} def
+%
+/languagelevel where
+ {pop languagelevel} {1} ifelse
+ 2 lt
+	{/InterpretLevel1 true def}
+	{/InterpretLevel1 Level1 def}
+ ifelse
+%
+% PostScript level 2 pattern fill definitions
+%
+/Level2PatternFill {
+/Tile8x8 {/PaintType 2 /PatternType 1 /TilingType 1 /BBox [0 0 8 8] /XStep 8 /YStep 8}
+	bind def
+/KeepColor {currentrgbcolor [/Pattern /DeviceRGB] setcolorspace} bind def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 8 8 L 0 8 M 8 0 L stroke} 
+>> matrix makepattern
+/Pat1 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 8 8 L 0 8 M 8 0 L stroke
+	0 4 M 4 8 L 8 4 L 4 0 L 0 4 L stroke}
+>> matrix makepattern
+/Pat2 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 0 8 L
+	8 8 L 8 0 L 0 0 L fill}
+>> matrix makepattern
+/Pat3 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -4 8 M 8 -4 L
+	0 12 M 12 0 L stroke}
+>> matrix makepattern
+/Pat4 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -4 0 M 8 12 L
+	0 -4 M 12 8 L stroke}
+>> matrix makepattern
+/Pat5 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -2 8 M 4 -4 L
+	0 12 M 8 -4 L 4 12 M 10 0 L stroke}
+>> matrix makepattern
+/Pat6 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -2 0 M 4 12 L
+	0 -4 M 8 12 L 4 -4 M 10 8 L stroke}
+>> matrix makepattern
+/Pat7 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 8 -2 M -4 4 L
+	12 0 M -4 8 L 12 4 M 0 10 L stroke}
+>> matrix makepattern
+/Pat8 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 -2 M 12 4 L
+	-4 0 M 12 8 L -4 4 M 8 10 L stroke}
+>> matrix makepattern
+/Pat9 exch def
+/Pattern1 {PatternBgnd KeepColor Pat1 setpattern} bind def
+/Pattern2 {PatternBgnd KeepColor Pat2 setpattern} bind def
+/Pattern3 {PatternBgnd KeepColor Pat3 setpattern} bind def
+/Pattern4 {PatternBgnd KeepColor Landscape {Pat5} {Pat4} ifelse setpattern} bind def
+/Pattern5 {PatternBgnd KeepColor Landscape {Pat4} {Pat5} ifelse setpattern} bind def
+/Pattern6 {PatternBgnd KeepColor Landscape {Pat9} {Pat6} ifelse setpattern} bind def
+/Pattern7 {PatternBgnd KeepColor Landscape {Pat8} {Pat7} ifelse setpattern} bind def
+} def
+%
+%
+%End of PostScript Level 2 code
+%
+/PatternBgnd {
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+} def
+%
+% Substitute for Level 2 pattern fill codes with
+% grayscale if Level 2 support is not selected.
+%
+/Level1PatternFill {
+/Pattern1 {0.250 Density} bind def
+/Pattern2 {0.500 Density} bind def
+/Pattern3 {0.750 Density} bind def
+/Pattern4 {0.125 Density} bind def
+/Pattern5 {0.375 Density} bind def
+/Pattern6 {0.625 Density} bind def
+/Pattern7 {0.875 Density} bind def
+} def
+%
+% Now test for support of Level 2 code
+%
+Level1 {Level1PatternFill} {Level2PatternFill} ifelse
+%
+/Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
+dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
+currentdict end definefont pop
+/MFshow {
+   { dup 5 get 3 ge
+     { 5 get 3 eq {gsave} {grestore} ifelse }
+     {dup dup 0 get findfont exch 1 get scalefont setfont
+     [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
+     get exch 4 get {Gshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
+     get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
+     dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
+     show 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
+     pop aload pop M} ifelse }ifelse }ifelse }
+     ifelse }
+   forall} def
+/Gswidth {dup type /stringtype eq {stringwidth} {pop (n) stringwidth} ifelse} def
+/MFwidth {0 exch { dup 5 get 3 ge { 5 get 3 eq { 0 } { pop } ifelse }
+ {dup 3 get{dup dup 0 get findfont exch 1 get scalefont setfont
+     6 get Gswidth pop add} {pop} ifelse} ifelse} forall} def
+/MLshow { currentpoint stroke M
+  0 exch R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MRshow { currentpoint stroke M
+  exch dup MFwidth neg 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MCshow { currentpoint stroke M
+  exch dup MFwidth -2 div 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/XYsave    { [( ) 1 2 true false 3 ()] } bind def
+/XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (/home/dmccusker/remote/jamming-dynamics/output/prof-4096-7/run56/eps/xavg.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 2)
+  /Author (dmccusker)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Sat Oct  7 14:07:24 2017)
+  /DOCINFO pdfmark
+end
+} ifelse
+end
+%%EndProlog
+%%Page: 1 1
+gnudict begin
+gsave
+doclip
+50 50 translate
+0.050 0.050 scale
+0 setgray
+newpath
+(Helvetica) findfont 200 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {BackgroundColor C 1.000 0 0 7200.00 5040.00 BoxColFill} if
+gsave % colour palette begin
+/maxcolors 0 def
+/HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
+  { /HSVs exch def /HSVv exch def 6.0 mul dup floor dup 3 1 roll sub
+     /HSVf exch def /HSVi exch cvi def /HSVp HSVv 1.0 HSVs sub mul def
+	 /HSVq HSVv 1.0 HSVs HSVf mul sub mul def 
+	 /HSVt HSVv 1.0 HSVs 1.0 HSVf sub mul sub mul def
+	 /HSVi HSVi 6 mod def 0 HSVi eq {HSVv HSVt HSVp}
+	 {1 HSVi eq {HSVq HSVv HSVp}{2 HSVi eq {HSVp HSVv HSVt}
+	 {3 HSVi eq {HSVp HSVq HSVv}{4 HSVi eq {HSVt HSVp HSVv}
+	 {HSVv HSVp HSVq} ifelse} ifelse} ifelse} ifelse} ifelse
+  } ifelse} def
+/Constrain {
+  dup 0 lt {0 exch pop}{dup 1 gt {1 exch pop} if} ifelse} def
+/YIQ2RGB {
+  3 copy -1.702 mul exch -1.105 mul add add Constrain 4 1 roll
+  3 copy -0.647 mul exch -0.272 mul add add Constrain 5 1 roll
+  0.621 mul exch -0.956 mul add add Constrain 3 1 roll } def
+/CMY2RGB {  1 exch sub exch 1 exch sub 3 2 roll 1 exch sub 3 1 roll exch } def
+/XYZ2RGB {  3 copy -0.9017 mul exch -0.1187 mul add exch 0.0585 mul exch add
+  Constrain 4 1 roll 3 copy -0.0279 mul exch 1.999 mul add exch
+  -0.9844 mul add Constrain 5 1 roll -0.2891 mul exch -0.5338 mul add
+  exch 1.91 mul exch add Constrain 3 1 roll} def
+/SelectSpace {ColorSpace (HSV) eq {HSV2RGB}{ColorSpace (XYZ) eq {
+  XYZ2RGB}{ColorSpace (CMY) eq {CMY2RGB}{ColorSpace (YIQ) eq {YIQ2RGB}
+  if} ifelse} ifelse} ifelse} def
+/InterpolatedColor false def
+/cF7 {sqrt} bind def	% sqrt(x)
+/cF5 {dup dup mul mul} bind def	% x^3
+/cF15 {360 mul sin} bind def	% sin(360x)
+/pm3dround {maxcolors 0 gt {dup 1 ge
+	{pop 1} {maxcolors mul floor maxcolors 1 sub div} ifelse} if} def
+/pm3dGamma 1.0 1.5 Gamma mul div def
+/ColorSpace (RGB) def
+Color InterpolatedColor or { % COLOUR vs. GRAY map
+  InterpolatedColor { %% Interpolation vs. RGB-Formula
+    /g {stroke pm3dround /grayv exch def interpolate
+        SelectSpace setrgbcolor} bind def
+  }{
+  /g {stroke pm3dround dup cF7 Constrain exch dup cF5 Constrain exch cF15 Constrain 
+       SelectSpace setrgbcolor} bind def
+  } ifelse
+}{
+  /g {stroke pm3dround pm3dGamma exp setgray} bind def
+} ifelse
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 1640 M
+63 0 V
+4514 0 R
+-63 0 V
+stroke
+1220 1640 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-40000)]
+] -66.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 2040 M
+63 0 V
+4514 0 R
+-63 0 V
+stroke
+1220 2040 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-20000)]
+] -66.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 2440 M
+63 0 V
+4514 0 R
+-63 0 V
+stroke
+1220 2440 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 0)]
+] -66.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 2840 M
+63 0 V
+4514 0 R
+-63 0 V
+stroke
+1220 2840 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 20000)]
+] -66.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 3239 M
+63 0 V
+4514 0 R
+-63 0 V
+stroke
+1220 3239 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 40000)]
+] -66.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 3639 M
+63 0 V
+4514 0 R
+-63 0 V
+stroke
+1220 3639 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 60000)]
+] -66.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 4039 M
+63 0 V
+4514 0 R
+-63 0 V
+stroke
+1220 4039 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 80000)]
+] -66.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 4439 M
+63 0 V
+4514 0 R
+-63 0 V
+stroke
+1220 4439 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 100000)]
+] -66.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+1340 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-140000)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1912 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+1912 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-120000)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+2484 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+2484 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-100000)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3056 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+3056 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-80000)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3629 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+3629 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-60000)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+4201 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+4201 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-40000)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+4773 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+4773 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 (-20000)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5345 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+5345 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 0)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5917 1640 M
+0 63 V
+0 2736 R
+0 -63 V
+stroke
+5917 1440 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 20000)]
+] -66.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 4439 N
+0 -2799 V
+4577 0 V
+0 2799 V
+-4577 0 V
+Z stroke
+LCb setrgbcolor
+160 3039 M
+currentpoint gsave translate -270 rotate 0 0 moveto
+[ [(Helvetica) 200.0 0.0 true true 0 (y)]
+] -66.7 MCshow
+grestore
+LTb
+LCb setrgbcolor
+3628 1140 M
+[ [(Helvetica) 200.0 0.0 true true 0 (x)]
+] -66.7 MCshow
+LTb
+3628 4739 M
+[ [(Helvetica) 200.0 0.0 true true 0 (Position with time of the original system)]
+] -66.7 MCshow
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+3.000 UL
+LT1
+LCb setrgbcolor
+3057 63 N
+0 800 V
+1142 0 V
+0 -800 V
+3057 63 L
+Z stroke
+% Begin plot #1
+1.000 UP
+1.000 UL
+LT0
+0 g LCb setrgbcolor
+3417 463 M
+[ [(Helvetica) 200.0 0.0 true true 0 (CoM)]
+] -66.7 MRshow
+LT0
+0 g 0 g 5345 2440 Pls
+.0013 g 5347 2432 Pls
+.0026 g 5348 2425 Pls
+.0038 g 5351 2418 Pls
+.0051 g 5351 2411 Pls
+.0064 g 5347 2404 Pls
+.0077 g 5344 2397 Pls
+.009 g 5342 2390 Pls
+.0102 g 5341 2382 Pls
+.0115 g 5342 2375 Pls
+.0128 g 5346 2368 Pls
+.0141 g 5347 2361 Pls
+.0154 g 5343 2354 Pls
+.0166 g 5338 2347 Pls
+.0179 g 5330 2342 Pls
+.0192 g 5323 2337 Pls
+.0205 g 5316 2331 Pls
+.0218 g 5310 2325 Pls
+.023 g 5303 2320 Pls
+.0243 g 5297 2314 Pls
+.0256 g 5290 2308 Pls
+.0269 g 5284 2302 Pls
+.0282 g 5278 2296 Pls
+.0294 g 5270 2291 Pls
+.0307 g 5265 2285 Pls
+.032 g 5256 2280 Pls
+.0333 g 5249 2275 Pls
+.0346 g 5239 2272 Pls
+.0358 g 5229 2271 Pls
+.0371 g 5219 2272 Pls
+.0384 g 5209 2270 Pls
+.0397 g 5202 2264 Pls
+.041 g 5199 2257 Pls
+.0422 g 5197 2250 Pls
+.0435 g 5190 2245 Pls
+.0448 g 5182 2240 Pls
+.0461 g 5177 2233 Pls
+.0474 g 5171 2227 Pls
+.0486 g 5169 2220 Pls
+.0499 g 5167 2213 Pls
+.0512 g 5166 2205 Pls
+.0525 g 5165 2198 Pls
+.0538 g 5163 2191 Pls
+.055 g 5161 2183 Pls
+.0563 g 5158 2176 Pls
+.0576 g 5157 2169 Pls
+.0589 g 5159 2162 Pls
+.0602 g 5161 2155 Pls
+.0614 g 5159 2147 Pls
+.0627 g 5160 2140 Pls
+.064 g 5164 2133 Pls
+.0653 g 5167 2126 Pls
+.0666 g 5167 2119 Pls
+.0678 g 5163 2112 Pls
+.0691 g 5156 2106 Pls
+.0704 g 5148 2102 Pls
+.0717 g 5140 2097 Pls
+.073 g 5131 2094 Pls
+.0742 g 5121 2091 Pls
+.0755 g 5113 2086 Pls
+.0768 g 5110 2079 Pls
+.0781 g 5108 2072 Pls
+.0794 g 5105 2064 Pls
+.0806 g 5099 2058 Pls
+.0819 g 5093 2052 Pls
+.0832 g 5086 2047 Pls
+.0845 g 5077 2043 Pls
+.0858 g 5068 2040 Pls
+.087 g 5058 2036 Pls
+.0883 g 5050 2032 Pls
+.0896 g 5040 2029 Pls
+.0909 g 5030 2028 Pls
+.0922 g 5019 2027 Pls
+.0934 g 5009 2027 Pls
+.0947 g 4999 2025 Pls
+.096 g 4992 2019 Pls
+.0973 g 4985 2014 Pls
+.0986 g 4977 2009 Pls
+.0998 g 4968 2006 Pls
+.1011 g 4957 2007 Pls
+.1024 g 4947 2010 Pls
+.1037 g 4938 2013 Pls
+.105 g 4930 2017 Pls
+.1062 g 4920 2021 Pls
+.1075 g 4910 2023 Pls
+.1088 g 4900 2021 Pls
+.1101 g 4889 2020 Pls
+.1114 g 4879 2020 Pls
+.1126 g 4869 2018 Pls
+.1139 g 4858 2017 Pls
+.1152 g 4849 2014 Pls
+.1165 g 4839 2012 Pls
+.1178 g 4828 2012 Pls
+.119 g 4820 2016 Pls
+.1203 g 4811 2020 Pls
+.1216 g 4802 2025 Pls
+.1229 g 4793 2028 Pls
+.1242 g 4787 2034 Pls
+.1254 g 4780 2039 Pls
+.1267 g 4769 2041 Pls
+.128 g 4761 2045 Pls
+.1293 g 4754 2051 Pls
+.1306 g 4746 2055 Pls
+.1318 g 4739 2061 Pls
+.1331 g 4733 2067 Pls
+.1344 g 4725 2072 Pls
+.1357 g 4719 2078 Pls
+.137 g 4712 2083 Pls
+.1382 g 4705 2089 Pls
+.1395 g 4695 2091 Pls
+.1408 g 4684 2092 Pls
+.1421 g 4674 2092 Pls
+.1434 g 4663 2092 Pls
+.1446 g 4653 2092 Pls
+.1459 g 4644 2095 Pls
+.1472 g 4633 2095 Pls
+.1485 g 4624 2091 Pls
+.1498 g 4615 2088 Pls
+.151 g 4604 2086 Pls
+.1523 g 4594 2084 Pls
+.1536 g 4584 2084 Pls
+.1549 g 4573 2083 Pls
+.1562 g 4563 2083 Pls
+.1574 g 4552 2084 Pls
+.1587 g 4542 2084 Pls
+.16 g 4531 2086 Pls
+.1613 g 4521 2087 Pls
+.1626 g 4511 2089 Pls
+.1638 g 4503 2094 Pls
+.1651 g 4496 2099 Pls
+.1664 g 4489 2105 Pls
+.1677 g 4482 2110 Pls
+.169 g 4475 2116 Pls
+.1702 g 4470 2122 Pls
+.1715 g 4462 2127 Pls
+.1728 g 4453 2131 Pls
+.1741 g 4445 2136 Pls
+.1754 g 4438 2141 Pls
+.1766 g 4435 2148 Pls
+.1779 g 4435 2155 Pls
+.1792 g 4437 2162 Pls
+.1805 g 4443 2169 Pls
+.1818 g 4452 2172 Pls
+.183 g 4462 2175 Pls
+.1843 g 4470 2180 Pls
+.1856 g 4477 2185 Pls
+.1869 g 4483 2191 Pls
+.1882 g 4487 2197 Pls
+.1894 g 4490 2205 Pls
+.1907 g 4491 2212 Pls
+.192 g 4490 2219 Pls
+.1933 g 4486 2226 Pls
+.1946 g 4478 2231 Pls
+.1958 g 4468 2232 Pls
+.1971 g 4458 2231 Pls
+.1984 g 4448 2229 Pls
+.1997 g 4440 2224 Pls
+.201 g 4431 2220 Pls
+.2022 g 4421 2217 Pls
+.2035 g 4411 2215 Pls
+.2048 g 4404 2210 Pls
+.2061 g 4395 2206 Pls
+.2074 g 4385 2205 Pls
+.2086 g 4375 2202 Pls
+.2099 g 4371 2195 Pls
+.2112 g 4371 2188 Pls
+.2125 g 4367 2181 Pls
+.2138 g 4359 2176 Pls
+.215 g 4350 2173 Pls
+.2163 g 4342 2168 Pls
+.2176 g 4337 2161 Pls
+.2189 g 4334 2154 Pls
+.2202 g 4329 2148 Pls
+.2214 g 4323 2142 Pls
+.2227 g 4315 2137 Pls
+.224 g 4308 2132 Pls
+.2253 g 4300 2127 Pls
+.2266 g 4293 2121 Pls
+.2278 g 4286 2116 Pls
+.2291 g 4283 2109 Pls
+.2304 g 4281 2101 Pls
+.2317 g 4280 2094 Pls
+.233 g 4275 2087 Pls
+.2342 g 4271 2081 Pls
+.2355 g 4268 2074 Pls
+.2368 g 4260 2068 Pls
+.2381 g 4251 2065 Pls
+.2394 g 4241 2063 Pls
+.2406 g 4230 2064 Pls
+.2419 g 4222 2068 Pls
+.2432 g 4213 2072 Pls
+.2445 g 4204 2076 Pls
+.2458 g 4197 2082 Pls
+.247 g 4188 2085 Pls
+.2483 g 4178 2085 Pls
+.2496 g 4167 2085 Pls
+.2509 g 4157 2087 Pls
+.2522 g 4146 2087 Pls
+.2534 g 4136 2087 Pls
+.2547 g 4126 2088 Pls
+.256 g 4116 2091 Pls
+.2573 g 4106 2089 Pls
+.2586 g 4095 2090 Pls
+.2598 g 4085 2089 Pls
+.2611 g 4074 2089 Pls
+.2624 g 4064 2089 Pls
+.2637 g 4055 2085 Pls
+.265 g 4046 2080 Pls
+.2662 g 4037 2077 Pls
+.2675 g 4028 2073 Pls
+.2688 g 4018 2070 Pls
+.2701 g 4008 2068 Pls
+.2714 g 3998 2066 Pls
+.2726 g 3988 2069 Pls
+.2739 g 3978 2070 Pls
+.2752 g 3967 2071 Pls
+.2765 g 3957 2072 Pls
+.2778 g 3947 2074 Pls
+.279 g 3938 2078 Pls
+.2803 g 3933 2084 Pls
+.2816 g 3926 2089 Pls
+.2829 g 3918 2094 Pls
+.2842 g 3913 2101 Pls
+.2854 g 3905 2106 Pls
+.2867 g 3895 2107 Pls
+.288 g 3885 2107 Pls
+.2893 g 3876 2103 Pls
+.2906 g 3868 2098 Pls
+.2918 g 3858 2096 Pls
+.2931 g 3847 2094 Pls
+.2944 g 3837 2093 Pls
+.2957 g 3827 2094 Pls
+.297 g 3816 2095 Pls
+.2982 g 3806 2094 Pls
+.2995 g 3795 2094 Pls
+.3008 g 3785 2096 Pls
+.3021 g 3777 2101 Pls
+.3034 g 3768 2105 Pls
+.3046 g 3758 2107 Pls
+.3059 g 3749 2111 Pls
+.3072 g 3740 2115 Pls
+.3085 g 3731 2119 Pls
+.3098 g 3723 2123 Pls
+.311 g 3714 2127 Pls
+.3123 g 3705 2131 Pls
+.3136 g 3699 2137 Pls
+.3149 g 3696 2144 Pls
+.3162 g 3697 2151 Pls
+.3174 g 3696 2159 Pls
+.3187 g 3696 2166 Pls
+.32 g 3694 2173 Pls
+.3213 g 3697 2180 Pls
+.3226 g 3701 2187 Pls
+.3238 g 3702 2194 Pls
+.3251 g 3702 2202 Pls
+.3264 g 3701 2209 Pls
+.3277 g 3699 2216 Pls
+.329 g 3698 2224 Pls
+.3302 g 3695 2231 Pls
+.3315 g 3690 2237 Pls
+.3328 g 3684 2243 Pls
+.3341 g 3681 2250 Pls
+.3354 g 3677 2257 Pls
+.3366 g 3672 2264 Pls
+.3379 g 3666 2270 Pls
+.3392 g 3661 2276 Pls
+.3405 g 3654 2281 Pls
+.3418 g 3644 2284 Pls
+.343 g 3634 2286 Pls
+.3443 g 3623 2286 Pls
+.3456 g 3613 2287 Pls
+.3469 g 3604 2291 Pls
+.3482 g 3597 2296 Pls
+.3494 g 3590 2302 Pls
+.3507 g 3586 2308 Pls
+.352 g 3578 2313 Pls
+.3533 g 3569 2317 Pls
+.3546 g 3559 2320 Pls
+.3558 g 3549 2321 Pls
+.3571 g 3538 2320 Pls
+.3584 g 3527 2320 Pls
+.3597 g 3517 2321 Pls
+.361 g 3507 2319 Pls
+.3622 g 3497 2316 Pls
+.3635 g 3490 2311 Pls
+.3648 g 3481 2307 Pls
+.3661 g 3472 2303 Pls
+.3674 g 3462 2301 Pls
+.3686 g 3452 2298 Pls
+.3699 g 3442 2296 Pls
+.3712 g 3431 2294 Pls
+.3725 g 3422 2290 Pls
+.3738 g 3417 2284 Pls
+.375 g 3408 2281 Pls
+.3763 g 3398 2282 Pls
+.3776 g 3389 2286 Pls
+.3789 g 3379 2289 Pls
+.3802 g 3371 2293 Pls
+.3814 g 3360 2295 Pls
+.3827 g 3352 2299 Pls
+.384 g 3345 2304 Pls
+.3853 g 3342 2312 Pls
+.3866 g 3339 2318 Pls
+.3878 g 3333 2325 Pls
+.3891 g 3329 2331 Pls
+.3904 g 3320 2336 Pls
+.3917 g 3311 2339 Pls
+.393 g 3301 2342 Pls
+.3942 g 3295 2348 Pls
+.3955 g 3288 2353 Pls
+.3968 g 3280 2357 Pls
+.3981 g 3270 2361 Pls
+.3994 g 3261 2364 Pls
+.4006 g 3253 2369 Pls
+.4019 g 3246 2375 Pls
+.4032 g 3240 2381 Pls
+.4045 g 3235 2387 Pls
+.4058 g 3230 2394 Pls
+.407 g 3224 2400 Pls
+.4083 g 3219 2406 Pls
+.4096 g 3214 2413 Pls
+.4109 g 3211 2420 Pls
+.4122 g 3205 2426 Pls
+.4134 g 3205 2433 Pls
+.4147 g 3204 2441 Pls
+.416 g 3203 2448 Pls
+.4173 g 3205 2455 Pls
+.4186 g 3213 2459 Pls
+.4198 g 3222 2463 Pls
+.4211 g 3229 2469 Pls
+.4224 g 3233 2475 Pls
+.4237 g 3237 2482 Pls
+.425 g 3241 2489 Pls
+.4262 g 3243 2496 Pls
+.4275 g 3247 2503 Pls
+.4288 g 3244 2510 Pls
+.4301 g 3238 2516 Pls
+.4314 g 3229 2520 Pls
+.4326 g 3221 2524 Pls
+.4339 g 3214 2530 Pls
+.4352 g 3208 2536 Pls
+.4365 g 3201 2541 Pls
+.4378 g 3197 2548 Pls
+.439 g 3198 2555 Pls
+.4403 g 3194 2562 Pls
+.4416 g 3190 2569 Pls
+.4429 g 3185 2576 Pls
+.4442 g 3179 2582 Pls
+.4454 g 3174 2588 Pls
+.4467 g 3170 2595 Pls
+.448 g 3171 2602 Pls
+.4493 g 3172 2609 Pls
+.4506 g 3172 2617 Pls
+.4518 g 3167 2623 Pls
+.4531 g 3165 2631 Pls
+.4544 g 3160 2637 Pls
+.4557 g 3152 2641 Pls
+.457 g 3142 2644 Pls
+.4582 g 3132 2647 Pls
+.4595 g 3124 2651 Pls
+.4608 g 3116 2656 Pls
+.4621 g 3107 2660 Pls
+.4634 g 3098 2664 Pls
+.4646 g 3093 2670 Pls
+.4659 g 3091 2677 Pls
+.4672 g 3089 2684 Pls
+.4685 g 3085 2691 Pls
+.4698 g 3084 2699 Pls
+.471 g 3085 2706 Pls
+.4723 g 3087 2713 Pls
+.4736 g 3091 2720 Pls
+.4749 g 3097 2726 Pls
+.4762 g 3105 2731 Pls
+.4774 g 3112 2736 Pls
+.4787 g 3117 2743 Pls
+.48 g 3121 2750 Pls
+.4813 g 3124 2757 Pls
+.4826 g 3128 2763 Pls
+.4838 g 3133 2770 Pls
+.4851 g 3140 2775 Pls
+.4864 g 3149 2779 Pls
+.4877 g 3159 2779 Pls
+.489 g 3170 2780 Pls
+.4902 g 3180 2782 Pls
+.4915 g 3190 2784 Pls
+.4928 g 3199 2788 Pls
+.4941 g 3208 2791 Pls
+.4954 g 3218 2795 Pls
+.4966 g 3228 2797 Pls
+.4979 g 3238 2799 Pls
+.4992 g 3249 2799 Pls
+.5005 g 3259 2800 Pls
+.5018 g 3269 2802 Pls
+.503 g 3278 2806 Pls
+.5043 g 3286 2810 Pls
+.5056 g 3294 2815 Pls
+.5069 g 3301 2821 Pls
+.5082 g 3305 2828 Pls
+.5094 g 3308 2835 Pls
+.5107 g 3310 2842 Pls
+.512 g 3310 2849 Pls
+.5133 g 3304 2855 Pls
+.5146 g 3295 2859 Pls
+.5158 g 3288 2865 Pls
+.5171 g 3281 2870 Pls
+.5184 g 3278 2877 Pls
+.5197 g 3276 2885 Pls
+.521 g 3273 2892 Pls
+.5222 g 3266 2897 Pls
+.5235 g 3260 2903 Pls
+.5248 g 3254 2910 Pls
+.5261 g 3250 2916 Pls
+.5274 g 3245 2923 Pls
+.5286 g 3241 2930 Pls
+.5299 g 3240 2937 Pls
+.5312 g 3238 2944 Pls
+.5325 g 3236 2951 Pls
+.5338 g 3233 2958 Pls
+.535 g 3227 2964 Pls
+.5363 g 3222 2971 Pls
+.5376 g 3217 2978 Pls
+.5389 g 3212 2984 Pls
+.5402 g 3212 2991 Pls
+.5414 g 3213 2999 Pls
+.5427 g 3211 3006 Pls
+.544 g 3208 3013 Pls
+.5453 g 3206 3020 Pls
+.5466 g 3204 3027 Pls
+.5478 g 3202 3035 Pls
+.5491 g 3199 3042 Pls
+.5504 g 3196 3049 Pls
+.5517 g 3194 3056 Pls
+.553 g 3190 3063 Pls
+.5542 g 3186 3070 Pls
+.5555 g 3183 3077 Pls
+.5568 g 3185 3084 Pls
+.5581 g 3189 3091 Pls
+.5594 g 3190 3098 Pls
+.5606 g 3186 3105 Pls
+.5619 g 3179 3111 Pls
+.5632 g 3173 3117 Pls
+.5645 g 3169 3124 Pls
+.5658 g 3164 3130 Pls
+.567 g 3159 3136 Pls
+.5683 g 3153 3142 Pls
+.5696 g 3146 3148 Pls
+.5709 g 3138 3152 Pls
+.5722 g 3129 3157 Pls
+.5734 g 3119 3160 Pls
+.5747 g 3110 3162 Pls
+.576 g 3101 3167 Pls
+.5773 g 3091 3169 Pls
+.5786 g 3082 3172 Pls
+.5798 g 3071 3172 Pls
+.5811 g 3061 3174 Pls
+.5824 g 3050 3176 Pls
+.5837 g 3040 3177 Pls
+.585 g 3030 3175 Pls
+.5862 g 3019 3174 Pls
+.5875 g 3009 3173 Pls
+.5888 g 2999 3171 Pls
+.5901 g 2988 3170 Pls
+.5914 g 2980 3165 Pls
+.5926 g 2972 3160 Pls
+.5939 g 2964 3156 Pls
+.5952 g 2954 3153 Pls
+.5965 g 2944 3151 Pls
+.5978 g 2934 3149 Pls
+.599 g 2925 3145 Pls
+.6003 g 2917 3140 Pls
+.6016 g 2912 3133 Pls
+.6029 g 2908 3127 Pls
+.6042 g 2901 3121 Pls
+.6054 g 2892 3117 Pls
+.6067 g 2882 3117 Pls
+.608 g 2871 3116 Pls
+.6093 g 2861 3116 Pls
+.6106 g 2850 3116 Pls
+.6118 g 2841 3113 Pls
+.6131 g 2832 3109 Pls
+.6144 g 2822 3108 Pls
+.6157 g 2812 3111 Pls
+.617 g 2802 3114 Pls
+.6182 g 2793 3117 Pls
+.6195 g 2784 3121 Pls
+.6208 g 2777 3127 Pls
+.6221 g 2771 3133 Pls
+.6234 g 2768 3140 Pls
+.6246 g 2768 3147 Pls
+.6259 g 2767 3155 Pls
+.6272 g 2766 3162 Pls
+.6285 g 2765 3169 Pls
+.6298 g 2764 3177 Pls
+.631 g 2764 3184 Pls
+.6323 g 2768 3191 Pls
+.6336 g 2774 3197 Pls
+.6349 g 2778 3204 Pls
+.6362 g 2785 3210 Pls
+.6374 g 2789 3216 Pls
+.6387 g 2791 3224 Pls
+.64 g 2799 3228 Pls
+.6413 g 2809 3231 Pls
+.6426 g 2819 3234 Pls
+.6438 g 2829 3236 Pls
+.6451 g 2838 3239 Pls
+.6464 g 2846 3244 Pls
+.6477 g 2850 3251 Pls
+.649 g 2853 3258 Pls
+.6502 g 2853 3266 Pls
+.6515 g 2850 3273 Pls
+.6528 g 2846 3279 Pls
+.6541 g 2842 3286 Pls
+.6554 g 2837 3292 Pls
+.6566 g 2827 3296 Pls
+.6579 g 2818 3298 Pls
+.6592 g 2807 3299 Pls
+.6605 g 2796 3298 Pls
+.6618 g 2786 3296 Pls
+.663 g 2777 3293 Pls
+.6643 g 2768 3288 Pls
+.6656 g 2759 3285 Pls
+.6669 g 2749 3282 Pls
+.6682 g 2740 3279 Pls
+.6694 g 2730 3276 Pls
+.6707 g 2721 3273 Pls
+.672 g 2712 3268 Pls
+.6733 g 2704 3264 Pls
+.6746 g 2695 3260 Pls
+.6758 g 2688 3255 Pls
+.6771 g 2680 3249 Pls
+.6784 g 2674 3244 Pls
+.6797 g 2665 3239 Pls
+.681 g 2659 3233 Pls
+.6822 g 2653 3227 Pls
+.6835 g 2647 3221 Pls
+.6848 g 2639 3217 Pls
+.6861 g 2632 3211 Pls
+.6874 g 2626 3205 Pls
+.6886 g 2622 3198 Pls
+.6899 g 2623 3191 Pls
+.6912 g 2628 3184 Pls
+.6925 g 2632 3178 Pls
+.6938 g 2635 3171 Pls
+.695 g 2632 3163 Pls
+.6963 g 2627 3157 Pls
+.6976 g 2619 3152 Pls
+.6989 g 2609 3151 Pls
+.7002 g 2598 3150 Pls
+.7014 g 2588 3149 Pls
+.7027 g 2577 3148 Pls
+.704 g 2567 3147 Pls
+.7053 g 2557 3149 Pls
+.7066 g 2547 3151 Pls
+.7078 g 2536 3152 Pls
+.7091 g 2527 3154 Pls
+.7104 g 2518 3158 Pls
+.7117 g 2515 3165 Pls
+.713 g 2519 3172 Pls
+.7142 g 2525 3178 Pls
+.7155 g 2529 3185 Pls
+.7168 g 2534 3191 Pls
+.7181 g 2536 3199 Pls
+.7194 g 2532 3206 Pls
+.7206 g 2527 3212 Pls
+.7219 g 2523 3219 Pls
+.7232 g 2519 3226 Pls
+.7245 g 2517 3233 Pls
+.7258 g 2519 3240 Pls
+.727 g 2522 3247 Pls
+.7283 g 2526 3254 Pls
+.7296 g 2529 3261 Pls
+.7309 g 2529 3268 Pls
+.7322 g 2528 3275 Pls
+.7334 g 2526 3283 Pls
+.7347 g 2522 3290 Pls
+.736 g 2522 3297 Pls
+.7373 g 2521 3304 Pls
+.7386 g 2519 3312 Pls
+.7398 g 2522 3318 Pls
+.7411 g 2529 3324 Pls
+.7424 g 2535 3330 Pls
+.7437 g 2544 3333 Pls
+.745 g 2553 3338 Pls
+.7462 g 2560 3343 Pls
+.7475 g 2568 3348 Pls
+.7488 g 2576 3353 Pls
+.7501 g 2586 3355 Pls
+.7514 g 2595 3359 Pls
+.7526 g 2604 3363 Pls
+.7539 g 2608 3370 Pls
+.7552 g 2606 3377 Pls
+.7565 g 2608 3384 Pls
+.7578 g 2611 3391 Pls
+.759 g 2617 3398 Pls
+.7603 g 2622 3404 Pls
+.7616 g 2627 3411 Pls
+.7629 g 2630 3418 Pls
+.7642 g 2633 3425 Pls
+.7654 g 2635 3432 Pls
+.7667 g 2638 3439 Pls
+.768 g 2637 3446 Pls
+.7693 g 2635 3454 Pls
+.7706 g 2634 3461 Pls
+.7718 g 2632 3468 Pls
+.7731 g 2631 3475 Pls
+.7744 g 2629 3483 Pls
+.7757 g 2625 3490 Pls
+.777 g 2620 3496 Pls
+.7782 g 2613 3502 Pls
+.7795 g 2607 3507 Pls
+.7808 g 2603 3514 Pls
+.7821 g 2599 3521 Pls
+.7834 g 2595 3528 Pls
+.7846 g 2590 3534 Pls
+.7859 g 2582 3539 Pls
+.7872 g 2575 3545 Pls
+.7885 g 2568 3550 Pls
+.7898 g 2561 3556 Pls
+.791 g 2554 3561 Pls
+.7923 g 2547 3567 Pls
+.7936 g 2539 3571 Pls
+.7949 g 2532 3577 Pls
+.7962 g 2528 3584 Pls
+.7974 g 2524 3591 Pls
+.7987 g 2520 3597 Pls
+.8 g 2518 3605 Pls
+.8013 g 2513 3611 Pls
+.8026 g 2504 3615 Pls
+.8038 g 2495 3619 Pls
+.8051 g 2486 3623 Pls
+.8064 g 2476 3624 Pls
+.8077 g 2466 3625 Pls
+.809 g 2457 3629 Pls
+.8102 g 2449 3634 Pls
+.8115 g 2439 3635 Pls
+.8128 g 2429 3638 Pls
+.8141 g 2423 3644 Pls
+.8154 g 2421 3651 Pls
+.8166 g 2420 3658 Pls
+.8179 g 2421 3666 Pls
+.8192 g 2426 3672 Pls
+.8205 g 2430 3679 Pls
+.8218 g 2431 3686 Pls
+.823 g 2429 3693 Pls
+.8243 g 2426 3700 Pls
+.8256 g 2422 3707 Pls
+.8269 g 2415 3712 Pls
+.8282 g 2406 3717 Pls
+.8294 g 2402 3723 Pls
+.8307 g 2401 3731 Pls
+.832 g 2405 3738 Pls
+.8333 g 2408 3745 Pls
+.8346 g 2410 3752 Pls
+.8358 g 2408 3759 Pls
+.8371 g 2405 3766 Pls
+.8384 g 2401 3773 Pls
+.8397 g 2398 3780 Pls
+.841 g 2397 3787 Pls
+.8422 g 2398 3795 Pls
+.8435 g 2396 3802 Pls
+.8448 g 2394 3809 Pls
+.8461 g 2392 3817 Pls
+.8474 g 2389 3824 Pls
+.8486 g 2386 3831 Pls
+.8499 g 2383 3838 Pls
+.8512 g 2383 3845 Pls
+.8525 g 2383 3853 Pls
+.8538 g 2386 3860 Pls
+.855 g 2392 3865 Pls
+.8563 g 2397 3872 Pls
+.8576 g 2399 3879 Pls
+.8589 g 2397 3886 Pls
+.8602 g 2396 3893 Pls
+.8614 g 2399 3900 Pls
+.8627 g 2400 3908 Pls
+.864 g 2403 3915 Pls
+.8653 g 2407 3922 Pls
+.8666 g 2411 3928 Pls
+.8678 g 2416 3935 Pls
+.8691 g 2422 3941 Pls
+.8704 g 2426 3948 Pls
+.8717 g 2432 3954 Pls
+.873 g 2440 3959 Pls
+.8742 g 2446 3965 Pls
+.8755 g 2445 3972 Pls
+.8768 g 2438 3978 Pls
+.8781 g 2430 3982 Pls
+.8794 g 2424 3988 Pls
+.8806 g 2416 3993 Pls
+.8819 g 2407 3997 Pls
+.8832 g 2398 4001 Pls
+.8845 g 2388 4003 Pls
+.8858 g 2379 4007 Pls
+.887 g 2371 4011 Pls
+.8883 g 2363 4017 Pls
+.8896 g 2357 4023 Pls
+.8909 g 2350 4028 Pls
+.8922 g 2343 4034 Pls
+.8934 g 2335 4039 Pls
+.8947 g 2328 4044 Pls
+.896 g 2320 4049 Pls
+.8973 g 2312 4054 Pls
+.8986 g 2303 4057 Pls
+.8998 g 2294 4061 Pls
+.9011 g 2286 4066 Pls
+.9024 g 2277 4070 Pls
+.9037 g 2267 4073 Pls
+.905 g 2257 4073 Pls
+.9062 g 2246 4072 Pls
+.9075 g 2236 4071 Pls
+.9088 g 2227 4066 Pls
+.9101 g 2219 4061 Pls
+.9114 g 2211 4057 Pls
+.9126 g 2204 4051 Pls
+.9139 g 2196 4046 Pls
+.9152 g 2186 4044 Pls
+.9165 g 2176 4043 Pls
+.9178 g 2165 4043 Pls
+.919 g 2156 4040 Pls
+.9203 g 2148 4035 Pls
+.9216 g 2143 4029 Pls
+.9229 g 2138 4022 Pls
+.9242 g 2131 4017 Pls
+.9254 g 2127 4010 Pls
+.9267 g 2124 4003 Pls
+.928 g 2119 3996 Pls
+.9293 g 2115 3990 Pls
+.9306 g 2111 3983 Pls
+.9318 g 2110 3975 Pls
+.9331 g 2106 3969 Pls
+.9344 g 2100 3963 Pls
+.9357 g 2096 3956 Pls
+.937 g 2091 3950 Pls
+.9382 g 2087 3943 Pls
+.9395 g 2084 3936 Pls
+.9408 g 2081 3929 Pls
+.9421 g 2077 3922 Pls
+.9434 g 2070 3917 Pls
+.9446 g 2060 3914 Pls
+.9459 g 2053 3909 Pls
+.9472 g 2045 3904 Pls
+.9485 g 2036 3899 Pls
+.9498 g 2027 3896 Pls
+.951 g 2017 3895 Pls
+.9523 g 2006 3894 Pls
+.9536 g 1996 3894 Pls
+.9549 g 1985 3895 Pls
+.9562 g 1975 3897 Pls
+.9574 g 1965 3897 Pls
+.9587 g 1954 3896 Pls
+.96 g 1944 3896 Pls
+.9613 g 1934 3894 Pls
+.9626 g 1924 3890 Pls
+.9638 g 1914 3888 Pls
+.9651 g 1904 3885 Pls
+.9664 g 1895 3882 Pls
+.9677 g 1887 3877 Pls
+.969 g 1878 3873 Pls
+.9702 g 1868 3870 Pls
+.9715 g 1858 3868 Pls
+.9728 g 1849 3865 Pls
+.9741 g 1841 3860 Pls
+.9754 g 1834 3855 Pls
+.9766 g 1827 3849 Pls
+.9779 g 1820 3844 Pls
+.9792 g 1812 3840 Pls
+.9805 g 1803 3836 Pls
+.9818 g 1793 3834 Pls
+.983 g 1782 3834 Pls
+.9843 g 1772 3835 Pls
+.9856 g 1763 3839 Pls
+.9869 g 1754 3842 Pls
+.9882 g 1744 3846 Pls
+.9894 g 1734 3848 Pls
+.9907 g 1724 3846 Pls
+.992 g 1715 3842 Pls
+.9933 g 1705 3841 Pls
+.9946 g 1695 3843 Pls
+.9958 g 1684 3843 Pls
+.9971 g 1674 3842 Pls
+.9984 g 1663 3841 Pls
+.9997 g 1653 3840 Pls
+3808 463 Pls
+% End plot #1
+1.000 UL
+LTb
+LCb setrgbcolor
+1340 4439 N
+0 -2799 V
+4577 0 V
+0 2799 V
+-4577 0 V
+Z stroke
+stroke gsave	%% draw gray scale smooth box
+maxcolors 0 gt {/imax maxcolors def} {/imax 1024 def} ifelse
+6031 1640 translate 228 2799 scale 0 setlinewidth
+/ystep 1 imax div def /y0 0 def /ii 0 def
+{ y0 g 0 y0 N 1 0 V 0 ystep V -1 0 f
+/y0 y0 ystep add def /ii ii 1 add def
+ii imax ge {exit} if } loop
+grestore 0 setgray
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 1640 N
+228 0 V
+0 2799 V
+-228 0 V
+0 -2799 V
+Z stroke
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+6259 1640 M
+-63 0 V
+stroke
+6379 1640 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 0)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 1640 M
+63 0 V
+165 279 R
+-63 0 V
+stroke
+6379 1919 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 1e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 1919 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 2199 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 2e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 2199 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 2479 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 3e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 2479 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 2759 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 4e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 2759 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 3039 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 5e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 3039 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 3319 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 6e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 3319 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 3599 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 7e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 3599 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 3879 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 8e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 3879 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 4159 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 9e+06)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 4159 M
+63 0 V
+165 280 R
+-63 0 V
+stroke
+6379 4439 M
+[ [(Helvetica) 200.0 0.0 true true 0 ( 1e+07)]
+] -66.7 MLshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6031 4439 M
+63 0 V
+1.000 UP
+stroke
+LTb
+LCb setrgbcolor
+grestore % colour palette end
+stroke
+grestore
+end
+showpage
+%%Trailer
+%%DocumentFonts: Helvetica
