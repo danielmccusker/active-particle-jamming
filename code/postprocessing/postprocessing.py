@@ -6,7 +6,7 @@ import math
 n = sum(os.path.isdir(i) for i in os.listdir(".")) #get the total number of folders in this directory, which includes "."
 outfile = open("temp.dat","a")
 
-for i in range(0, n): #does not include the stopping value
+for i in range(0, n-1): #does not include the stopping value
 	path = "run"+str(i)+"/dat/summary.dat"
 	infile = open(path, "rb")
 	reader = csv.reader(infile, delimiter = "\t")

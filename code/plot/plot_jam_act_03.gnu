@@ -14,6 +14,9 @@
 
 gnuplot << EOF
 
+N = 1000 #number of data points on a graph
+int = ($3/N)
+
 set terminal postscript eps color enhanced "Helvetica" 20
 directory = '/home/dmccusker/remote/jamming-dynamics/output/'.'$2/'
 filein  = directory.'$1/dat/data.dat'
@@ -36,9 +39,9 @@ set fit quiet
 f0(x) = A0
 A0 = 0.5
 
-fit f0(x) filein using 1:5 every ::1000 via A0
+fit f0(x) filein using 1:5 every int:int via A0
 
-plot filein u 1:5 every 10 t '$1', f0(x) t sprintf("mean: A = %.4g, error = %.4g",A0, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
+plot filein u 1:5 every int t '$1', f0(x) t sprintf("mean: A = %.4g, error = %.4g",A0, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
 # ------------------------------------------------------------------------------------------ #
 
@@ -51,7 +54,7 @@ set xlabel "time [steps]"
 set ylabel "{/Symbol Y}"
 set yrange [-pi:pi]
 
-plot filein u 1:6 every 10 t '$1'
+plot filein u 1:6 every int t '$1'
 
 # ------------------------------------------------------------------------------------------ #
 
@@ -67,9 +70,9 @@ set autoscale y
 f1(x) = A1
 A1 = 0.5
 
-fit f1(x) filein using 1:4 every ::1000 via A1
+fit f1(x) filein using 1:4 every int:int via A1
 
-plot filein u 1:4 every 10::10 t '$1', f1(x) t sprintf("mean: A = %.4g, error = %.4g",A1, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
+plot filein u 1:4 every int::10 t '$1', f1(x) t sprintf("mean: A = %.4g, error = %.4g",A1, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
 # ------------------------------------------------------------------------------------------ #
 
@@ -81,7 +84,7 @@ set title "Mean squared difference of radii"
 set xlabel "time [steps]"
 set ylabel "<(a_i - a_j)^2>"
 
-plot filein u 1:7 every 10 with lines
+plot filein u 1:7 every int with lines
 
 # ------------------------------------------------------------------------------------------ #
 
@@ -93,7 +96,7 @@ set title "Position with time of the original system"
 set xlabel "x"
 set ylabel "y"
 
-plot filein u 2:3:1 every 100 with points palette t "CoM"
+plot filein u 2:3:1 every int with points palette t "CoM"
 
 # ------------------------------------------------------------------------------------------ #
 
@@ -123,7 +126,7 @@ set ylabel "y"
 set xrange [-35:35]
 set yrange [-35:35]
 
-plot filein u (f(\$8-\$2)):(f(\$9-\$3)):1 every 100 with points palette t "Cell 1", filein u (f(\$10-\$2)):(f(\$11-\$3)):1 every 100 with points palette t "Cell 2", filein u (f(\$12-\$2)):(f(\$13-\$3)):1 every 100 with points palette t "Cell 3"
+plot filein u (f(\$8-\$2)):(f(\$9-\$3)):1 every int with points palette t "Cell 1", filein u (f(\$10-\$2)):(f(\$11-\$3)):1 every int with points palette t "Cell 2", filein u (f(\$12-\$2)):(f(\$13-\$3)):1 every int with points palette t "Cell 3"
 
 # ------------------------------------------------------------------------------------------ #
 
@@ -170,9 +173,9 @@ set ylabel "<(x({/Symbol t}) - x(0))^2>"
 f(x) = 4*D*x
 D=0.1
 
-fit f(x) filein u 1:2:3 via D
+fit f(x) filein u 1:2:3 every int via D
 
-plot filein u 1:2 t '$1', f(x) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
+plot filein u 1:2 every int t '$1', f(x) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
 set print directory.'$1/dat/summary.dat' append
 print 'effective diffusion constant:	', D
@@ -182,7 +185,7 @@ fileout = directory.'$1/eps/MSDlogerror.eps'
 set output fileout
 set logscale xy
 
-plot filein u 1:2:3 w errorbars t '$1', f(x) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
+plot filein u 1:2:3 every int w errorbars t '$1', f(x) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
 #------------------------------------------------------------------------------------------ #
 
@@ -194,7 +197,7 @@ set xlabel "lagtime [steps]"
 set ylabel "log <(x({/Symbol t}) - x(0))^2>"
 unset logscale xy
 
-plot filein u 1:(log($2)) t '$1', log(f(x)) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
+plot filein u 1:4 every int t '$1', log(f(x)) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
 # ------------------------------------------------------------------------------------------ #
 
@@ -207,7 +210,7 @@ set xlabel "lagtime [steps]"
 set ylabel "<(v({/Symbol t}).v(0))^2>"
 unset logscale xy
 
-plot filein using 1:4 t '$1' with lines
+plot filein using 1:4 every int t '$1' with lines
 
 # ------------------------------------------------------------------------------------------ #
 

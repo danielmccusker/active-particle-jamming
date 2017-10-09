@@ -66,59 +66,50 @@ Print::~Print()
 string Print::init(string fullRun, string ID, int noCells)
 {
     run = ID;
-    path = "/home/dmccusker/remote/jamming-dynamics/output/"+fullRun;
-    string path_ = path+"/";
-    const char *p = path_.c_str();
+    path = "/home/dmccusker/remote/jamming-dynamics/output/"+fullRun+"/";
+    const char *p = path.c_str();
     N = noCells;
     sqrtN = sqrt(N);
-
     int check = 0;
     DIR* dir = opendir(p); 
 	cout << "the value of dir is " << dir << endl;
-    if(!dir){
-	system(("mkdir "+path).c_str());
-    	cout <<"This message should only appear once" << endl;
-	check += system(("cp /home/dmccusker/remote/jamming-dynamics/code/postprocessing/* "+path).c_str());
-	if( check < 0 ) cout << "The postprocessing code was not copied to the output folder\n";
-	check += system(("mkdir "+path+"/"+run).c_str());
-	check += system(("mkdir "+path+"/"+run+"/dat").c_str());
-	check += system(("mkdir "+path+"/"+run+"/eps").c_str());
-	check += system(("mkdir "+path+"/"+run+"/vid").c_str());
-	if(check < 0){ cout << "Failed to create folders. Status 715\n"; exit(715); }
-	check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/jam.html "+path+"/"+run+"/vid/jam.html").c_str());
-	check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/{jam.html,jquery.js} "+path+"/").c_str());
-	if(check < 0){ cout << "Failed to copy files to vid/. Status 716\n"; exit(716); }
-	closedir(dir); 
-    } else if(dir){
-	cout << "this message should appear every other time" << endl;
-	closedir(dir); 
-	ifstream test;
-    	test.open((path+"/"+run+"/vid/jam.html").c_str());
-    	if(test.fail()) {
-	        check += system(("mkdir "+path+"/"+run).c_str());
-      	        check += system(("mkdir "+path+"/"+run+"/dat").c_str());
-		check += system(("mkdir "+path+"/"+run+"/eps").c_str());
-		check += system(("mkdir "+path+"/"+run+"/vid").c_str());
-		if(check < 0){ cout << "Failed to create folders. Status 715\n"; exit(715); }
-        
-		check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/jam.html "+path+"/"+run+"/vid/jam.html").c_str());
-		check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/{jam.html,jquery.js} "+path+"/").c_str());
-		if(check < 0){ cout << "Failed to copy files to vid/. Status 716\n"; exit(716); }
-    	} else {
-		test.close();
-        	cout << "This action will overwrite old data. Press \'9\' to continue.\n";
-        	cin >> check;
-        	if(check!=9) exit(9);
-    	} 
-    } 
     
-    data.open((path+"/"+run+"/dat/data.dat").c_str());
-    positions.open((path+"/"+run+"/dat/positions.dat").c_str());
-    JavaScriptVid.open((path+"/"+run+"/vid/data.js").c_str());
-    OvitoVid.open((path+"/"+run+"/vid/ovito.txt").c_str());
-    size.open((path+"/"+run+"/vid/size.js").c_str());
-    summary.open((path+"/"+run+"/dat/summary.dat").c_str());
-    GNF.open((path+"/"+run+"/dat/GNF.dat").c_str());
+    if(!dir){
+        check += system(("mkdir "+path).c_str());
+        check += system(("mkdir "+path+run).c_str());
+        cout << "This message should only appear once" << endl;
+        if(check < 0){
+            cout << "Failed to create folders. Status 715\n";
+            exit(715);
+        }
+        
+    if(dir){
+        cout << "this message should appear every other time" << endl;
+        closedir(dir);
+    }
+    
+    check += system(("cp /home/dmccusker/remote/jamming-dynamics/code/postprocessing/* "+path).c_str());
+    if( check < 0 ){
+        cout << "The postprocessing code was not copied to the output folder.";
+    }
+    check += system(("mkdir "+path+run+"/dat").c_str());
+    check += system(("mkdir "+path+run+"/eps").c_str());
+    check += system(("mkdir "+path+run+"/vid").c_str());
+    if(check < 0){
+        cout << "Failed to create folders. Status 715\n"; exit(715);
+    }
+    check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/jam.html "+path+run+"/vid/jam.html").c_str());
+        
+    if(check < 0){
+        cout << "Failed to copy files to vid/. Status 716\n"; exit(716);
+    }
+    data.open((path+run+"/dat/data.dat").c_str());
+    positions.open((path+run+"/dat/positions.dat").c_str());
+    JavaScriptVid.open((path+run+"/vid/data.js").c_str());
+    OvitoVid.open((path+run+"/vid/ovito.txt").c_str());
+    size.open((path+run+"/vid/size.js").c_str());
+    summary.open((path+run+"/dat/summary.dat").c_str());
+    GNF.open((path+run+"/dat/GNF.dat").c_str());
 
     if(data.fail() || JavaScriptVid.fail() || size.fail())
     {
@@ -204,7 +195,7 @@ void Print::print_v(int k, double v, double prob)
 {
     if( k == 0 )
     {
-        velDist.open((path+"/"+run+"/dat/velDist.dat").c_str());
+        velDist.open((path+run+"/dat/velDist.dat").c_str());
     }
     velDist << v << "\t" << prob << "\n";
 }
@@ -213,7 +204,7 @@ void Print::print_g(int k, double r, double gr)
 {
     if( k == 1 )
     {
-        pairCorr.open((path+"/"+run+"/dat/pairCorr.dat").c_str());
+        pairCorr.open((path+run+"/dat/pairCorr.dat").c_str());
     }
     pairCorr << r << "\t" << gr << "\n";
 }
@@ -222,9 +213,9 @@ void Print::print_MSD(int tau, double msd, double err, double vaf)
 {
     if( tau == 0 )
     {
-        MSD.open((path+"/"+run+"/dat/MSD.dat").c_str());
+        MSD.open((path+run+"/dat/MSD.dat").c_str());
     }
-    MSD << tau << "\t" << msd << "\t" << err << "\t" << vaf << "\n";
+    MSD << tau << "\t" << msd << "\t" << log(msd) << "t" << log(1.-msd) << "\t" << err << "\t" << vaf << "\n";
 }
 
 void Print::resize(double &x, double &y)

@@ -82,7 +82,6 @@ boost::normal_distribution<> normdist(0, 1);
 boost::variate_generator< boost::mt19937, boost::uniform_real<> > randuni(gen, unidist);
 boost::variate_generator< boost::mt19937, boost::normal_distribution<> > randnorm(gen, normdist);
 
-const int noCells = 1024;
 const int screenshotInterval = 128;
 
 using namespace std;
@@ -90,7 +89,7 @@ using namespace std::chrono;
 
 struct Engine
 {
-    Engine(string, string, long int, int, double, double, double);
+    Engine(string, string, int, long int, int, double, double, double);
     ~Engine();
 
     // Functions
@@ -133,6 +132,7 @@ struct Engine
 
     long int totalSteps;
     long int countdown;
+    int noCells;
     long int timeCounter;
     long int ts0, ts1, ts2, ts3, ts4;       // Times of the MSDs starting points
     long int tau0, tau1, tau2, tau3, tau4;  // Lagtimes in units of screenshotInterval starting at ts0, ts1, ...
@@ -173,11 +173,12 @@ struct Engine
     double GNFinterval;
 };
 
-Engine::Engine(string dir, string ID, long int numberOfSteps, int stepsPerTime, double C1, double C2, double rho)
+Engine::Engine(string dir, string ID, int N, long int numberOfSteps, int stepsPerTime, double C1, double C2, double rho)
 // Constructor: This is where variables get defined and initialized.
 {
     fullRun = dir;
     run = ID;
+    noCells = N;
     totalSteps = numberOfSteps;
     countdown = numberOfSteps+1;
     deltat    = 1./stepsPerTime;
@@ -1183,11 +1184,12 @@ int main(int argc, char *argv[])
 {
     string ID = "";
     string dir = "";
+    int N = 0;
     if(argc != 8)
     {
         cout<< "Incorrect number of arguments. Need:" << endl
             << "- full run ID" << endl
-	    << "- ID" << endl << "- number of iterations" << endl
+	    << "- ID" << endl << "- number of cells" << endl << "- number of iterations" << endl
             << "- iterations per unit time" << endl << "- \\lambda_s" << endl
             << "- \\lambda_n" << endl << "- \\rho" << endl
             << "Program exit status (1)" << endl;
@@ -1196,18 +1198,19 @@ int main(int argc, char *argv[])
     else
     {
         dir = argv[1];
-	ID             = argv[2];
+        ID             = argv[2];
+        N              = argv[3];
         long int steps = atol(argv[3]);
         int stepsPTime = atoi(argv[4]);
         double l_s     = atof(argv[5]);
         double l_n     = atof(argv[6]);
         double rho     = atof(argv[7]);
 
-        Engine engine(dir, ID, steps, stepsPTime, l_s, l_n, rho);
+        Engine engine(dir, ID, N, steps, stepsPTime, l_s, l_n, rho);
         engine.start();
     }
     
-    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir).c_str());
+    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+steps).c_str());
     if( check != 0 )
         cout << "An error occurred while plotting (one of) the graphs\n";
     return 0;
