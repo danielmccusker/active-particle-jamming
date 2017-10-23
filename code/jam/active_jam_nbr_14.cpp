@@ -82,7 +82,6 @@ boost::normal_distribution<> normdist(0, 1);
 boost::variate_generator< boost::mt19937, boost::uniform_real<> > randuni(gen, unidist);
 boost::variate_generator< boost::mt19937, boost::normal_distribution<> > randnorm(gen, normdist);
 
-const int noCells = 1024;
 const int screenshotInterval = 128;
 
 using namespace std;
@@ -90,7 +89,7 @@ using namespace std::chrono;
 
 struct Engine
 {
-    Engine(string, string, long int, int, double, double, double);
+    Engine(string, string, int, long int, int, double, double, double);
     ~Engine();
 
     // Functions
@@ -133,6 +132,7 @@ struct Engine
 
     long int totalSteps;
     long int countdown;
+    int noCells;
     long int timeCounter;
     long int ts0, ts1, ts2, ts3, ts4;       // Times of the MSDs starting points
     long int tau0, tau1, tau2, tau3, tau4;  // Lagtimes in units of screenshotInterval starting at ts0, ts1, ...
@@ -173,11 +173,12 @@ struct Engine
     double GNFinterval;
 };
 
-Engine::Engine(string dir, string ID, long int numberOfSteps, int stepsPerTime, double C1, double C2, double rho)
+Engine::Engine(string dir, string ID, int N, long int numberOfSteps, int stepsPerTime, double C1, double C2, double rho)
 // Constructor: This is where variables get defined and initialized.
 {
     fullRun = dir;
     run = ID;
+    noCells = N;
     totalSteps = numberOfSteps;
     countdown = numberOfSteps+1;
     deltat    = 1./stepsPerTime;
@@ -263,7 +264,7 @@ void Engine::start()
     
     path = print.init(fullRun, run, noCells);
     cout << path << endl;
-    print.print_summary(run, noCells, countdown-1, 1./deltat, CFself, CTnoise, dens);//print input summary
+    
     init();
     GNFinit();
     relax();
@@ -293,8 +294,7 @@ void Engine::start()
     
     auto duration = duration_cast<seconds>( t2 - t1 ).count();//elapsed time
     
-    cout << "time elapsed for " << timeCounter << " time steps (s): " << duration << endl;
-    
+    print.print_summary(run, noCells, timeCounter, 1./deltat, CFself, CTnoise, dens, duration); //print run summary
 }
 
 void Engine::init()
@@ -454,12 +454,10 @@ void Engine::find_nbr()
                         if(r2 < (sumR*sumR))     // They overlap
                         {
                             double overlap = sumR / sqrt(r2) - 1;
-                            double forceX = overlap*deltax;
-                            double forceY = overlap*deltay;
-                            cell[i].Fx -= forceX;
-                            cell[i].Fy -= forceY;
-                            cell[j].Fx += forceX;
-                            cell[j].Fy += forceY;
+                            cell[i].Fx -= overlap*deltax;
+                            cell[i].Fy -= overlap*deltay;
+                            cell[j].Fx += overlap*deltax;
+                            cell[j].Fy += overlap*deltay;
                         }
                         cell[i].cosp_new += cell[j].cosp;
                         cell[i].sinp_new += cell[j].sinp;
@@ -507,12 +505,10 @@ void Engine::find_nbr()
                         if(r2 < (sumR*sumR))     // They overlap
                         {
                             double overlap = sumR / sqrt(r2) - 1;
-                            double forceX = overlap*deltax;
-                            double forceY = overlap*deltay;
-                            cell[i].Fx -= forceX;
-                            cell[i].Fy -= forceY;
-                            cell[j].Fx += forceX;
-                            cell[j].Fy += forceY;
+                            cell[i].Fx -= overlap*deltax;
+                            cell[i].Fy -= overlap*deltay;
+                            cell[j].Fx += overlap*deltax;
+                            cell[j].Fy += overlap*deltay;
                             if(countdown <= film && timeCounter%screenshotInterval == 0)
                             {
                                 cell[i].over -= 240*overlap;
@@ -1183,11 +1179,12 @@ int main(int argc, char *argv[])
 {
     string ID = "";
     string dir = "";
+    int N = 0;
     if(argc != 8)
     {
         cout<< "Incorrect number of arguments. Need:" << endl
             << "- full run ID" << endl
-	    << "- ID" << endl << "- number of iterations" << endl
+	    << "- ID" << endl << "- number of cells" << endl << "- number of iterations" << endl
             << "- iterations per unit time" << endl << "- \\lambda_s" << endl
             << "- \\lambda_n" << endl << "- \\rho" << endl
             << "Program exit status (1)" << endl;
@@ -1196,18 +1193,19 @@ int main(int argc, char *argv[])
     else
     {
         dir = argv[1];
-	ID             = argv[2];
+        ID             = argv[2];
+        N              = argv[3];
         long int steps = atol(argv[3]);
         int stepsPTime = atoi(argv[4]);
         double l_s     = atof(argv[5]);
         double l_n     = atof(argv[6]);
         double rho     = atof(argv[7]);
 
-        Engine engine(dir, ID, steps, stepsPTime, l_s, l_n, rho);
+        Engine engine(dir, ID, N, steps, stepsPTime, l_s, l_n, rho);
         engine.start();
     }
     
-    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir).c_str());
+    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+steps).c_str());
     if( check != 0 )
         cout << "An error occurred while plotting (one of) the graphs\n";
     return 0;

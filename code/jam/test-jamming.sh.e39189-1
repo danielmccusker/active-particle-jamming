@@ -1,4 +1,0 @@
-mkdir: cannot create directory ‘/home/dmccusker/remote/jamming-dynamics/output/test’: File exists
-cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/test/GNFvis.gnu’: File exists
-cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/test/MSDvis.gnu’: File exists
-cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/test/postprocessing.py’: File exists
