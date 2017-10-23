@@ -73,7 +73,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/random.hpp>
 #include "../classes/Cell.h"
-#include "../print/print_04.h"
+#include "../print/Print.h"
 #include "../classes/Box.h"
 
 #define PI 3.14159265
@@ -210,12 +210,8 @@ Engine::~Engine(){
     
     //for( int k=0; k<vmax; ++k) print.print_v(k, k*dv, veldist[k] / (double)N);
     
-    for (int i=0; i<N; i++) {
-        cell[i].clearVerletList();
-    }
-    for (int j=0; j<b2; j++) {
-        grid[j].clear_cell_list();
-    }
+    for (int i=0; i<N;  i++) cell[i].VerletList.clear();
+    for (int j=0; j<b2; j++) grid[j].CellList.clear();
     
 //    for(long int t=0; t<(timeCounter - ts0)/screenshotInterval+1; ++t)
 //    {
@@ -233,7 +229,7 @@ Engine::~Engine(){
 
 void Engine::start(){
     
-    //high_resolution_clock::time_point t1 = high_resolution_clock::now();               // Start time
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();               // Start time
     
     path = print.init(fullRun, run, N);
     
@@ -245,7 +241,7 @@ void Engine::start(){
     //relax();
     
     while(countdown != 0){
-
+        //cout << t << endl;
         if( newSkinList() ){
             assignCellsToGrid();
             buildVerletLists();
@@ -273,13 +269,13 @@ void Engine::start(){
         
     }
     
-    pairCorr();
+    //pairCorr();
     
-   // high_resolution_clock::time_point t2 = high_resolution_clock::now();                //end time
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();                //end time
     
-    //auto duration = duration_cast<seconds>( t2 - t1 ).count();                          //elapsed time
+    auto duration = duration_cast<seconds>( t2 - t1 ).count();                          //elapsed time
     
-    print.print_summary(run, N, t, 1./dt, CFself, CTnoise, dens);   //print run summary
+    print.print_summary(run, N, t, 1./dt, CFself, CTnoise, dens, duration);   //print run summary
     
 //    
 //    double velmag = sqrt(cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely);
@@ -412,32 +408,40 @@ void Engine::defineGrid(){
 }
 
 void Engine::assignCellsToGrid(){                           // Could maybe optimize to not search every box every time
-    for (int j=0; j<b2; j++) grid[j].clear_cell_list();
     for (int i=0; i<N; i++){
+        double r2 = lp*lp/2;          // Circle of radius lp*√2/2 around each box center touches the box's corners
         for (int j=0; j<b2; j++){
-            double R2 = lp*lp/2;          // Circle of radius lp*√2/2 around each box center touches the box's corners
             double dx = cell[i].posx - grid[j].center[0];
             double dy = cell[i].posy - grid[j].center[1];
             double d2 = dx*dx+dy*dy;
-            if(d2 < R2)  { R2 = d2; cell[i].box = j; }      // Find box to which the cell belongs
+            if(d2 < r2)  { r2 = d2; cell[i].box = j; }      // Find box to which the cell belongs
         }
-        grid[cell[i].box].add_cell(cell[i]);                // Add this cell to the box's list
+        grid[cell[i].box].CellList.push_back(i);            // Add this cell to the box's list
     }
 }
 
 void Engine::buildVerletLists(){
     for(int i=0; i<N; i++){
-        // check again to use symmetry
         for(int m=0; m<9; m++){
-            int p = grid[cell[i].box].neighbors[m];         // Get the indices of the 9 boxes to search
-            grid[p].check_box(&cell[i], rs2, L, Lover2);      // Add to cell's Verlet list
+            int p = grid[cell[i].box].neighbors[m];                 // Get the indices of the 9 boxes to search
+            int max = grid[p].CellList.size();
+            for(int k=0; k < max; k++){                             // Iterate through the cell list of each of these 9 boxes
+                int j = grid[p].CellList[k];
+                if(j > i){                                          // Symmetry reduces calcuations by half
+                    double dx = delta_norm(cell[j].posx-cell[i].posx);
+                    double dy = delta_norm(cell[j].posy-cell[i].posy);
+                    if( dx*dx+dy*dy < rs2 ){
+                        cell[i].VerletList.push_back(j);            // Add to cell's Verlet list
+                        cell[j].VerletList.push_back(i);
+                    }
+                }
+            }
         }
     }
 }
 
 bool Engine::newSkinList(){
 // Compare the two largest displacements to see if a skin refresh is required
-    
     bool refresh= false;
     double largest2 = 0.;
     double second2 = 0.;
@@ -450,6 +454,7 @@ bool Engine::newSkinList(){
     }
     
     if( ( sqrt(largest2)+sqrt(second2) ) > (rs-rn) ){
+        cout << " New skin list " << endl;
         xavgold = 0;
         yavgold = 0;
         refresh = true;
@@ -459,11 +464,13 @@ bool Engine::newSkinList(){
             cell[i].yold = cell[i].yreal;
             xavgold += cell[i].xreal;
             yavgold += cell[i].yreal;
-            cell[i].clearVerletList();
+            cell[i].VerletList.clear();
         }
+        for (int j=0; j<b2; j++) grid[j].CellList.clear();
         xavgold /= N;
         yavgold /= N;
     }
+    
     return refresh;
 }
 
@@ -473,23 +480,50 @@ void Engine::neighborInteractions(){
 // ~Most physics happens here~
     
     for(int i=0; i<N; i++){
-        double noise = CTnoise*randuni();
-        cell[i].checkVerletList(rn2, L, Lover2, noise);
+        int max = cell[i].VerletList.size();
+        for(int k=0; k < max; k++){
+            int j = cell[i].VerletList[k];
+            if(j > i){                                                  // Use symmetry
+                double dx = delta_norm(cell[j].posx-cell[i].posx);
+                double dy = delta_norm(cell[j].posy-cell[i].posy);
+                double d2 = dx*dx+dy*dy;
+                if(d2 < rn2){                                           // They're neighbors
+                    double sumR = cell[i].R + cell[j].R;
+                    if( d2 < (sumR*sumR) ){                             // They also overlap
+                        double overlap = sumR / sqrt(d2) - 1;
+                        double forceX = overlap*dx;
+                        double forceY = overlap*dy;
+                        cell[i].Fx -= forceX;
+                        cell[i].Fy -= forceY;
+                        cell[j].Fx += forceX;
+                        cell[j].Fy += forceY;
+                    }
+                    cell[i].cosp_new += cell[j].cosp;
+                    cell[i].sinp_new += cell[j].sinp;
+                    cell[j].cosp_new += cell[i].cosp;
+                    cell[j].sinp_new += cell[i].sinp;
+                }
+            }
+        }
+        cell[i].Fx += cell[i].cosp*cell[i].FselfR;
+        cell[i].Fy += cell[i].sinp*cell[i].FselfR;
+        cell[i].psi_new = atan2(cell[i].sinp_new, cell[i].cosp_new) + CTnoise*randuni();
     }
 }
 
 void Engine::relax(){
 // Relax the system for 1,000,000 steps, slowly decreasing the activity to the final value
     
-    int trelax = 1e3;
+    int trelax = 1e6;
     double CFrelax = 0.05;
     double CFself_old = CFself;                         // Store parameter values
     double CTnoise_old = CTnoise;
     t = 1;                                              // Prevent the program from producing output
     CTnoise = 0;
     
-    for(int t_=0; t_<trelax; t_++){
-        CFself = CFself_old + ((CFrelax - CFself_old)*(trelax - t_))/trelax;
+    for(int _t=0; _t<trelax; _t++){
+        cout << _t << endl;
+        CFself = CFself_old + ((CFrelax - CFself_old)*(trelax - _t))/trelax;
         if( newSkinList() ){
             assignCellsToGrid();
             buildVerletLists();

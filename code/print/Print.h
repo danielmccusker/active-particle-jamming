@@ -34,8 +34,8 @@ struct Print
     void print_size(double);
     void print_v(int, double, double);
     void print_g(int, double, double);
-    void print_MSD(int, double, double, double);
-    //void print_MSD(int, double);
+    //void print_MSD(int, double, double, double);
+    void print_MSD(int, double);
     void resize(double &, double &);
     void print_summary(string, int, long int, int, double, double, double, double);
     void print_GNF(double, double);
@@ -214,18 +214,18 @@ void Print::print_g(int k, double r, double gr)
     pairCorr << r << "\t" << gr << "\n";
 }
 
-void Print::print_MSD(int tau, double msd, double err, double vaf)
-{
-    if( tau == 0 )
-    {
-        MSD.open((path+run+"/dat/MSD.dat").c_str());
-    }
-    MSD << tau << "\t" << msd << "\t" << log(msd) << "t" << log(1.-msd) << "\t" << err << "\t" << vaf << "\n";
-}
-//
-//void Print::print_MSD(int t, double msd){
-//    MSD << t << "\t" << msd << "\t" << log(msd) << "\t" << log(1.0-msd) << endl;
+//void Print::print_MSD(int tau, double msd, double err, double vaf)
+//{
+//    if( tau == 0 )
+//    {
+//        MSD.open((path+run+"/dat/MSD.dat").c_str());
+//    }
+//    MSD << tau << "\t" << msd << "\t" << log(msd) << "t" << log(1.-msd) << "\t" << err << "\t" << vaf << "\n";
 //}
+
+void Print::print_MSD(int t, double msd){
+    MSD << t << "\t" << msd << "\t" << log(msd) << "\t" << log(1.0-msd) << endl;
+}
 
 void Print::resize(double &x, double &y)
 // Resizes (and translates) the cells such that they are beautifully displayed
