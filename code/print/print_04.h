@@ -18,6 +18,8 @@
 #include <dirent.h>
 using namespace std;
 
+const string location = "/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/";
+
 struct Print
 {
     Print();
@@ -32,7 +34,8 @@ struct Print
     void print_size(double);
     void print_v(int, double, double);
     void print_g(int, double, double);
-    void print_MSD(int, double, double, double);
+    //void print_MSD(int, double, double, double);
+    void print_MSD(int, double);
     void resize(double &, double &);
     void print_summary(string, int, long int, int, double, double, double);
     void print_GNF(double, double);
@@ -61,12 +64,13 @@ Print::~Print()
     velDist.close();
     summary.close();
     GNF.close();
+    MSD.close();
 }
 
 string Print::init(string fullRun, string ID, int noCells)
 {
     run = ID;
-    path = "/home/dmccusker/remote/jamming-dynamics/output/"+fullRun+"/";
+    path = location+"output/"+fullRun+"/";
     const char *p = path.c_str();
     N = noCells;
     sqrtN = sqrt(N);
@@ -82,13 +86,13 @@ string Print::init(string fullRun, string ID, int noCells)
             cout << "Failed to create folders. Status 715\n";
             exit(715);
         }
-        
+    }
     if(dir){
         cout << "this message should appear every other time" << endl;
         closedir(dir);
     }
     
-    check += system(("cp /home/dmccusker/remote/jamming-dynamics/code/postprocessing/* "+path).c_str());
+    check += system(("cp "+location+"code/postprocessing/* "+path).c_str());
     if( check < 0 ){
         cout << "The postprocessing code was not copied to the output folder.";
     }
@@ -98,7 +102,7 @@ string Print::init(string fullRun, string ID, int noCells)
     if(check < 0){
         cout << "Failed to create folders. Status 715\n"; exit(715);
     }
-    check += system(("cp /home/dmccusker/remote/jamming-dynamics/output/jam.html "+path+run+"/vid/jam.html").c_str());
+    check += system(("cp "+location+"output/jam.html "+path+run+"/vid/jam.html").c_str());
         
     if(check < 0){
         cout << "Failed to copy files to vid/. Status 716\n"; exit(716);
@@ -110,6 +114,7 @@ string Print::init(string fullRun, string ID, int noCells)
     size.open((path+run+"/vid/size.js").c_str());
     summary.open((path+run+"/dat/summary.dat").c_str());
     GNF.open((path+run+"/dat/GNF.dat").c_str());
+    MSD.open((path+run+"/dat/MSD.dat").c_str());
 
     if(data.fail() || JavaScriptVid.fail() || size.fail())
     {
@@ -209,13 +214,17 @@ void Print::print_g(int k, double r, double gr)
     pairCorr << r << "\t" << gr << "\n";
 }
 
-void Print::print_MSD(int tau, double msd, double err, double vaf)
-{
-    if( tau == 0 )
-    {
-        MSD.open((path+run+"/dat/MSD.dat").c_str());
-    }
-    MSD << tau << "\t" << msd << "\t" << log(msd) << "t" << log(1.-msd) << "\t" << err << "\t" << vaf << "\n";
+//void Print::print_MSD(int tau, double msd, double err, double vaf)
+//{
+//    if( tau == 0 )
+//    {
+//        MSD.open((path+run+"/dat/MSD.dat").c_str());
+//    }
+//    MSD << tau << "\t" << msd << "\t" << log(msd) << "t" << log(1.-msd) << "\t" << err << "\t" << vaf << "\n";
+//}
+
+void Print::print_MSD(int t, double msd){
+    MSD << t << "\t" << msd << "\t" << log(msd) << "\t" << log(1.0-msd) << endl;
 }
 
 void Print::resize(double &x, double &y)
@@ -237,6 +246,7 @@ void Print::print_summary(string ID, int noCells, long int numberOfSteps, int st
     summary << "lambda_s (self-propulsion): " << "\t" << C1 << endl;
     summary << "lambda_n (noise):           " << "\t" << C2 << endl;
     summary << "rho (density):              " << "\t" << rho << endl;
+    //summary << "simulation ran for " << seconds << " seconds." << endl;
 }
 
 void Print::print_GNF(double avg, double fluct)

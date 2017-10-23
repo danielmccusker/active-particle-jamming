@@ -264,7 +264,7 @@ void Engine::start()
     
     path = print.init(fullRun, run, noCells);
     cout << path << endl;
-    print.print_summary(run, noCells, countdown-1, 1./deltat, CFself, CTnoise, dens);//print input summary
+    
     init();
     GNFinit();
     relax();
@@ -294,8 +294,7 @@ void Engine::start()
     
     auto duration = duration_cast<seconds>( t2 - t1 ).count();//elapsed time
     
-    cout << "time elapsed for " << timeCounter << " time steps (s): " << duration << endl;
-    
+    print.print_summary(run, noCells, timeCounter, 1./deltat, CFself, CTnoise, dens, duration); //print run summary
 }
 
 void Engine::init()
@@ -455,12 +454,10 @@ void Engine::find_nbr()
                         if(r2 < (sumR*sumR))     // They overlap
                         {
                             double overlap = sumR / sqrt(r2) - 1;
-                            double forceX = overlap*deltax;
-                            double forceY = overlap*deltay;
-                            cell[i].Fx -= forceX;
-                            cell[i].Fy -= forceY;
-                            cell[j].Fx += forceX;
-                            cell[j].Fy += forceY;
+                            cell[i].Fx -= overlap*deltax;
+                            cell[i].Fy -= overlap*deltay;
+                            cell[j].Fx += overlap*deltax;
+                            cell[j].Fy += overlap*deltay;
                         }
                         cell[i].cosp_new += cell[j].cosp;
                         cell[i].sinp_new += cell[j].sinp;
@@ -508,12 +505,10 @@ void Engine::find_nbr()
                         if(r2 < (sumR*sumR))     // They overlap
                         {
                             double overlap = sumR / sqrt(r2) - 1;
-                            double forceX = overlap*deltax;
-                            double forceY = overlap*deltay;
-                            cell[i].Fx -= forceX;
-                            cell[i].Fy -= forceY;
-                            cell[j].Fx += forceX;
-                            cell[j].Fy += forceY;
+                            cell[i].Fx -= overlap*deltax;
+                            cell[i].Fy -= overlap*deltay;
+                            cell[j].Fx += overlap*deltax;
+                            cell[j].Fy += overlap*deltay;
                             if(countdown <= film && timeCounter%screenshotInterval == 0)
                             {
                                 cell[i].over -= 240*overlap;
