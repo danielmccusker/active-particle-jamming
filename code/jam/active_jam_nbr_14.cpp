@@ -72,7 +72,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/random.hpp>
-#include "../cell/cell_04.h"
+#include "../classes/cell_04.h"
 #include "../print/print_04.h"
 
 //Mersenne Twister pseudorandomnumber generator
@@ -82,16 +82,19 @@ boost::normal_distribution<> normdist(0, 1);
 boost::variate_generator< boost::mt19937, boost::uniform_real<> > randuni(gen, unidist);
 boost::variate_generator< boost::mt19937, boost::normal_distribution<> > randnorm(gen, normdist);
 
-const int screenshotInterval = 128;
+const int screenshotInterval = 1;
+const int noCells = 512;
+
 
 using namespace std;
 using namespace std::chrono;
 
 struct Engine
 {
-    Engine(string, string, int, long int, int, double, double, double);
+    Engine(string, string, long int, int, double, double, double);
     ~Engine();
 
+    
     // Functions
     void start();
     void init();
@@ -132,7 +135,7 @@ struct Engine
 
     long int totalSteps;
     long int countdown;
-    int noCells;
+    
     long int timeCounter;
     long int ts0, ts1, ts2, ts3, ts4;       // Times of the MSDs starting points
     long int tau0, tau1, tau2, tau3, tau4;  // Lagtimes in units of screenshotInterval starting at ts0, ts1, ...
@@ -173,12 +176,11 @@ struct Engine
     double GNFinterval;
 };
 
-Engine::Engine(string dir, string ID, int N, long int numberOfSteps, int stepsPerTime, double C1, double C2, double rho)
+Engine::Engine(string dir, string ID, long int numberOfSteps, int stepsPerTime, double C1, double C2, double rho)
 // Constructor: This is where variables get defined and initialized.
 {
     fullRun = dir;
     run = ID;
-    noCells = N;
     totalSteps = numberOfSteps;
     countdown = numberOfSteps+1;
     deltat    = 1./stepsPerTime;
@@ -186,8 +188,8 @@ Engine::Engine(string dir, string ID, int N, long int numberOfSteps, int stepsPe
     CTnoise   = C2;
     dens      = rho;
 
-    nbrRegionRefresh     = 16;                            // Tune this value, preferably a power of two
-    film                 = 256*screenshotInterval;
+    nbrRegionRefresh     = 1;                            // Tune this value, preferably a power of two
+    film                 = 10000*screenshotInterval;
     timeCounter          = 0;
     ts0                  = 8192;
     while( 2 * ts0 < countdown / 5 ) { ts0 *= 2;}
@@ -267,7 +269,7 @@ void Engine::start()
     
     init();
     GNFinit();
-    relax();
+    //relax();
 
     while(countdown != 0)    // time loop
     {
@@ -1179,7 +1181,6 @@ int main(int argc, char *argv[])
 {
     string ID = "";
     string dir = "";
-    int N = 0;
     if(argc != 8)
     {
         cout<< "Incorrect number of arguments. Need:" << endl
@@ -1194,18 +1195,17 @@ int main(int argc, char *argv[])
     {
         dir = argv[1];
         ID             = argv[2];
-        N              = argv[3];
         long int steps = atol(argv[3]);
         int stepsPTime = atoi(argv[4]);
         double l_s     = atof(argv[5]);
         double l_n     = atof(argv[6]);
         double rho     = atof(argv[7]);
 
-        Engine engine(dir, ID, N, steps, stepsPTime, l_s, l_n, rho);
+        Engine engine(dir, ID, steps, stepsPTime, l_s, l_n, rho);
         engine.start();
     }
     
-    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+steps).c_str());
+    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir).c_str());
     if( check != 0 )
         cout << "An error occurred while plotting (one of) the graphs\n";
     return 0;
