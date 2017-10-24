@@ -83,7 +83,7 @@ boost::variate_generator< boost::mt19937, boost::uniform_real<> > randuni(gen, u
 boost::variate_generator< boost::mt19937, boost::normal_distribution<> > randnorm(gen, normdist);
 
 const int screenshotInterval = 1;
-const int noCells = 512;
+const int noCells = 1000;
 
 
 using namespace std;
@@ -188,7 +188,7 @@ Engine::Engine(string dir, string ID, long int numberOfSteps, int stepsPerTime, 
     CTnoise   = C2;
     dens      = rho;
 
-    nbrRegionRefresh     = 1;                            // Tune this value, preferably a power of two
+    nbrRegionRefresh     = 16;                            // Tune this value, preferably a power of two
     film                 = 10000*screenshotInterval;
     timeCounter          = 0;
     ts0                  = 8192;

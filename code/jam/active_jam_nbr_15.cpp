@@ -255,9 +255,11 @@ void Engine::start(){
             cell[i].update(dt, Lover2, L);
             xavg+=cell[i].xreal;
             yavg+=cell[i].yreal;
-            double velmag = sqrt(cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely);
-            double veldir = atan2(cell[i].vely, cell[i].velx);
-            print.print_Ovito(i, cell[i].R, cell[i].posx, cell[i].posy, cell[i].psi, 50*velmag, veldir, cell[i].over);
+	    if(countdown<(0.05*totalSteps)){
+                double velmag = sqrt(cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely);
+            	double veldir = atan2(cell[i].vely, cell[i].velx);
+		print.print_Ovito(i, cell[i].R, cell[i].posx, cell[i].posy, cell[i].psi, 50*velmag, veldir, cell[i].over);
+            }
         }
         xavg = xavg/N;
         yavg = yavg/N;
@@ -454,7 +456,6 @@ bool Engine::newSkinList(){
     }
     
     if( ( sqrt(largest2)+sqrt(second2) ) > (rs-rn) ){
-        cout << " New skin list " << endl;
         xavgold = 0;
         yavgold = 0;
         refresh = true;

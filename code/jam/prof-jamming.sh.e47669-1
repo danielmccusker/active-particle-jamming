@@ -1,0 +1,3 @@
+cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/10000/GNFvis.gnu’: File exists
+cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/10000/MSDvis.gnu’: File exists
+cp: cannot create regular file ‘/home/dmccusker/remote/jamming-dynamics/output/10000/postprocessing.py’: File exists

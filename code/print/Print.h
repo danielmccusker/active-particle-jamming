@@ -18,7 +18,7 @@
 #include <dirent.h>
 using namespace std;
 
-const string location = "/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/";
+const string location = "/home/dmccusker/remote/jamming-dynamics/";
 
 struct Print
 {
