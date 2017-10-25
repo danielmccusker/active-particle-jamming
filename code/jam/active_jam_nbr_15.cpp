@@ -1,69 +1,22 @@
-// 1024 circular particles are put together in a box with double periodic boundary conditions. We will test for what values of the parameter
-// setting the self-propulsion force, alignment torque and density the system will be jammed. We say a system is jammed when there are no
-// internal rearrangements, that is, the set of neighbours does not change. Hence, a system can be jammed with a net movement. The output
-// of the simulation is a file with: time, order, net orientation, average velocity, average position, position of three particles, and, in
-// three different files: the velocity distribution, the pair correlation function, and the mean square displacement.
-// In this file, the alignment is done by looking at the neighbours, rather than aligning with the velocity.
-// This test file should work for all simulation length. The last 256 frames are recorded
 
-// ============================
-// Fixed:
-// - 01: Relax the system as a passive particle system: CTalign = 0, -PI < cell[i].psi <= PI
-// - 05: Lagtimes are divided by screenshotInterval
-// - 05: Set the original position (x0,y0) using the real position instead of position in box
-// - 05: Choose a 5 times smaller dr for the paircorrelation function
-// - 06: MSD was not calculated at timeCounter = tau1, tau2, tau3, tau4
-// - 06: atoi and atol are used correctly
-// Added:
-// - 01: GNU-plotting after simulation
-// - 03: Mean square displacement
-// - 06: Size simulation box output to config_2.dat
-// - 06: Calculation of velocity auto correlation function
-// - 07: Quantify crystalization by comparing radii of neighbours
-// - 09: Average distance to neighbours to detect holes
-// - 11: Output position, velocity, size and orientation 10 times during the run
+// N circular particles are put together in a 2D box with periodic boundary conditions. We will study
+// for which values of the self-propulsion force, orientational noise, and density the system is
+// jammed. We say a system is jammed when there are no internal rearrangements, that is, the set of
+// neighbors does not change. In such a case, each particle is "caged" by its neighbors. The system
+// can therefore be jammed even with a global translation.
 
-// * Dan * //
-// - 12: added print file for input parameters, improved function for pair correlation function
-// - 13: added timer, circle overlap for calculating GNF
+// The simulation uses a modified Verlet list method. A Verlet list keeps track of every particle
+// in a "skin radius" around each particle, which are considered "possible" neighbors. Neighbors are
+// particles separated by less than 2.8 times the average particle radius. The Verlet lists are
+// refreshed when the particles have moved far enough that they may have entered the neighbor radius
+// from outside the skin radius. When refreshing the Verlet lists, rather than searching globally
+// for all pairs to see if they are within a skin radius, we assign each cell to the simulation area
+// partition ("box"), and search all pairs inside this box and the eight surrounding boxes. To determine
+// when to refresh the list, we measure displacements relative to the center of mass. Therefore, we
+// calculate the system's center of mass at every time step.
 
-// Changed:
-// - 01: Choose a ten times smaller value for dr
-// - 01: screenshotInterval 512 -> 256
-// - 02: Alignment and noise are combined into a single update mechanism [ psi_i = avg(psi_j) + lambda_n * PI * randuni() ]
-// - 02: The binwidth dr depends on the displacement per step
-// - 02: Uniform random distribution interval to (-PI, PI] instead of (-1, 1]
-// - 02: "../cell/jam_01.h"
-// - 02: Back to polydisperse particles
-// - 02: screenshotInterval 256 -> 128
-// - 03: "../cell/jam_02.h"
-// - 03: "../print/jam_01.h"
-// - 04: newSkinList incorporates movement of average position and saves the number of refreshes in config_2
-// - 06: "../cell/jam_03.h"
-// - 06: "../print/jam_02.h"
-// - 07: Rearranged the output to data.dat
-// - 07: "../cell/jam_04.h"
-// - 07: "../print/jam_03.h"
-// - 07: More output by gnuplot
-// - 08: Cnoise depends on the number of steps per unit time (Undone in 09)
-// - 09: Monodisperse particles that move at the same speed
-// - 10: Polydisperse particles that move at the same speed
-// - 11: More particles 1024 -> 4096
-
-// * Dan * //
-// - 12: "phi" to "rho" (density), ../cell/jam_04.h -> ../cell/cell_04.h, ../print/jam_03.h -> "../print/print_04.h"
-
-// Removed:
-// - 02: CTalign
-// - 02: theta_norm
-// - 02: uniform in distribution
-// - 04: Removed the physics function and moved the contents all to find_nbr()
-// - 07: Removed the nbr vector
-// - 09: Removed adif2
-
-// * Dan * //
-// - 12: removed old correlation function
-
+// Be sure to change the directory in the gnuplot file and the print class based on whether running
+// locally or remotely on a computing cluster
 
 #include <vector>
 #include <cmath>
@@ -73,8 +26,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/random.hpp>
 #include "../classes/Cell.h"
-#include "../print/Print.h"
 #include "../classes/Box.h"
+#include "../classes/Print.h"
 
 #define PI 3.14159265
 
@@ -93,33 +46,32 @@ struct Engine
     Engine(string, string, long int, long int, int, double, double, double);
     ~Engine();
     
-    // Functions
+// Functions
     void defineGrid();
-    void buildVerletLists();
-    void start();
     void defineCells();
+    void GNFinit();
+    void start();
     void relax();
-    bool newSkinList();
-    void assignCellsToGrid();
+    
+    void assignCellsToGrid(int,double);
+    void buildVerletLists();
+    double newSkinList();
     void neighborInteractions();
-    void find_nbr();
+    void calculateCenterOfMass();
+    
+// Statistical physics functions
+    void densityFluctuations();
+    void pairCorr();
+    double MSD();
+    double VAF();
+    void velDist();
+    
     double delta_norm(double);
     double cc_overlap(double R1, double R2, double r);
     double totalAreaIntersection(double R);
-    void pairCorr();
-    void graphics();
-    void GNFinit();
-    void densityFluctuations();
     
-    double MSD();
-    double MSDerror();
-    double VAF();
-    
-    void save_config();
-    void save_config2();
-    
-    // Variables
-    Print print;                            // Print class has methods for printing all kinds of data
+// Variables
+    Print print;                            // Print class has methods for printing data
     string path;                            // Change this in the Print class for local or remote runs
     string run;                             // Run with current set of parameters
     string fullRun;                         // Entire set of runs for a given particle number
@@ -128,6 +80,7 @@ struct Engine
     long int totalSteps;
     long int countdown;
     long int t;                             // Current time
+    int nSkip;                              // Print data every nSkip steps
     long int resetCounter;                  // Records the number of times the Verlet skin list is refreshed
     double dt;                              // Time step, in units of cell-cell repulsion time
 
@@ -135,29 +88,28 @@ struct Engine
     vector<Cell> cell;                      // "cell" is vector of "Cell" type objects
     vector<Box> grid;                       // Stores topology of simulation area
     
+    double CFself;                          // Self-propulsion force
+    double CTnoise;                         // Noise parameter
+    double dens;                            // "Packing fraction" / average density
+    
     double L;                               // Length of the simulation area
     double Lover2;                          // Read: "L-over-two", so we don't have to calculate L/2 every time we need it
     double lp;                              // Length of a box
-    int b;                                  // Number of boxes in one direction
+    int b;                                  // Number of boxes in one dimension
     int b2;                                 // Total number of boxes
     double rn;                              // Radius that defines particle's interaction neighborhood
     double rs;                              // Verlet skin radius
     double rn2;                             // Square distances, to avoid calculating too many square roots
     double rs2;
     
-    double CFself;                          // Self-propulsion force
-    double CTnoise;                         // Noise parameter
-    double dens;                            // "Packing fraction" / ~average~ density (recall: giant density fluctuations)
-    
     double xavg0, yavg0;                    // Initial position of center of mass
     double vcx0, vcy0;                      // Initial velocity of center of mass
     double xavg, yavg;                      // Current position of center of mass, with no PBC
     double xavgold, yavgold;                // Stores values of average positions for Verlet list skin refresh
-                                            //The four above are measured in terms of "real" positions
+    
     double vcx, vcy;                        // Current velocity of center of mass
-    double vg;                              // Average particle speed
+    double vavg;                            // Average particle speed
     double ux, uy;                          // Average x- and y-components of particle orientation
-        //normalize ux and uy
     double nbrdist2;                        // Average squared distance to a neighbor (small for crystalized with holes?)
     
     int rmsCounter;                         //counts time steps for calculating rms density fluctuations
@@ -180,122 +132,182 @@ Engine::Engine(string dir, string ID, long int n, long int steps, int stepsPerTi
     CTnoise     = l_n;
     dens        = rho;
 
-    film                 = 256;
-    t          = 0;
-    resetCounter         = 0;
+    nSkip = 100;
+    film  = 256*nSkip;
+    t = 0;
+    resetCounter = 0;
 }
 
 Engine::~Engine(){
 // Destructor
     
-    const int gmax = 60001;
-    const int vmax = 150;
-    int g[gmax] = {0};
-    int veldist[vmax] = {0};
-    double dr = 0.0001;
-    double dv = CFself/100;
-    
-    for( int i=0; i<N; ++i)
-    {
-        double v = sqrt(cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely);
-        int binv = v/dv;
-        if(binv >= vmax)
-        {
-           // cout << binv << "=149\n";
-            binv = 149;
-        }
-        veldist[binv] += 1;
-        
+    for (int i=0; i<N;  i++){
+        cell[i].VerletList.clear();
     }
-    
-    //for( int k=0; k<vmax; ++k) print.print_v(k, k*dv, veldist[k] / (double)N);
-    
-    for (int i=0; i<N;  i++) cell[i].VerletList.clear();
-    for (int j=0; j<b2; j++) grid[j].CellList.clear();
-    
-//    for(long int t=0; t<(timeCounter - ts0)/screenshotInterval+1; ++t)
-//    {
-//        long int norm = N*MSDcounter[t];
-//        double msdave = MSD[t]/norm;
-//        print.print_MSD(t*screenshotInterval, msdave, sqrt(MSDerr[t]/norm - msdave*msdave), (vaf[t]/norm)/2);
-//    }
-    
-    ofstream overWrite;
-    overWrite.open((path+"/"+run+"/dat/config_2.dat").c_str());
-    overWrite << resetCounter;
-    overWrite.close();
-}
+    for (int j=0; j<b2; j++){
+        grid[j].CellList.clear();
+    }
 
+}
 
 void Engine::start(){
     
-    high_resolution_clock::time_point t1 = high_resolution_clock::now();               // Start time
+// Start time
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     
     path = print.init(fullRun, run, N);
-    
     defineCells();
     defineGrid();
-    assignCellsToGrid();
+    assignCellsToGrid(0,0);
     buildVerletLists();
     GNFinit();
-    //relax();
     
-    while(countdown != 0){
-        //cout << t << endl;
-        if( newSkinList() ){
-            assignCellsToGrid();
+    relax();
+    
+    while(countdown != 0){                      // Time loop
+        
+        double refresh = newSkinList();
+        if( refresh > 0 ){
+            assignCellsToGrid(1, refresh);
             buildVerletLists();
         }
         
         neighborInteractions();
-        print.print_noCells(N);
-        xavg = 0;
-        yavg = 0;
-        for(int i=0; i<N; i++){
-            cell[i].update(dt, Lover2, L);
-            xavg+=cell[i].xreal;
-            yavg+=cell[i].yreal;
-	    if(countdown<(0.05*totalSteps)){
-                double velmag = sqrt(cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely);
-            	double veldir = atan2(cell[i].vely, cell[i].velx);
-		print.print_Ovito(i, cell[i].R, cell[i].posx, cell[i].posy, cell[i].psi, 50*velmag, veldir, cell[i].over);
+        
+        for(int i=0; i<N; i++) cell[i].update(dt, Lover2, L);      // Integrate equations of motion
+            
+        calculateCenterOfMass();
+        
+        if(t%nSkip == 0){                                          // Print data every nSkip steps
+            
+            ux = 0;
+            uy = 0;
+            vcx = 0;
+            vcy = 0;
+            for(int i=0; i<N; i++){
+                ux += cell[i].cosp;
+                uy += cell[i].sinp;
+                vcx += cell[i].velx;
+                vcy += cell[i].vely;
+            }
+            ux = ux/N;
+            uy = uy/N;
+            vcx = vcx/N;
+            vcy = vcy/N;
+            
+            // Time, center of mass position, order parameter, system orientation, three cell trajectories
+            print.print_data(t, xavg, yavg, sqrt(ux*ux+uy*uy), atan2(uy, ux),
+                             cell[0].posx, cell[0].posy, cell[N/3].posx, cell[N/3].posy, cell[2*N/3].posx, cell[2*N/3].posy);
+            print.print_VAF(t, VAF());
+            print.print_MSD(t, MSD());
+            
+            densityFluctuations();
+            
+            if(countdown<film){                 // Print video for the last part of the run
+                print.print_noCells(N);
+                for(int i=0; i<N; i++){
+                    double velmag = sqrt(cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely);
+                    double veldir = atan2(cell[i].vely, cell[i].velx);
+                    print.print_vid(cell[i].posx, cell[i].posy, cell[i].psi, 50*velmag, veldir, cell[i].over);
+                    print.print_Ovito(i, cell[i].R, cell[i].posx, cell[i].posy, cell[i].psi, velmag, veldir, cell[i].over);
+                    cell[i].over = 240;
+                }
             }
         }
-        xavg = xavg/N;
-        yavg = yavg/N;
-        print.print_MSD(t, MSD());
-        //graphics();
-        //densityFluctuations();
+        
         t++;
         countdown--;
+        //cout << countdown << endl;
+    }
+    
+    //velDist();
+    //pairCorr();
+
+// End time
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+// Elapsed time
+    auto duration = duration_cast<seconds>( t2 - t1 ).count();
+    
+    print.print_summary(run, N, t, 1./dt, CFself, CTnoise, dens, duration);
+    
+}
+
+void Engine::relax(){
+// Relax the system for 1,000,000 steps, slowly decreasing the activity to the final value
+// Also get initial velocities
+    
+    int trelax = 1e5;
+    double CFrelax = 0.05;
+    double CFself_old = CFself;                         // Store parameter values
+    double CTnoise_old = CTnoise;
+    t = 1;                                              // Prevent the program from producing output
+    CTnoise = 0;
+    
+    for(int t_=0; t_<trelax; t_++){
+        CFself = CFself_old + ((CFrelax - CFself_old)*(trelax - t_))/trelax;
+        
+        double refresh = newSkinList();
+        if( refresh > 0 ){
+            assignCellsToGrid(1, refresh);
+            buildVerletLists();
+        }
+        
+        neighborInteractions();
+        
+        for(int i=0; i<N; i++){
+            cell[i].update(dt, Lover2, L);
+            cell[i].psi = randuni();
+        }
+        
+        calculateCenterOfMass();
         
     }
     
-    //pairCorr();
+    xavg0 = 0;
+    yavg0 = 0;
+    xavgold = 0;
+    yavgold = 0;
+    vcx0 = 0;
+    vcy0 = 0;
     
-    high_resolution_clock::time_point t2 = high_resolution_clock::now();                //end time
+    for(int i=0; i<N; i++){
+        cell[i].xreal = cell[i].posx;                   // Start cells at their current location in the grid
+        cell[i].yreal = cell[i].posy;
+        cell[i].x0    = cell[i].posx;
+        cell[i].y0    = cell[i].posy;
+        xavg0 += cell[i].xreal;
+        yavg0 += cell[i].yreal;
+        
+        cell[i].vx0 = cell[i].velx;                     // Initial velocities
+        cell[i].vy0 = cell[i].vely;
+        vcx0 += cell[i].vx0;
+        vcy0 += cell[i].vy0;
+    }
     
-    auto duration = duration_cast<seconds>( t2 - t1 ).count();                          //elapsed time
+    xavg0 = xavg0/N;                                    // Reset center of mass
+    yavg0 = yavg0/N;
+    xavg    = xavg0;
+    yavg    = yavg0;
+    xavgold = xavg0;
+    yavgold = yavg0;
+    vcx0 = vcx0/N;                                      // Initial velocity of center of mass
+    vcy0 = vcy0/N;
     
-    print.print_summary(run, N, t, 1./dt, CFself, CTnoise, dens, duration);   //print run summary
-    
-//    
-//    double velmag = sqrt(cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely);
-//    double veldir = atan2(cell[i].vely, cell[i].velx);
-//    print.print_vid(cell[i].posx, cell[i].posy, cell[i].psi, 50*velmag, veldir, cell[i].over);
-//    print.print_Ovito(i, cell[i].R, cell[i].posx, cell[i].posy, cell[i].psi, 50*velmag, veldir, cell[i].over);
-//    print.print_positions(cell[i].posx, cell[i].posy);
-//    cell[i].over = 240;
+    t = 0;
+    resetCounter = 0;
+    CFself = CFself_old;
+    CTnoise = CTnoise_old;
 }
 
 void Engine::defineCells(){
     
     double area = 0;
     
-    for(int i=0; i<N; i++){                             // Create vector of cells and assign their radii
+    for(int i=0; i<N; i++){                             // Create vector of cell objects and assign their radii
         Cell *newCell = new Cell;
         cell.push_back(*newCell);
         cell[i].index = i;
+        
         double cellRad = 1. + randnorm()/10;            // Cell radii follow a Gaussian distribution
         double R2 = cellRad*cellRad;
         area += R2;                                     // Simulation area depends on cell sizes
@@ -314,8 +326,6 @@ void Engine::defineCells(){
     yavg0 = 0;
     xavgold = 0;
     yavgold = 0;
-    //vcx0 = 0;
-    //vcy0 = 0;
     
     for(int i=0; i<N; i++){                             // Set up initial cell configuration
         cell[i].posx    = -Lover2 + spacing*(i%sqrtN) + randnorm()/3.;
@@ -344,15 +354,10 @@ void Engine::defineCells(){
 
         xavg0 += cell[i].xreal;
         yavg0 += cell[i].yreal;
-        //vcx0 += cell[i].velx;
-        //vcy0 += cell[i].vely;
     }
     
     xavg0 = xavg0/N;
     yavg0 = yavg0/N;
-    //vcx0 = vcx0/N;
-    //vcy0 = vcy0/N;
-    
     xavg    = xavg0;
     yavg    = yavg0;
     xavgold = xavg0;
@@ -409,16 +414,50 @@ void Engine::defineGrid(){
     }
 }
 
-void Engine::assignCellsToGrid(){                           // Could maybe optimize to not search every box every time
-    for (int i=0; i<N; i++){
-        double r2 = lp*lp/2;          // Circle of radius lp*√2/2 around each box center touches the box's corners
-        for (int j=0; j<b2; j++){
-            double dx = cell[i].posx - grid[j].center[0];
-            double dy = cell[i].posy - grid[j].center[1];
-            double d2 = dx*dx+dy*dy;
-            if(d2 < r2)  { r2 = d2; cell[i].box = j; }      // Find box to which the cell belongs
+void Engine::calculateCenterOfMass(){
+    xavg = 0;
+    yavg = 0;
+    for(int i=0; i<N; i++){
+        xavg += cell[i].xreal;
+        yavg += cell[i].yreal;
+    }
+    xavg = xavg/N;
+    yavg = yavg/N;
+}
+
+void Engine::assignCellsToGrid(int k, double refresh){
+// At the beginning of the simulation, for every particle, we search every box to find which box
+// the cell is in. Afterwards, we search only the neighboring boxes of the cell's current box to see
+// if it moved boxes.  The particles are moving slowly enough that they are not travelling more than
+// one box length per skin refresh.
+    
+    if(k>0 && lp>refresh){
+        for (int i=0; i<N; i++){
+            double r2 = lp*lp/2;        // Circle of radius lp*√2/2 around each box center touches the box's corners
+            for (int m=0; m<9; m++){
+                int j = grid[cell[i].box].neighbors[m];
+                double dx = cell[i].posx - grid[j].center[0];
+                double dy = cell[i].posy - grid[j].center[1];
+                double d2 = dx*dx+dy*dy;
+                if(d2 < r2)  { r2 = d2; cell[i].box = j; }      // Find box to which the cell belongs
+            }
+            grid[cell[i].box].CellList.push_back(i);            // Add this cell to the box's list
         }
-        grid[cell[i].box].CellList.push_back(i);            // Add this cell to the box's list
+    } else if(k==0){
+        for (int i=0; i<N; i++){
+            double r2 = lp*lp/2;
+            for (int j=0; j<b2; j++){
+                double dx = cell[i].posx - grid[j].center[0];
+                double dy = cell[i].posy - grid[j].center[1];
+                double d2 = dx*dx+dy*dy;
+                if(d2 < r2)  { r2 = d2; cell[i].box = j; }
+            }
+            grid[cell[i].box].CellList.push_back(i);
+        }
+    } else {
+        cout << "The cells are moving too fast or something is wrong with the dynamics. exit 100"
+             << endl;
+        exit(100);
     }
 }
 
@@ -442,9 +481,11 @@ void Engine::buildVerletLists(){
     }
 }
 
-bool Engine::newSkinList(){
+double Engine::newSkinList(){
 // Compare the two largest displacements to see if a skin refresh is required
-    bool refresh= false;
+// Refresh if any particle may have entered any other particle's neighborhood
+    
+    double refresh = -1.0;
     double largest2 = 0.;
     double second2 = 0.;
     for(int i=0; i<N; i++){
@@ -458,7 +499,7 @@ bool Engine::newSkinList(){
     if( ( sqrt(largest2)+sqrt(second2) ) > (rs-rn) ){
         xavgold = 0;
         yavgold = 0;
-        refresh = true;
+        refresh = sqrt(largest2)+sqrt(second2);
         resetCounter++;
         for(int i=0; i<N; i++){
             cell[i].xold = cell[i].xreal;
@@ -467,11 +508,12 @@ bool Engine::newSkinList(){
             yavgold += cell[i].yreal;
             cell[i].VerletList.clear();
         }
-        for (int j=0; j<b2; j++) grid[j].CellList.clear();
         xavgold /= N;
         yavgold /= N;
+        
+        for (int j=0; j<b2; j++)
+            grid[j].CellList.clear();
     }
-    
     return refresh;
 }
 
@@ -482,72 +524,38 @@ void Engine::neighborInteractions(){
     
     for(int i=0; i<N; i++){
         int max = cell[i].VerletList.size();
-        for(int k=0; k < max; k++){
+        for(int k=0; k < max; k++){                                 // Check each cell's Verlet list for neighbors
             int j = cell[i].VerletList[k];
-            if(j > i){                                                  // Use symmetry
+            if(j > i){                                              // Symmetry reduces calculations by half
                 double dx = delta_norm(cell[j].posx-cell[i].posx);
                 double dy = delta_norm(cell[j].posy-cell[i].posy);
                 double d2 = dx*dx+dy*dy;
-                if(d2 < rn2){                                           // They're neighbors
+                if(d2 < rn2){                                       // They're neighbors
                     double sumR = cell[i].R + cell[j].R;
-                    if( d2 < (sumR*sumR) ){                             // They also overlap
+                    if( d2 < (sumR*sumR) ){                         // They also overlap
                         double overlap = sumR / sqrt(d2) - 1;
                         double forceX = overlap*dx;
                         double forceY = overlap*dy;
-                        cell[i].Fx -= forceX;
+                        cell[i].Fx -= forceX;                       // Spring repulsion force
                         cell[i].Fy -= forceY;
                         cell[j].Fx += forceX;
                         cell[j].Fy += forceY;
+                        if(countdown <= film && t%nSkip == 0){
+                            cell[i].over -= 240*abs(overlap);
+                            cell[j].over -= 240*abs(overlap);
+                        }
                     }
-                    cell[i].cosp_new += cell[j].cosp;
+                    cell[i].cosp_new += cell[j].cosp;               // Add up orientations of neighbors
                     cell[i].sinp_new += cell[j].sinp;
                     cell[j].cosp_new += cell[i].cosp;
                     cell[j].sinp_new += cell[i].sinp;
                 }
             }
         }
-        cell[i].Fx += cell[i].cosp*cell[i].FselfR;
+        cell[i].Fx += cell[i].cosp*cell[i].FselfR;                  // Self-propulsion force
         cell[i].Fy += cell[i].sinp*cell[i].FselfR;
         cell[i].psi_new = atan2(cell[i].sinp_new, cell[i].cosp_new) + CTnoise*randuni();
     }
-}
-
-void Engine::relax(){
-// Relax the system for 1,000,000 steps, slowly decreasing the activity to the final value
-    
-    int trelax = 1e6;
-    double CFrelax = 0.05;
-    double CFself_old = CFself;                         // Store parameter values
-    double CTnoise_old = CTnoise;
-    t = 1;                                              // Prevent the program from producing output
-    CTnoise = 0;
-    
-    for(int _t=0; _t<trelax; _t++){
-        cout << _t << endl;
-        CFself = CFself_old + ((CFrelax - CFself_old)*(trelax - _t))/trelax;
-        if( newSkinList() ){
-            assignCellsToGrid();
-            buildVerletLists();
-        }
-        
-        neighborInteractions();
-        
-        for(int i=0; i<N; i++){
-            cell[i].update(dt, Lover2, L);
-            cell[i].psi = randuni();
-        }
-    }
-    
-    for(int i=0; i<N; i++){
-        cell[i].xreal = cell[i].posx;
-        cell[i].yreal = cell[i].posy;
-    }
-    
-    t = 0;
-    resetCounter = 0;
-    CFself = CFself_old;
-    CTnoise = CTnoise_old;
-    cout << "stop relaxation " << endl;
 }
 
 double Engine::MSD(){
@@ -561,20 +569,10 @@ double Engine::MSD(){
     return MSD;
 }
 
-double Engine::MSDerror(){
-    double MSDerr = 0.0;
-    for (int i=0; i<N; i++) {
-        double dx = (cell[i].xreal - cell[i].x0 - xavg + xavg0);
-        double dy = (cell[i].yreal - cell[i].y0 - yavg + yavg0);
-        MSDerr += (dx*dx+dy*dy)*(dx*dx+dy*dy);
-    }
-    return MSDerr;
-}
-
 double Engine::VAF(){
     double VAF = 0.0;
     for (int i=0; i<N; i++) {
-        double num = (cell[i].velx-vcx)*cell[i].vx0 + (cell[i].vely-vcy)*cell[i].vy0;
+        double num = (cell[i].velx-vcx)*(cell[i].vx0-vcx0) + (cell[i].vely-vcy)*(cell[i].vy0-vcy0);
         double norm = cell[i].vx0*cell[i].vx0 + cell[i].vy0*cell[i].vy0;
         VAF += num/norm;
     }
@@ -582,8 +580,27 @@ double Engine::VAF(){
     return VAF;
 }
 
+void Engine::velDist(){
+// Histogram; velocity distribution graphed from 0 to 2 times average velocity
+    
+    double vmax = 2*CFself;
+    const int noBins = 200;
+    int dist[noBins] = {0};
+    double dv = vmax/(double)noBins;
+
+    for(int i=0; i<N; i++){
+        double v = sqrt(cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely);
+        int binv = v/dv;
+        dist[binv] += 1;
+    }
+
+    for(int k=0; k<noBins; k++)
+        print.print_v(k*dv, dist[k] / (double)N);
+    
+}
+
 double Engine::delta_norm(double delta){
-// Subtracts multiples of the boxsize until -L/2 < delta <= L/2
+// Subtracts multiples of the boxsize until -L/2 < delta <= L/2 to account for PBC
 
     int k=-1;
     if(delta < -Lover2) k=1;
@@ -592,44 +609,38 @@ double Engine::delta_norm(double delta){
     return delta;
 }
 
-void Engine::pairCorr()
-//calculates the pair correlation function at a certain time step.
-{
-    double g = 0.0; //value of the correlation function
-    double r = 0; //current radius
-    double dr = L/500;  //step size is 1/500 of box size
-    double C = L*L/(2*PI); //geometric normalization factor that depends on the system dimension
-    
-    double drij = 0.0; //distance between a pair
-    double dx = 0.0;
-    double dy = 0.0;
-    double sum = 0.0;
-    
-    int k = 1;
+void Engine::pairCorr(){
+// Calculates the pair correlation function at a certain time step.
+
+    double g = 0.0;                             // Value of the correlation function
+    double r = 0.1;                             // Current radius
+    double dr = 0.1;                            // Step size is 1/10 of average cell radius
+    double C = L*L/(2*PI);                      // Geometric normalization that depends on the system dimension
     
     while(r < Lover2){
-        sum = 0.0;
-        for (int i=0; i < N; i++){ //iterate through pairs
+        double sum = 0.0;
+        for (int i=0; i < N; i++){
             for(int j=i+1; j < N; j++){
-                dx = delta_norm(cell[i].posx-cell[j].posx);
-                dy = delta_norm(cell[i].posy-cell[j].posy);
-                drij = sqrt(dx*dx + dy*dy);
-                
-                if(abs(drij-r) < dr) sum = sum + 1.0; //add if a pair separation is in the interval [r, r+dr]
+                double dx = delta_norm(cell[i].posx-cell[j].posx);
+                double dy = delta_norm(cell[i].posy-cell[j].posy);
+                double d2 = dx*dx+dy*dy;
+                if(abs((sqrt(d2)-r)) < dr)
+                    sum = sum + 1.0;            // Add if a pair separation is in the interval [r, r+dr)
             }
         }
         sum = sum / N;
-        g = (C/r)*sum; //surface area of shell, rad squared if in 3D
-        print.print_g(k, r, g);
+        g = (C/r)*sum;                          // Surface area of shell, rad squared if in 3D
+        print.print_g(r, g);
         r = r + dr;
-        k++;
     }
 }
 
-void Engine::GNFinit(){ // Initialize GNF measurements
+void Engine::GNFinit(){
+// Initialize GNF measurements
+    
     numberOfGNFpoints = 10;
     R = Lover2;
-    GNFinterval = (double)totalSteps/(double)numberOfGNFpoints;
+    GNFinterval = (double)totalSteps/(nSkip*(double)numberOfGNFpoints);
     rmsCounter = 0;
     rmsValue = 0;
 }
@@ -664,7 +675,6 @@ double Engine::totalAreaIntersection(double R){
         double A = cc_overlap(cell[i].R, R, d);
         Atot = Atot+A;
     }
-    //cout << "total intersecting area: " << Atot << endl;
     return Atot;
 }
 
@@ -683,82 +693,6 @@ void Engine::densityFluctuations(){
         rmsCounter = 0;
         R = R/2;
     }
-}
-
-void Engine::graphics()
-// Creates the output files and resets output parameters.
-{
-//
-//
-//		print.print_data(timeCounter, xavg, yavg, vg, sqrt(ux*ux+uy*uy)/N, atan2(uy, ux), nbrdist2,
-//                        cell[0].posx, cell[0].posy, cell[N/3].posx, cell[N/3].posy, cell[2*N/3].posx, cell[2*N/3].posy);
-//		if(timeCounter%65536==0)
-//		{
-//			save_config();
-//            if (timeCounter%ts0 == 0)
-//            {
-//                save_config2();
-//            }
-//		}
-//
-//
-//	}
-}
-
-void Engine::save_config()
-// Two files that keep track of the size, position and directions of all particles while the simulation is running.
-// If the simulation crashes, at least one of the files can be used to reinitiate the simulation without losing 
-// already gathered data.
-{
-    static int phase = 0;
-    ofstream config;
-    
-    if(phase)
-        config.open((path+"/"+run+"/dat/config_1.dat").c_str());
-    else
-        config.open((path+"/"+run+"/dat/config_2.dat").c_str());
-    
-    if(config.fail())
-    {
-        cout << "Failed opening " << path+"/" << run << "/dat/config.dat";
-        exit(717);
-    }
-    
-    config << t << "\n";
-    
-    for(int i=0; i<N; ++i)
-    {
-        config << setprecision(8) << cell[i].posx << "\t" << cell[i].posy << "\t" << cell[i].psi << "\n";
-    }
-    
-    config.close();
-    phase = 1 - phase;
-}
-
-void Engine::save_config2()
-// File that keeps track of the dynamics
-{
-    static int fileNumber = 0;
-    string stringFileNumber = boost::lexical_cast<string>(fileNumber);
-    ofstream config;
-    
-    config.open((path+"/"+run+"/dat/config_"+stringFileNumber+"1.dat").c_str());
-    
-    if(config.fail())
-    {
-        cout << "Failed opening " << path+"/" << run << "/dat/config.dat";
-        exit(717);
-    }
-    
-    config << t << "\n";
-    
-    for(int i=0; i<N; ++i)
-    {
-        config << setprecision(8) << cell[i].posx << "\t" << cell[i].posy << cell[i].velx << "\t" << cell[i].vely << "\t" << cell[i].R << "\t" << cell[i].psi << "\n";
-    }
-    
-    config.close();
-    ++fileNumber;
 }
 
 int main(int argc, char *argv[])
@@ -798,9 +732,8 @@ int main(int argc, char *argv[])
         engine.start();
     }
     
-    //int check = system(("/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+std::to_string(steps)).c_str());
-    //if( check != 0 )
-      //cout << "An error occurred while plotting (one of) the graphs\n";
-    cout << "at the end " << endl;
+    int check = system(("/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+std::to_string(steps)).c_str());
+    if( check != 0 ) cout << "An error occurred while plotting (one of) the graphs\n";
+    
     return 0;
 }

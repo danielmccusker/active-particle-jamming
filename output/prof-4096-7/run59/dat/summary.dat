@@ -1,9 +1,0 @@
-Run ID:                     	run59
-Number of Cells:            	4096
-Number of Steps:            	10000000
-Steps per unit time:        	10
-lambda_s (self-propulsion): 	0.3
-lambda_n (noise):           	0.5
-rho (density):              	0.84
-effective diffusion constant:	0.0114966741036019
-density fluctuations scale like:	0.840895979081591

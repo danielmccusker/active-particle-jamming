@@ -8,7 +8,6 @@ struct Cell
 {
     Cell();
     
-    //double delta_norm(double delta, double L, double Lover2);
     void update(double, double, double);
     //void addToVerletList(Cell c);
     //void clearVerletList();
@@ -53,6 +52,7 @@ Cell::Cell(){
     yreal = -100;
     x0 = -100;
     y0 = -100;
+    
     psi = 0;
     psi_new = 0;
     cosp = 0;
@@ -173,14 +173,3 @@ void Cell::update(double dt, double Lover2, double L){
 //    Fy += sinp*FselfR;
 //    psi_new = atan2(sinp_new, cosp_new) + noise;
 //}
-//
-//double Cell::delta_norm(double delta, double L, double Lover2)
-//// Subtracts multiples of the boxsize until -L/2 < delta <= L/2
-//{
-//    int k=-1;
-//    if(delta < -Lover2) k=1;
-//    while(delta < -Lover2 || delta >= Lover2) delta += k*L;
-//    
-//    return delta;
-//}
-

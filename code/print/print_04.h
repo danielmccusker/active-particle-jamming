@@ -80,7 +80,6 @@ string Print::init(string fullRun, string ID, int noCells)
     
     if(!dir){
         check += system(("mkdir "+path).c_str());
-        check += system(("mkdir "+path+run).c_str());
         cout << "This message should only appear once" << endl;
         if(check < 0){
             cout << "Failed to create folders. Status 715\n";
@@ -92,6 +91,7 @@ string Print::init(string fullRun, string ID, int noCells)
         closedir(dir);
     }
     
+    check += system(("mkdir "+path+run).c_str());
     check += system(("cp "+location+"code/postprocessing/* "+path).c_str());
     if( check < 0 ){
         cout << "The postprocessing code was not copied to the output folder.";
@@ -216,12 +216,9 @@ void Print::print_g(int k, double r, double gr)
 
 void Print::print_MSD(int tau, double msd, double err, double vaf)
 {
-    if( tau == 0 )
-    {
-        MSD.open((path+run+"/dat/MSD.dat").c_str());
-    }
-    MSD << tau << "\t" << msd << "\t" << log(msd) << "t" << log(1.-msd) << "\t" << err << "\t" << vaf << "\n";
+    MSD << tau << "\t" << msd << " \t" << err << "\t" << vaf << "\n";
 }
+
 //
 //void Print::print_MSD(int t, double msd){
 //    MSD << t << "\t" << msd << "\t" << log(msd) << "\t" << log(1.0-msd) << endl;

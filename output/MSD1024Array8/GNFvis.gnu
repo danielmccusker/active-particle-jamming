@@ -4,7 +4,7 @@ set terminal postscript eps color enhanced "Helvetica" 300 size 150,150
 set ticslevel 0
 #set logscale cb
 set cbrange [0.3:0.8]
-set palette defined (0.3 "red",  0.62 "white", 0.8 "blue")
+set palette defined (0.3 "red",  0.6 "white", 0.8 "blue")
 set pm3d interpolate 10,10
 set yrange [0:0.31]
 set xrange [0:1.1]

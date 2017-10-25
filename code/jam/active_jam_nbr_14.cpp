@@ -82,9 +82,8 @@ boost::normal_distribution<> normdist(0, 1);
 boost::variate_generator< boost::mt19937, boost::uniform_real<> > randuni(gen, unidist);
 boost::variate_generator< boost::mt19937, boost::normal_distribution<> > randnorm(gen, normdist);
 
-const int screenshotInterval = 1;
-const int noCells = 1000;
-
+const int screenshotInterval = 128;
+const int noCells = 2048;
 
 using namespace std;
 using namespace std::chrono;
@@ -94,7 +93,6 @@ struct Engine
     Engine(string, string, long int, int, double, double, double);
     ~Engine();
 
-    
     // Functions
     void start();
     void init();
@@ -189,7 +187,7 @@ Engine::Engine(string dir, string ID, long int numberOfSteps, int stepsPerTime, 
     dens      = rho;
 
     nbrRegionRefresh     = 16;                            // Tune this value, preferably a power of two
-    film                 = 10000*screenshotInterval;
+    film                 = 256*screenshotInterval;
     timeCounter          = 0;
     ts0                  = 8192;
     while( 2 * ts0 < countdown / 5 ) { ts0 *= 2;}
@@ -250,6 +248,7 @@ Engine::~Engine()
     {
         long int norm = noCells*MSDcounter[t];
         double msdave = MSD[t]/norm;
+        cout << "print MSD " << endl;
         print.print_MSD(t*screenshotInterval, msdave, sqrt(MSDerr[t]/norm - msdave*msdave), (vaf[t]/norm)/2);
     }
     
@@ -265,11 +264,11 @@ void Engine::start()
     high_resolution_clock::time_point t1 = high_resolution_clock::now(); //start time
     
     path = print.init(fullRun, run, noCells);
-    cout << path << endl;
+    //cout << path << endl;
     
     init();
     GNFinit();
-    //relax();
+    relax();
 
     while(countdown != 0)    // time loop
     {
@@ -283,7 +282,7 @@ void Engine::start()
 
         graphics();     // output data
         
-        densityFluctuations();
+        //densityFluctuations();
 
         ++timeCounter;
         --countdown;
@@ -341,7 +340,7 @@ void Engine::init()
 void Engine::relax()
 // This function relaxes the system for 1 000 000 steps, slowly decreasing the activity to the final value
 {
-    int trelax = 1000000;
+    int trelax = 1e3;
     double CFrelax = 0.05;
     double CFself_old = CFself;
     double CTnoise_old = CTnoise;
