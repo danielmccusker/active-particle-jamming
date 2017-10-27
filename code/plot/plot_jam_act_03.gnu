@@ -15,7 +15,7 @@
 gnuplot << EOF
 
 N = 1000            # Number of data points on a graph
-int = 1            # Step size between data points
+int = ($3)/(N*100)            # Step size between data points
 
 set terminal postscript eps color enhanced "Helvetica" 20
 #directory = '/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/output/'.'$2/'
@@ -37,9 +37,9 @@ set yrange [0:1]
 set key horizontal below height 3
 set key box lt 2 lc -1 lw 3
 
-set fit errorvariables
-set fit logfile "/dev/null"
-set fit quiet
+#set fit errorvariables
+#set fit logfile "/dev/null"
+#set fit quiet
 
 f0(x) = A0
 A0 = 0.5
@@ -116,30 +116,30 @@ fileout = directory.'$1/eps/x123.eps'
 
 set output fileout
 
-stats filein u 6:7 nooutput
-L = (STATS_max_x > STATS_max_y) ? STATS_max_x : STATS_max_y
-L = (-STATS_min_x > L) ? -STATS_min_x : L
-L = (-STATS_min_y > L) ? -STATS_min_y : L
-stats filein u 8:9 nooutput
-L = (STATS_max_x > L) ? STATS_max_x : L
-L = (STATS_max_y > L) ? STATS_max_y : L
-L = (-STATS_min_x > L) ? -STATS_min_x : L
-L = (-STATS_min_y > L) ? -STATS_min_y : L
-stats filein u 10:11 nooutput
-L = (STATS_max_x > L) ? STATS_max_x : L
-L = (STATS_max_y > L) ? STATS_max_y : L
-L = (-STATS_min_x > L) ? -STATS_min_x : L
-L = (-STATS_min_y > L) ? -STATS_min_y : L
+#stats filein u 6:7 nooutput
+#L = (STATS_max_x > STATS_max_y) ? STATS_max_x : STATS_max_y
+#L = (-STATS_min_x > L) ? -STATS_min_x : L
+#L = (-STATS_min_y > L) ? -STATS_min_y : L
+#stats filein u 8:9 nooutput
+#L = (STATS_max_x > L) ? STATS_max_x : L
+#L = (STATS_max_y > L) ? STATS_max_y : L
+#L = (-STATS_min_x > L) ? -STATS_min_x : L
+#L = (-STATS_min_y > L) ? -STATS_min_y : L
+#stats filein u 10:11 nooutput
+#L = (STATS_max_x > L) ? STATS_max_x : L
+#L = (STATS_max_y > L) ? STATS_max_y : L
+#L = (-STATS_min_x > L) ? -STATS_min_x : L
+#L = (-STATS_min_y > L) ? -STATS_min_y : L
 
-f(x) = x - 2*L*floor((x+L)/(2*L))
+#f(x) = x - 2*L*floor((x+L)/(2*L))
 
-set title "Position with time of the original system"
-set xlabel "x"
-set ylabel "y"
-set xrange [-30:30]
-set yrange [-30:30]
+#set title "Position with time of the original system"
+#set xlabel "x"
+#set ylabel "y"
+#set xrange [-30:30]
+#set yrange [-30:30]
 
-plot filein u (f(\$6-\$2)):(f(\$7-\$3)):1 every int with points palette t "Cell 1", filein u (f(\$8-\$2)):(f(\$9-\$3)):1 every int with points palette t "Cell 2", filein u (f(\$10-\$2)):(f(\$11-\$3)):1 every int with points palette t "Cell 3"
+#plot filein u (f(\$6-\$2)):(f(\$7-\$3)):1 every int with points palette t "Cell 1", filein u (f(\$8-\$2)):(f(\$9-\$3)):1 every int with points palette t "Cell 2", filein u (f(\$10-\$2)):(f(\$11-\$3)):1 every int with points palette t "Cell 3"
 
 # ------------------------------------------------------------------------------------------ #
 # Pair correlation function
@@ -186,12 +186,14 @@ set title "MSD"
 set xlabel "lagtime [steps]"
 set ylabel "<(x({/Symbol t}) - x(0))^2>"
 
-f(x) = 4*D*x
+f(x) = 4*D*x+d
 D=0.1
+d=0.5
+#unset fit quiet
+FIT_LIMIT = 1e-08
+fit f(x) filein u 1:2 every int via d,D
 
-fit f(x) filein u 1:2:3 every int via D
-
-plot filein u 1:2 every int t '$1', f(x) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
+plot filein u 1:2 every int t '$1', f(x) t sprintf("mean: D = %.4g",D)# , error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
 set print directory.'$1/dat/summary.dat' append
 print 'effective diffusion constant:	', D

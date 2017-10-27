@@ -168,7 +168,7 @@ void Engine::start(){
         
         double refresh = newSkinList();
         if( refresh > 0 ){
-            assignCellsToGrid(1, refresh);
+            assignCellsToGrid(0, refresh);
             buildVerletLists();
         }
         
@@ -236,7 +236,7 @@ void Engine::relax(){
 // Relax the system for 1,000,000 steps, slowly decreasing the activity to the final value
 // Also get initial velocities
     
-    int trelax = 1e5;
+    int trelax = 1e6;
     double CFrelax = 0.05;
     double CFself_old = CFself;                         // Store parameter values
     double CTnoise_old = CTnoise;
@@ -248,7 +248,7 @@ void Engine::relax(){
         
         double refresh = newSkinList();
         if( refresh > 0 ){
-            assignCellsToGrid(1, refresh);
+            assignCellsToGrid(0, refresh);
             buildVerletLists();
         }
         
@@ -732,7 +732,7 @@ int main(int argc, char *argv[])
         engine.start();
     }
     
-    int check = system(("/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+std::to_string(steps)).c_str());
+    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+std::to_string(steps)).c_str());
     if( check != 0 ) cout << "An error occurred while plotting (one of) the graphs\n";
     
     return 0;

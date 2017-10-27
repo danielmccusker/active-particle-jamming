@@ -1,0 +1,312 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ks/call  Ks/call  name    
+ 72.57  27536.31 27536.31 101000001     0.00     0.00  Engine::neighborInteractions()
+ 11.54  31916.35  4380.04                             Engine::start()
+  8.70  35216.14  3299.80 100000001     0.00     0.00  Engine::newSkinList()
+  6.75  37777.91  2561.77 5475147776     0.00     0.00  frame_dummy
+  0.19  37848.25    70.34 4096000000     0.00     0.00  Cell::update(double, double, double)
+  0.16  37909.04    60.79        1     0.06     2.33  Engine::relax()
+  0.07  37937.04    28.00   999991     0.00     0.00  Engine::totalAreaIntersection(double)
+  0.00  37938.44     1.40                             Engine::calculateCenterOfMass()
+  0.00  37938.88     0.44       94     0.00     0.00  Engine::assignCellsToGrid(int, double) [clone .constprop.114]
+  0.00  37939.09     0.21       94     0.00     0.00  Engine::buildVerletLists()
+  0.00  37939.12     0.03                             Engine::cc_overlap(double, double, double)
+  0.00  37939.14     0.02  1048576     0.00     0.00  Print::print_Ovito(int, double, double, double, double, double, double, int)
+  0.00  37939.16     0.02  1048576     0.00     0.00  Print::print_vid(double, double, double, int, double, int)
+  0.00  37939.18     0.02  1000001     0.00     0.00  Print::print_data(long, double, double, double, double, double, double, double, double, double, double)
+  0.00  37939.19     0.01  1000001     0.00     0.00  Print::print_MSD(int, double)
+  0.00  37939.19     0.01     4096     0.00     0.00  Cell::Cell()
+  0.00  37939.19     0.00    26566     0.00     0.00  void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int const&>(int const&)
+  0.00  37939.19     0.00     4097     0.00     0.00  Print::print_size(double)
+  0.00  37939.19     0.00      441     0.00     0.00  Box::Box()
+  0.00  37939.19     0.00      256     0.00     0.00  Print::print_noCells(int)
+  0.00  37939.19     0.00       13     0.00     0.00  boost::random::mersenne_twister_engine<unsigned int, 32ul, 624ul, 397ul, 31ul, 2567483615u, 11ul, 4294967295u, 7ul, 2636928640u, 15ul, 4022730752u, 18ul, 1812433253u>::twist()
+  0.00  37939.19     0.00       13     0.00     0.00  void std::vector<Cell, std::allocator<Cell> >::_M_emplace_back_aux<Cell const&>(Cell const&)
+  0.00  37939.19     0.00       10     0.00     0.00  Print::print_GNF(double, double)
+  0.00  37939.19     0.00       10     0.00     0.00  void std::vector<Box, std::allocator<Box> >::_M_emplace_back_aux<Box const&>(Box const&)
+  0.00  37939.19     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4CellC2Ev
+  0.00  37939.19     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int) [clone .constprop.111]
+  0.00  37939.19     0.00        1     0.00     0.00  Print::print_summary(std::string, int, long, int, double, double, double, double)
+  0.00  37939.19     0.00        1     0.00     0.00  Print::init(std::string, std::string, int)
+  0.00  37939.19     0.00        1     0.00     0.00  Print::Print()
+  0.00  37939.19     0.00        1     0.00     0.00  Print::~Print()
+  0.00  37939.19     0.00        1     0.00     0.00  Engine::defineGrid()
+  0.00  37939.19     0.00        1     0.00     0.00  Engine::defineCells()
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.00% of 37939.19 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0 4380.04 33557.73                 Engine::start() [1]
+             27263.67  638.90 100000001/101000001     Engine::neighborInteractions() [2]
+             3299.80    0.00 100000001/100000001     Engine::newSkinList() [3]
+               60.79 2266.47       1/1           Engine::relax() [5]
+               28.00    0.00  999991/999991      Engine::totalAreaIntersection(double) [7]
+                0.02    0.00 1048576/1048576     Print::print_vid(double, double, double, int, double, int) [13]
+                0.02    0.00 1048576/1048576     Print::print_Ovito(int, double, double, double, double, double, double, int) [12]
+                0.02    0.00 1000001/1000001     Print::print_data(long, double, double, double, double, double, double, double, double, double, double) [14]
+                0.01    0.00       3/94          Engine::assignCellsToGrid(int, double) [clone .constprop.114] [9]
+                0.01    0.00 1000001/1000001     Print::print_MSD(int, double) [15]
+                0.00    0.01       1/1           Engine::defineCells() [16]
+                0.01    0.00       3/94          Engine::buildVerletLists() [10]
+                0.00    0.00     256/256         Print::print_noCells(int) [27]
+                0.00    0.00      10/10          Print::print_GNF(double, double) [30]
+                0.00    0.00       1/1           Print::init(std::string, std::string, int) [35]
+                0.00    0.00       1/1           Engine::defineGrid() [38]
+                0.00    0.00       1/1           Print::print_summary(std::string, int, long, int, double, double, double, double) [34]
+-----------------------------------------------
+              272.64    6.39 1000000/101000001     Engine::relax() [5]
+             27263.67  638.90 100000001/101000001     Engine::start() [1]
+[2]     74.3 27536.31  645.29 101000001         Engine::neighborInteractions() [2]
+              645.29    0.00 1379143680/5475147776     frame_dummy [4]
+-----------------------------------------------
+             3299.80    0.00 100000001/100000001     Engine::start() [1]
+[3]      8.7 3299.80    0.00 100000001         Engine::newSkinList() [3]
+-----------------------------------------------
+                0.00    0.00    4096/5475147776     Engine::defineCells() [16]
+              645.29    0.00 1379143680/5475147776     Engine::neighborInteractions() [2]
+             1916.48    0.00 4096000000/5475147776     Engine::relax() [5]
+[4]      6.8 2561.77    0.00 5475147776         frame_dummy [4]
+-----------------------------------------------
+               60.79 2266.47       1/1           Engine::start() [1]
+[5]      6.1   60.79 2266.47       1         Engine::relax() [5]
+             1916.48    0.00 4096000000/5475147776     frame_dummy [4]
+              272.64    6.39 1000000/101000001     Engine::neighborInteractions() [2]
+               70.34    0.00 4096000000/4096000000     Cell::update(double, double, double) [6]
+                0.43    0.00      91/94          Engine::assignCellsToGrid(int, double) [clone .constprop.114] [9]
+                0.20    0.00      91/94          Engine::buildVerletLists() [10]
+-----------------------------------------------
+               70.34    0.00 4096000000/4096000000     Engine::relax() [5]
+[6]      0.2   70.34    0.00 4096000000         Cell::update(double, double, double) [6]
+-----------------------------------------------
+               28.00    0.00  999991/999991      Engine::start() [1]
+[7]      0.1   28.00    0.00  999991         Engine::totalAreaIntersection(double) [7]
+-----------------------------------------------
+                                                 <spontaneous>
+[8]      0.0    1.40    0.00                 Engine::calculateCenterOfMass() [8]
+-----------------------------------------------
+                0.01    0.00       3/94          Engine::start() [1]
+                0.43    0.00      91/94          Engine::relax() [5]
+[9]      0.0    0.44    0.00      94         Engine::assignCellsToGrid(int, double) [clone .constprop.114] [9]
+                0.00    0.00    2205/26566       void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int const&>(int const&) [24]
+-----------------------------------------------
+                0.01    0.00       3/94          Engine::start() [1]
+                0.20    0.00      91/94          Engine::relax() [5]
+[10]     0.0    0.21    0.00      94         Engine::buildVerletLists() [10]
+                0.00    0.00   24361/26566       void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int const&>(int const&) [24]
+-----------------------------------------------
+                                                 <spontaneous>
+[11]     0.0    0.03    0.00                 Engine::cc_overlap(double, double, double) [11]
+-----------------------------------------------
+                0.02    0.00 1048576/1048576     Engine::start() [1]
+[12]     0.0    0.02    0.00 1048576         Print::print_Ovito(int, double, double, double, double, double, double, int) [12]
+-----------------------------------------------
+                0.02    0.00 1048576/1048576     Engine::start() [1]
+[13]     0.0    0.02    0.00 1048576         Print::print_vid(double, double, double, int, double, int) [13]
+-----------------------------------------------
+                0.02    0.00 1000001/1000001     Engine::start() [1]
+[14]     0.0    0.02    0.00 1000001         Print::print_data(long, double, double, double, double, double, double, double, double, double, double) [14]
+-----------------------------------------------
+                0.01    0.00 1000001/1000001     Engine::start() [1]
+[15]     0.0    0.01    0.00 1000001         Print::print_MSD(int, double) [15]
+-----------------------------------------------
+                0.00    0.01       1/1           Engine::start() [1]
+[16]     0.0    0.00    0.01       1         Engine::defineCells() [16]
+                0.01    0.00    4096/4096        Cell::Cell() [17]
+                0.00    0.00    4096/5475147776     frame_dummy [4]
+                0.00    0.00    4097/4097        Print::print_size(double) [25]
+                0.00    0.00      13/13          boost::random::mersenne_twister_engine<unsigned int, 32ul, 624ul, 397ul, 31ul, 2567483615u, 11ul, 4294967295u, 7ul, 2636928640u, 15ul, 4022730752u, 18ul, 1812433253u>::twist() [28]
+                0.00    0.00      13/13          void std::vector<Cell, std::allocator<Cell> >::_M_emplace_back_aux<Cell const&>(Cell const&) [29]
+-----------------------------------------------
+                0.01    0.00    4096/4096        Engine::defineCells() [16]
+[17]     0.0    0.01    0.00    4096         Cell::Cell() [17]
+-----------------------------------------------
+                0.00    0.00    2205/26566       Engine::assignCellsToGrid(int, double) [clone .constprop.114] [9]
+                0.00    0.00   24361/26566       Engine::buildVerletLists() [10]
+[24]     0.0    0.00    0.00   26566         void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int const&>(int const&) [24]
+-----------------------------------------------
+                0.00    0.00    4097/4097        Engine::defineCells() [16]
+[25]     0.0    0.00    0.00    4097         Print::print_size(double) [25]
+-----------------------------------------------
+                0.00    0.00     441/441         Engine::defineGrid() [38]
+[26]     0.0    0.00    0.00     441         Box::Box() [26]
+-----------------------------------------------
+                0.00    0.00     256/256         Engine::start() [1]
+[27]     0.0    0.00    0.00     256         Print::print_noCells(int) [27]
+-----------------------------------------------
+                0.00    0.00      13/13          Engine::defineCells() [16]
+[28]     0.0    0.00    0.00      13         boost::random::mersenne_twister_engine<unsigned int, 32ul, 624ul, 397ul, 31ul, 2567483615u, 11ul, 4294967295u, 7ul, 2636928640u, 15ul, 4022730752u, 18ul, 1812433253u>::twist() [28]
+-----------------------------------------------
+                0.00    0.00      13/13          Engine::defineCells() [16]
+[29]     0.0    0.00    0.00      13         void std::vector<Cell, std::allocator<Cell> >::_M_emplace_back_aux<Cell const&>(Cell const&) [29]
+-----------------------------------------------
+                0.00    0.00      10/10          Engine::start() [1]
+[30]     0.0    0.00    0.00      10         Print::print_GNF(double, double) [30]
+-----------------------------------------------
+                0.00    0.00      10/10          Engine::defineGrid() [38]
+[31]     0.0    0.00    0.00      10         void std::vector<Box, std::allocator<Box> >::_M_emplace_back_aux<Box const&>(Box const&) [31]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [61]
+[32]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4CellC2Ev [32]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [61]
+[33]     0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [clone .constprop.111] [33]
+-----------------------------------------------
+                0.00    0.00       1/1           Engine::start() [1]
+[34]     0.0    0.00    0.00       1         Print::print_summary(std::string, int, long, int, double, double, double, double) [34]
+-----------------------------------------------
+                0.00    0.00       1/1           Engine::start() [1]
+[35]     0.0    0.00    0.00       1         Print::init(std::string, std::string, int) [35]
+-----------------------------------------------
+                0.00    0.00       1/1           Engine::Engine(std::string, std::string, long, long, int, double, double, double) [51]
+[36]     0.0    0.00    0.00       1         Print::Print() [36]
+-----------------------------------------------
+                0.00    0.00       1/1           Engine::~Engine() [52]
+[37]     0.0    0.00    0.00       1         Print::~Print() [37]
+-----------------------------------------------
+                0.00    0.00       1/1           Engine::start() [1]
+[38]     0.0    0.00    0.00       1         Engine::defineGrid() [38]
+                0.00    0.00     441/441         Box::Box() [26]
+                0.00    0.00      10/10          void std::vector<Box, std::allocator<Box> >::_M_emplace_back_aux<Box const&>(Box const&) [31]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [32] _GLOBAL__sub_I__ZN4CellC2Ev [30] Print::print_GNF(double, double) [9] Engine::assignCellsToGrid(int, double) [clone .constprop.114]
+  [33] __static_initialization_and_destruction_0(int, int) [clone .constprop.111] [15] Print::print_MSD(int, double) [2] Engine::neighborInteractions()
+  [26] Box::Box()             [13] Print::print_vid(double, double, double, int, double, int) [8] Engine::calculateCenterOfMass()
+   [6] Cell::update(double, double, double) [36] Print::Print() [7] Engine::totalAreaIntersection(double)
+  [17] Cell::Cell()           [37] Print::~Print()         [5] Engine::relax()
+  [14] Print::print_data(long, double, double, double, double, double, double, double, double, double, double) [28] boost::random::mersenne_twister_engine<unsigned int, 32ul, 624ul, 397ul, 31ul, 2567483615u, 11ul, 4294967295u, 7ul, 2636928640u, 15ul, 4022730752u, 18ul, 1812433253u>::twist() [1] Engine::start()
+  [25] Print::print_size(double) [11] Engine::cc_overlap(double, double, double) [31] void std::vector<Box, std::allocator<Box> >::_M_emplace_back_aux<Box const&>(Box const&)
+  [12] Print::print_Ovito(int, double, double, double, double, double, double, int) [38] Engine::defineGrid() [29] void std::vector<Cell, std::allocator<Cell> >::_M_emplace_back_aux<Cell const&>(Cell const&)
+  [27] Print::print_noCells(int) [16] Engine::defineCells() [24] void std::vector<int, std::allocator<int> >::_M_emplace_back_aux<int const&>(int const&)
+  [34] Print::print_summary(std::string, int, long, int, double, double, double, double) [3] Engine::newSkinList() [4] frame_dummy
+  [35] Print::init(std::string, std::string, int) [10] Engine::buildVerletLists()
