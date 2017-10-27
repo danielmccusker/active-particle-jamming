@@ -61,6 +61,7 @@ struct Engine
     
 // Statistical physics functions
     void densityFluctuations();
+    double AreaIntersectionOneBox(double R, int b);
     void pairCorr();
     double MSD();
     double VAF();
@@ -68,7 +69,7 @@ struct Engine
     
     double delta_norm(double);
     double cc_overlap(double R1, double R2, double r);
-    double totalAreaIntersection(double R);
+    
     
 // Variables
     Print print;                            // Print class has methods for printing data
@@ -112,9 +113,9 @@ struct Engine
     double ux, uy;                          // Average x- and y-components of particle orientation
     double nbrdist2;                        // Average squared distance to a neighbor (small for crystalized with holes?)
     
-    int rmsCounter;                         //counts time steps for calculating rms density fluctuations
-    double rmsValue;
-    double R;                               //radius of GNF intersection circle
+    int GNFcounter;                         //counts time steps for calculating rms density fluctuations
+    double fluctuationValue;
+    double Rad;                               //radius of GNF intersection circle
     double numberOfGNFpoints;               //how many divisions of total run time for each density fluctuation measurement
     double GNFinterval;
 };
@@ -639,11 +640,30 @@ void Engine::GNFinit(){
 // Initialize GNF measurements
     
     numberOfGNFpoints = 10;
-    R = Lover2;
+    Rad = Lover2;
     GNFinterval = (double)totalSteps/(nSkip*(double)numberOfGNFpoints);
-    rmsCounter = 0;
-    rmsValue = 0;
+    GNFcounter = 0;
+    fluctuationValue = 0;
 }
+
+//double Engine::KineticEnergy(double vcm){
+//    double value = 0.0;
+//    for (int i=0; i<N; i++) {
+//        value+=cell[i].velx*cell[i].velx + cell[i].vely*cell[i].vely;
+//    }
+//    
+//    return value/vcm;
+//}
+//
+//double Engine::PotentialEnergy(double d2){
+//    double value = 0.0;
+//    for (int i=0; i<N; i++) {
+//        value+=cell[i].over*cell[i].over;
+//    }
+//    value = value/2.; // Double-counting
+//    
+//    return value/d2;
+//}
 
 double Engine::cc_overlap(double R1, double R2, double r){
 // Formula for calculating area intersection between two circles C1 and C2 with radii R1 and R2
@@ -666,14 +686,15 @@ double Engine::cc_overlap(double R1, double R2, double r){
     }
 }
 
-double Engine::totalAreaIntersection(double R){
-// Draw a circle of radius R at the center of the box, and calculate its total overlapping area with all cells
+double Engine::AreaIntersectionOneBox(double Rad, int b){
+// Draw a circle of radius Rad around the center of a box, and calculate its total overlapping area with all cells
     
     double Atot = 0;
     for (int i=0; i<N; i++) {
-        double d = sqrt((cell[i].posx*cell[i].posx) + (cell[i].posy*cell[i].posy));
-        double A = cc_overlap(cell[i].R, R, d);
-        Atot = Atot+A;
+        double dx = delta_norm(cell[i].posx - grid[b].center[0]);
+        double dy = delta_norm(cell[i].posy - grid[b].center[1]);
+        double r = sqrt(dx*dx+dy*dy);
+        Atot += cc_overlap(cell[i].R, Rad, r);
     }
     return Atot;
 }
@@ -681,18 +702,21 @@ double Engine::totalAreaIntersection(double R){
 void Engine::densityFluctuations(){
 // Print density fluctuations as a function of average density
     
-    rmsCounter++;
-    if(rmsCounter < GNFinterval) {
-        double A = totalAreaIntersection(R);
-        double expectedA = dens*PI*R*R;
-        rmsValue = rmsValue + (A-expectedA)*(A-expectedA);
+    double expectedA = dens*PI*Rad*Rad;
+    if(GNFcounter < GNFinterval) {
+        for (int a=0; a<b2; a++){
+            double A = AreaIntersectionOneBox(Rad, a);
+            fluctuationValue += (A-expectedA)*(A-expectedA);
+        }
+        fluctuationValue /= b2;
     } else {
     // Store value of rms fluctuation and reset for next measurement, decrease circle size
-        print.print_GNF(dens*PI*R*R, sqrt(rmsValue/(double)rmsCounter) );
-        rmsValue = 0;
-        rmsCounter = 0;
-        R = R/2;
+        print.print_GNF(expectedA, sqrt(fluctuationValue/(double)GNFcounter) );
+        fluctuationValue = 0;
+        GNFcounter = 0;
+        Rad = Rad/2;
     }
+    GNFcounter++;
 }
 
 int main(int argc, char *argv[])
@@ -732,7 +756,7 @@ int main(int argc, char *argv[])
         engine.start();
     }
     
-    int check = system(("/home/dmccusker/remote/jamming-dynamics/code/plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+std::to_string(steps)).c_str());
+    int check = system(("../plot/plot_jam_act_03.gnu "+ID+ " " +dir+" "+std::to_string(steps)).c_str());
     if( check != 0 ) cout << "An error occurred while plotting (one of) the graphs\n";
     
     return 0;

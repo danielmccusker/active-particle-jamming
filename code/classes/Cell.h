@@ -64,7 +64,7 @@ Cell::Cell(){
     vely = 0;
     Fx  = 0;
     Fy  = 0;
-    over = 240;
+    over = 0;
     
     //nextVerletMember = NULL;
     //nextBoxMember = NULL;

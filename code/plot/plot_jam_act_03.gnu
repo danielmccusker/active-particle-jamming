@@ -18,8 +18,8 @@ N = 1000            # Number of data points on a graph
 int = ($3)/(N*100)            # Step size between data points
 
 set terminal postscript eps color enhanced "Helvetica" 20
-#directory = '/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/output/'.'$2/'
-directory = '/home/dmccusker/remote/jamming-dynamics/output/'.'$2/'
+directory = '/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/output/'.'$2/'
+#directory = '/home/dmccusker/remote/jamming-dynamics/output/'.'$2/'
 
 # ------------------------------------------------------------------------------------------ #
 # Plot order parameter
