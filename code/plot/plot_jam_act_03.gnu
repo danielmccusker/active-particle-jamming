@@ -15,11 +15,12 @@
 gnuplot << EOF
 
 N = 1000            # Number of data points on a graph
-int = ($3)/(N*100)            # Step size between data points
+#int = ($3)/(N*100)            # Step size between data points
+int = 1
 
 set terminal postscript eps color enhanced "Helvetica" 20
-directory = '/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/output/'.'$2/'
-#directory = '/home/dmccusker/remote/jamming-dynamics/output/'.'$2/'
+#directory = '/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/output/'.'$2/'
+directory = '/home/dmccusker/remote/jamming-dynamics/output/'.'$2/'
 
 # ------------------------------------------------------------------------------------------ #
 # Plot order parameter
@@ -39,7 +40,7 @@ set key box lt 2 lc -1 lw 3
 
 #set fit errorvariables
 #set fit logfile "/dev/null"
-#set fit quiet
+set fit quiet
 
 f0(x) = A0
 A0 = 0.5
@@ -80,19 +81,6 @@ plot filein u 1:5 every int w points t '$1'
 #fit f1(x) filein using 1:4 every int:int via A1
 #
 #plot filein u 1:4 every int::10 t '$1', f1(x) t sprintf("mean: A = %.4g, error = %.4g",A1, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
-
-# ------------------------------------------------------------------------------------------ #
-# Plot mean squared difference of cell radii
-#
-#fileout = directory.'$1/eps/Rdif2.eps'
-#
-#set output fileout
-#
-#set title "Mean squared difference of radii"
-#set xlabel "time [steps]"
-#set ylabel "<(a_i - a_j)^2>"
-#
-#plot filein u 1:7 every int with lines
 
 # ------------------------------------------------------------------------------------------ #
 # Plot trajectory of the system's center of mass
@@ -242,7 +230,7 @@ fileout = directory.'$1/eps/GNF.eps'
 set logscale xy
 
 f(x) = m*x+b
-fit f(x) filein using 3:4 via m,b
+fit f(x) filein using 4:5 via m,b
 f2(x) = exp(b)*x**m
 
 set output fileout
@@ -251,7 +239,7 @@ set title "Density fluctuations"
 set xlabel "<A>"
 set ylabel "rms fluctuation"
 
-plot filein with linespoints t '$1', x with lines t 'slope = 1', sqrt(x) with lines t 'slope = 0.5', f2(x) with lines lt rgb "#ff00ff" t sprintf("slope of fit = %.4g", m)
+plot filein using 2:3 with linespoints t '$1', x with lines t 'slope = 1', sqrt(x) with lines t 'slope = 0.5', f2(x) with lines lt rgb "#ff00ff" t sprintf("slope of fit = %.4g", m)
 
 set print directory.'$1/dat/summary.dat' append
 print 'density fluctuations scale like:	', m
