@@ -6,11 +6,11 @@ parameterArray=($parameters)
 
 ID=${parameterArray[0]}
 currentRun=${parameterArray[1]}
-noCells=${parameterArray[2]}
-noSteps=${parameterArray[3]}
-stepsPerTime=${parameterArray[4]}
-lambda_s=${parameterArray[5]}
-lambda_n=${parameterArray[6]}
-rho=${parameterArray[7]}
+noSteps=${parameterArray[2]}
+stepsPerTime=${parameterArray[3]}
+lambda_s=${parameterArray[4]}
+lambda_n=${parameterArray[5]}
+rho=${parameterArray[6]}
 
-/home/dmccusker/remote/jamming-dynamics/code/jam/a.out $ID $currentRun $noCells $noSteps $stepsPerTime $lambda_s $lambda_n $rho
+/home/dmccusker/remote/jamming-dynamics/code/jam/a.out $ID $currentRun $noSteps $stepsPerTime $lambda_s $lambda_n $rho
+
