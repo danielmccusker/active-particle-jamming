@@ -86,7 +86,7 @@ struct Engine
     int nSkip;                              // Print data every nSkip steps
     long int resetCounter;                  // Records the number of times the Verlet skin list is refreshed
     double dt;                              // Time step, in units of cell-cell repulsion time
-    const int timeAvg = 5;                  // Number of time steps for averaging static physics functions
+    const int timeAvg = 1;                  // Number of time steps for averaging static physics functions
     const int tCorrelation = 20;            // Number of time steps for calculating time-dependent correlations
     int tau;                                // Starting time for time-dependent correlations
     int tCorrCounter;
@@ -798,9 +798,6 @@ void Engine::spatialCorrelations(int init){
         
         if(k1 < noPairPoints) { pairCorrelationValues[k1] += pairVal; k1++; }
         if(k2 < noVelPoints && cellDiameter) { velocityCorrelationValues[k2] += velVal; k2++; }
-        cout << r << endl;
-        cout << cellDiameter << endl;
-        cout << endl;
         
         r+=dr;
         // Increase dr once we've reached the end of the pair correlation calculation
@@ -815,7 +812,7 @@ void Engine::GNFinit(){
     
     numberOfGNFpoints = 10;
     RadMin = 3.0;
-    RadMax = Lover2;
+    RadMax = Lover2*9.0/10.0;
     
     Rad = RadMin;
     RadInt = pow(RadMax/RadMin, 1./(numberOfGNFpoints-1));

@@ -15,8 +15,8 @@
 gnuplot << EOF
 
 N = 1000            # Number of data points on a graph
-#int = ($3)/(N*100)            # Step size between data points
-int = 1
+int = ($3)/(N*10)            # Step size between data points
+#int = 1
 
 set terminal postscript eps color enhanced "Helvetica" 20
 #directory = '/Users/Daniel1/Desktop/ActiveMatterResearch/jamming-dynamics/output/'.'$2/'
@@ -47,7 +47,7 @@ A0 = 0.5
 
 fit f0(x) filein using 1:4 every int:int via A0
 
-plot filein u 1:5 every int w points t '$1', f0(x) t sprintf("mean: A = %.4g, error = %.4g",A0, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
+plot filein u 1:4 every int w points t '$1', f0(x) t sprintf("mean: A = %.4g, error = %.4g",A0, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
 # ------------------------------------------------------------------------------------------ #
 # Plot system orientation
@@ -63,25 +63,6 @@ set yrange [-pi:pi]
 
 plot filein u 1:5 every int w points t '$1'
 
-## ------------------------------------------------------------------------------------------ #
-## Plot average velocity
-#
-#fileout = directory.'$1/eps/vavg.eps'
-#
-#set output fileout
-#
-#set title "Average velocity"
-#set xlabel "time [steps]"
-#set ylabel "v_{gem}"
-#set autoscale y
-#
-#f1(x) = A1
-#A1 = 0.5
-#
-#fit f1(x) filein using 1:4 every int:int via A1
-#
-#plot filein u 1:4 every int::10 t '$1', f1(x) t sprintf("mean: A = %.4g, error = %.4g",A1, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
-
 # ------------------------------------------------------------------------------------------ #
 # Plot trajectory of the system's center of mass
 
@@ -92,8 +73,8 @@ set output fileout
 set title "Position with time of the original system"
 set xlabel "x"
 set ylabel "y"
-set xrange [-500:500]
-set yrange [-500:500]
+set xrange [-750:750]
+set yrange [-750:750]
 
 plot filein u 2:3:1 every int with points palette t "CoM"
 
@@ -104,30 +85,30 @@ fileout = directory.'$1/eps/x123.eps'
 
 set output fileout
 
-#stats filein u 6:7 nooutput
-#L = (STATS_max_x > STATS_max_y) ? STATS_max_x : STATS_max_y
-#L = (-STATS_min_x > L) ? -STATS_min_x : L
-#L = (-STATS_min_y > L) ? -STATS_min_y : L
-#stats filein u 8:9 nooutput
-#L = (STATS_max_x > L) ? STATS_max_x : L
-#L = (STATS_max_y > L) ? STATS_max_y : L
-#L = (-STATS_min_x > L) ? -STATS_min_x : L
-#L = (-STATS_min_y > L) ? -STATS_min_y : L
-#stats filein u 10:11 nooutput
-#L = (STATS_max_x > L) ? STATS_max_x : L
-#L = (STATS_max_y > L) ? STATS_max_y : L
-#L = (-STATS_min_x > L) ? -STATS_min_x : L
-#L = (-STATS_min_y > L) ? -STATS_min_y : L
+stats filein u 6:7 nooutput
+L = (STATS_max_x > STATS_max_y) ? STATS_max_x : STATS_max_y
+L = (-STATS_min_x > L) ? -STATS_min_x : L
+L = (-STATS_min_y > L) ? -STATS_min_y : L
+stats filein u 8:9 nooutput
+L = (STATS_max_x > L) ? STATS_max_x : L
+L = (STATS_max_y > L) ? STATS_max_y : L
+L = (-STATS_min_x > L) ? -STATS_min_x : L
+L = (-STATS_min_y > L) ? -STATS_min_y : L
+stats filein u 10:11 nooutput
+L = (STATS_max_x > L) ? STATS_max_x : L
+L = (STATS_max_y > L) ? STATS_max_y : L
+L = (-STATS_min_x > L) ? -STATS_min_x : L
+L = (-STATS_min_y > L) ? -STATS_min_y : L
 
-#f(x) = x - 2*L*floor((x+L)/(2*L))
+f(x) = x - 2*L*floor((x+L)/(2*L))
 
-#set title "Position with time of the original system"
-#set xlabel "x"
-#set ylabel "y"
-#set xrange [-30:30]
-#set yrange [-30:30]
+set title "Position with time of the original system"
+set xlabel "x"
+set ylabel "y"
+set xrange [-1000:1000]
+set yrange [-1000:1000]
 
-#plot filein u (f(\$6-\$2)):(f(\$7-\$3)):1 every int with points palette t "Cell 1", filein u (f(\$8-\$2)):(f(\$9-\$3)):1 every int with points palette t "Cell 2", filein u (f(\$10-\$2)):(f(\$11-\$3)):1 every int with points palette t "Cell 3"
+plot filein u (f(\$6-\$2)):(f(\$7-\$3)):1 every int with points palette t "Cell 1", filein u (f(\$8-\$2)):(f(\$9-\$3)):1 every int with points palette t "Cell 2", filein u (f(\$10-\$2)):(f(\$11-\$3)):1 every int with points palette t "Cell 3"
 
 # ------------------------------------------------------------------------------------------ #
 # Pair correlation function
@@ -147,6 +128,10 @@ stats filein using 2 every ::1 name "Y" nooutput
 stats filein using 1 every ::Y_index_max::Y_index_max name "X" nooutput
 
 plot filein using 1:2 t sprintf("$1: peak of g1 = %.4g at r = %.4g", Y_max, X_max) with linespoints
+
+set print directory.'$1/dat/summary2.dat' append
+print 'Pair correlation function peak:	', Y_max
+print 'Peaks at radius:	', X_max
 
 # ------------------------------------------------------------------------------------------ #
 # Velocity distribution
@@ -183,7 +168,7 @@ fit f(x) filein u 1:2 every int via d,D
 
 plot filein u 1:2 every int t '$1', f(x) t sprintf("mean: D = %.4g",D)# , error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
-set print directory.'$1/dat/summary.dat' append
+set print directory.'$1/dat/summary2.dat' append
 print 'effective diffusion constant:	', D
 
 #fileout = directory.'$1/eps/MSDlogerror.eps'
@@ -207,6 +192,66 @@ unset logscale xy
 plot filein u 1:4 every int t '$1', log(f(x)) t sprintf("mean: D = %.4g, error = %.4g",D, sqrt(FIT_WSSR / (FIT_NDF + 1 )))
 
 # ------------------------------------------------------------------------------------------ #
+# Plot density fluctuations
+
+filein  = directory.'$1/dat/GNF.dat'
+fileout = directory.'$1/eps/GNF.eps'
+
+set logscale xy
+
+f(x) = m*x+b
+fit f(x) filein using 4:5 every ::0::8 via m, b
+f2(x) = exp(b)*x**m
+
+set output fileout
+
+set title "Density fluctuations"
+set xlabel "<A>"
+set ylabel "rms fluctuation"
+
+plot filein using 2:3 every ::0::8 with linespoints t '$1', x with lines t 'slope = 1', sqrt(x) with lines t 'slope = 0.5', f2(x) with lines lt rgb "#ff00ff" t sprintf("slope of fit = %.4g", m)
+
+set print directory.'$1/dat/summary2.dat' append
+print 'density fluctuations scale like:	', m
+
+# ------------------------------------------------------------------------------------------ #
+# Plot velocity correlation function
+
+filein  = directory.'$1/dat/velCorr.dat'
+fileout = directory.'$1/eps/velCorr.eps'
+
+#f(x) = m*x+b
+#fit f(x) filein using 4:5 via m,b
+#f2(x) = exp(b)*x**m
+unset logscale xy
+set output fileout
+
+set title "Velocity correlation function"
+set xlabel "r"
+set ylabel "g"
+
+plot filein using 1:2 with linespoints t '$1'
+#set print directory.'$1/dat/summary.dat' append
+#print 'density fluctuations scale like: ', m
+
+# ------------------------------------------------------------------------------------------ #
+# Plot order autocorrelation function
+
+filein  = directory.'$1/dat/oaf.dat'
+fileout = directory.'$1/eps/oaf.eps'
+
+unset logscale xy
+set output fileout
+
+set title "order autocorrelation function"
+set xlabel "lagtime [steps]"
+set ylabel "<(phi({/Symbol t}).phi(0))^2>"
+unset logscale xy
+
+plot filein using 1:2 t '$1' with linespoints
+
+
+# ------------------------------------------------------------------------------------------ #
 # Plot velocity autocorrelation function
 
 filein  = directory.'$1/dat/vaf.dat'
@@ -219,30 +264,10 @@ set xlabel "lagtime [steps]"
 set ylabel "<(v({/Symbol t}).v(0))^2>"
 unset logscale xy
 
-plot filein using 1:2 every int t '$1' with linespoints
+plot filein using 1:2 t '$1' with linespoints
 
 # ------------------------------------------------------------------------------------------ #
-# Plot density fluctuations
 
-filein  = directory.'$1/dat/GNF.dat'
-fileout = directory.'$1/eps/GNF.eps'
 
-set logscale xy
-
-f(x) = m*x+b
-fit f(x) filein using 4:5 via m,b
-f2(x) = exp(b)*x**m
-
-set output fileout
-
-set title "Density fluctuations"
-set xlabel "<A>"
-set ylabel "rms fluctuation"
-
-plot filein using 2:3 with linespoints t '$1', x with lines t 'slope = 1', sqrt(x) with lines t 'slope = 0.5', f2(x) with lines lt rgb "#ff00ff" t sprintf("slope of fit = %.4g", m)
-
-set print directory.'$1/dat/summary.dat' append
-print 'density fluctuations scale like:	', m
-
-# ------------------------------------------------------------------------------------------ #
 EOF
+
