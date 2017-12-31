@@ -17,18 +17,21 @@ struct Print
     ~Print();
     
     void init(string, string, string, int);
-    void print_data(long int, double, double, double, double, double, double, double, double, double, double);
+    void print_data(long int, double, double, double, double, double, double, double, double, double, double, double);
     void print_Ovito(int, int, int, double, double, double, int, double, double);
     void print_velCorr(double,double);
+    void print_angleCorr(double,double);
+    void print_angleCorrC(double,double);
     void print_pairCorr(double,double);
+    void print_velCorrC(double,double);
     void print_velDist(double, double);
     void print_VAF(int, double);
     void print_OAF(int, double);
     void print_MSD(int, double);
     void print_GNF(double, double, double);
-    void print_summary(string, int, double, long int, int, double, double, double, double, long int, double, double, double, double);
+    void print_summary(string, int, double, long int, int, double, double, double, double, long int, double, double, double, double, double, double);
     
-    ofstream data, OvitoVid, velCorr, pairCorr, velDist, VAF, OAF, MSD, GNF, summary;
+    ofstream data, OvitoVid, velCorr, velCorrC, angleCorr, angleCorrC, pairCorr, velDist, VAF, OAF, MSD, GNF, summary, summary2;
 
     string run;
     string path;
@@ -42,6 +45,9 @@ Print::~Print(){
     data.close();
     OvitoVid.close();
     velCorr.close();
+    angleCorr.close();
+    angleCorrC.close();
+    velCorrC.close();
     pairCorr.close();
     velDist.close();
     VAF.close();
@@ -49,6 +55,7 @@ Print::~Print(){
     GNF.close();
     MSD.close();
     summary.close();
+    summary2.close();
 }
 
 void Print::init(string location, string fullRun, string ID, int noCells){
@@ -82,7 +89,10 @@ void Print::init(string location, string fullRun, string ID, int noCells){
     
     data.open((path+run+"/dat/data.dat").c_str());
     OvitoVid.open((path+run+"/vid/ovito.txt").c_str());
+    angleCorr.open((path+run+"/dat/angleCorr.dat").c_str());
+    angleCorrC.open((path+run+"/dat/angleCorrC.dat").c_str());
     velCorr.open((path+run+"/dat/velCorr.dat").c_str());
+    velCorrC.open((path+run+"/dat/velCorrC.dat").c_str());
     pairCorr.open((path+run+"/dat/pairCorr.dat").c_str());
     velDist.open((path+run+"/dat/velDist.dat").c_str());
     VAF.open((path+run+"/dat/vaf.dat").c_str());
@@ -90,17 +100,18 @@ void Print::init(string location, string fullRun, string ID, int noCells){
     GNF.open((path+run+"/dat/GNF.dat").c_str());
     MSD.open((path+run+"/dat/MSD.dat").c_str());    
     summary.open((path+run+"/dat/summary.dat").c_str());
+    summary2.open((path+run+"/dat/summary2.dat").c_str());
 
 }
 
 void Print::print_data(long int t, double xa, double ya, double phi, double Psi,
-                         double x1, double y1, double x2, double y2, double x3, double y3){
+                         double x1, double y1, double x2, double y2, double x3, double y3, double pressure){
     data << setprecision(8) << t << "\t" << xa << "\t" << ya << "\t" << "\t" << phi << "\t" << Psi << "\t"
-        << x1 << "\t" << y1 << "\t" << x2 << "\t" << y2 << "\t" << x3 << "\t" << y3 << "\n";
+        << x1 << "\t" << y1 << "\t" << x2 << "\t" << y2 << "\t" << x3 << "\t" << y3 << "\t" << pressure << "\n";
 }
 
 void Print::print_Ovito(int k, int noCells, int cellIndex, double x, double y, double radius, int overlap, double vx, double vy){
-// Print in "XYZ" file format, to be read by molecular dynamics visualizing software
+// Print in "XYZ" file format, to be read by molecular dynamics visualization software
     
     if(k==0){
     // Demarcate the beginning of each time step
@@ -114,6 +125,18 @@ void Print::print_Ovito(int k, int noCells, int cellIndex, double x, double y, d
 
 void Print::print_velCorr(double r, double v){
     velCorr << r << "\t" << v << endl;
+}
+
+void Print::print_velCorrC(double r, double v){
+    velCorrC << r << "\t" << v << endl;
+}
+
+void Print::print_angleCorr(double r, double v){
+    angleCorr << r << "\t" << v << endl;
+}
+
+void Print::print_angleCorrC(double r, double v){
+    angleCorrC << r << "\t" << v << endl;
 }
 
 void Print::print_pairCorr(double r, double gr){
@@ -142,7 +165,7 @@ void Print::print_GNF(double Rad, double avg, double fluct){
 }
 
 void Print::print_summary(string ID, int noCells, double L, long int numberOfSteps, int stepsPerTime, double C1, double C2, double rho, double seconds, long int resetCounter, double corr,
-                          double binder, double order, double variance) {
+                          double binder, double order, double variance, double pressure, double pressureVar) {
     summary << "Run ID:                     " << "\t" << ID << endl;
     summary << "Number of cells:            " << "\t" << noCells << endl;
     summary << "Grid length:                " << "\t" << L << endl;
@@ -157,5 +180,23 @@ void Print::print_summary(string ID, int noCells, double L, long int numberOfSte
     summary << "Binder cumulant:            " << "\t" << binder << endl;
     summary << "Average order parameter:    " << "\t" << order << endl;
     summary << "Order parameter variance:   " << "\t" << variance << endl;
+    summary << "Average pressure:           " << "\t" << pressure << endl;
+    summary << "Pressure variance:          " << "\t" << pressureVar << endl;
+    summary2 << ID << endl;
+    summary2 << noCells << endl;
+    summary2 << L << endl;
+    summary2 << numberOfSteps << endl;
+    summary2 << stepsPerTime << endl;
+    summary2 << C1 << endl;
+    summary2 << C2 << endl;
+    summary2 << rho << endl;
+    summary2 << seconds << endl;
+    summary2 << resetCounter << endl;
+    summary2 << corr << endl;
+    summary2 << binder << endl;
+    summary2 << order << endl;
+    summary2 << variance << endl;
+    summary2 << pressure << endl;
+    summary2 << pressureVar << endl;
 }
 
