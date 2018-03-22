@@ -367,6 +367,10 @@ void Engine::defineCells(){
 
 void Engine::defineGrid()
 {
+    
+//index=z*width*height+y*width+x
+
+    
     lp = 2*rn;                                          // lp is ~at least~ the assigned neighbor region diameter.
     b = static_cast<int>(floor(L/lp));                  // It can be a little bit bigger such that we have
     b2 = b*b;                                           // an integer number b2 of equally-sized boxes.
@@ -862,7 +866,7 @@ void Engine::spatialCorrelations(int init)
         velocityCorrelationValues[k]+=velTemp[k];
         velocityCorrelationCorrectedValues[k]+=velCorrTemp[k];
     }
-    double norm = L*L/(2*PI*(double)N);
+    double norm = 1/(2*PI*dr_p*(double)N*rho);
     for(int k=0; k<np; k++)
     {
         pairCorrelationValues[k]+=norm*pairTemp[k];
