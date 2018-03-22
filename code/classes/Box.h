@@ -1,23 +1,28 @@
-using namespace std;
+
+// *** One spatial partition of the simulation area ***
 
 struct Box
 {
     Box();
     
     int serial_index;
-    int vector_index[2];
-    double xmin, xmax, ymin, ymax;
-    double center[2];
-    int neighbors[9];
-    
+    vector<int> vector_index;
+    vector<double> min, max;
+    vector<double> center;
+    vector<int> neighbors;
     vector<int> CellList;
 };
 
 Box::Box(){
     serial_index = -1;
-    vector_index[0] = -1;
-    vector_index[1] = -1;
-   
+    vector_index.assign(NDIM,-1);
+    min.assign(NDIM,0);
+    max.assign(NDIM,0);
+    center.assign(NDIM,0);
+    
+    if(NDIM==2) neighbors.assign(9,0);
+    if(NDIM==3) neighbors.assign(27,0);
+
     CellList.reserve(50);
 }
 

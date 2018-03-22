@@ -214,38 +214,57 @@ for i in range(2,nplots,1):
         xmax = x1[len(x1)-1]
         xrange = np.linspace(2,xmax,num=100)
         
-        p=[-2, 1, 0] # Initial guess for power law fit
-        fitParamsP, fitCovariancesP = curve_fit(powerlaw, x1, y1, p0=p)
-        m,b,c = fitParamsP
-        powerlawerr = np.sqrt(np.diag(fitCovariancesP))
-        ax1.plot(xrange,powerlaw(xrange,m,b,c),     label='power law m = %.3g'%m)
-        ax2.semilogy(xrange,powerlaw(xrange,m,b,0), label='power law m = %.3g'%m)
-        ax3.loglog(xrange,powerlaw(xrange,m,b,0),   label='power law m = %.3g'%m)
-        np.savetxt(summary3, ["Power law coefficient: \t %s" % b], fmt='%s')
-        np.savetxt(summary4, ["%s" % b], fmt='%s')
-        np.savetxt(summary3, ["Power law exponent: \t %s" % m], fmt='%s')
-        np.savetxt(summary4, ["%s" % m], fmt='%s')
-        np.savetxt(summary3, ["Error of power law fit: \t %s" % powerlawerr], fmt='%s')
-        np.savetxt(summary4, ["%s" % powerlawerr], fmt='%s')
-        
         ax1.plot(x,y,'ro', label='data')
-        ax2.semilogy(x,y-c,'ro', label='data')
-        ax3.loglog(x,y-c,'ro', label='data')
+        p=[-1, 1, 0] # Initial guess for power law fit
+        try:
+            fitParamsP, fitCovariancesP = curve_fit(powerlaw, x1, y1, p0=p)
+        
+            m,b,c = fitParamsP
+            powerlawerr = np.sqrt(np.diag(fitCovariancesP))
+            ax1.plot(xrange,powerlaw(xrange,m,b,c),     label='power law m = %.3g'%m)
+            ax2.semilogy(xrange,powerlaw(xrange,m,b,0), label='power law m = %.3g'%m)
+            ax3.loglog(xrange,powerlaw(xrange,m,b,0),   label='power law m = %.3g'%m)
+            np.savetxt(summary3, ["Power law coefficient: \t %s" % b], fmt='%s')
+            np.savetxt(summary4, ["%s" % b], fmt='%s')
+            np.savetxt(summary3, ["Power law exponent: \t %s" % m], fmt='%s')
+            np.savetxt(summary4, ["%s" % m], fmt='%s')
+            np.savetxt(summary3, ["Error of power law fit: \t %s" % powerlawerr], fmt='%s')
+            np.savetxt(summary4, ["%s" % powerlawerr], fmt='%s')
+            
+            ax2.semilogy(x,y-c,'ro', label='data')
+            ax3.loglog(x,y-c,'ro', label='data')
+                
+        except RuntimeError:
+            np.savetxt(summary3, ["Power law coefficient: \t %s" % 0], fmt='%s')
+            np.savetxt(summary4, ["%s" % 0], fmt='%s')
+            np.savetxt(summary3, ["Power law exponent: \t %s" % 0], fmt='%s')
+            np.savetxt(summary4, ["%s" % 0], fmt='%s')
+            np.savetxt(summary3, ["Error of power law fit: \t %s" % 0], fmt='%s')
+            np.savetxt(summary4, ["%s" % 0], fmt='%s')
         
         p=[10, 1, 0]
-        fitParamsE, fitCovariancesE = curve_fit(exponential, x1, y1, p0=p)
-        m,b,c = fitParamsE
-        experr = np.sqrt(np.diag(fitCovariances))
-        ax1.plot(xrange,exponential(xrange,m,b,c),     label='exponential lc = %.3g'%m)
-        ax2.semilogy(xrange,exponential(xrange,m,b,0), label='exponential lc = %.3g'%m)
-        ax3.loglog(xrange,exponential(xrange,m,b,0),   label='exponential lc = %.3g'%m)
-        np.savetxt(summary3, ["Exponential coefficient: \t %s" % b], fmt='%s')
-        np.savetxt(summary4, ["%s" % b], fmt='%s')
-        np.savetxt(summary3, ["Exponential correlation length: \t %s" % m], fmt='%s')
-        np.savetxt(summary4, ["%s" % m], fmt='%s')
-        np.savetxt(summary3, ["Error of exponential fit: \t %s" % experr], fmt='%s')
-        np.savetxt(summary4, ["%s" % experr], fmt='%s')
-        
+        try:
+            fitParamsE, fitCovariancesE = curve_fit(exponential, x1, y1, p0=p)
+            m,b,c = fitParamsE
+            experr = np.sqrt(np.diag(fitCovariances))
+            ax1.plot(xrange,exponential(xrange,m,b,c),     label='exponential lc = %.3g'%m)
+            ax2.semilogy(xrange,exponential(xrange,m,b,0), label='exponential lc = %.3g'%m)
+            ax3.loglog(xrange,exponential(xrange,m,b,0),   label='exponential lc = %.3g'%m)
+            np.savetxt(summary3, ["Exponential coefficient: \t %s" % b], fmt='%s')
+            np.savetxt(summary4, ["%s" % b], fmt='%s')
+            np.savetxt(summary3, ["Exponential correlation length: \t %s" % m], fmt='%s')
+            np.savetxt(summary4, ["%s" % m], fmt='%s')
+            np.savetxt(summary3, ["Error of exponential fit: \t %s" % experr], fmt='%s')
+            np.savetxt(summary4, ["%s" % experr], fmt='%s')
+
+        except RuntimeError:
+            np.savetxt(summary3, ["Exponential coefficient: \t %s" % 0], fmt='%s')
+            np.savetxt(summary4, ["%s" % 0], fmt='%s')
+            np.savetxt(summary3, ["Exponential correlation length: \t %s" % 0], fmt='%s')
+            np.savetxt(summary4, ["%s" % 0], fmt='%s')
+            np.savetxt(summary3, ["Error of exponential fit: \t %s" % 0], fmt='%s')
+            np.savetxt(summary4, ["%s" % 0], fmt='%s')
+
         ax1.set_xlim(1,xmax)
         ax2.set_xlim(1,xmax)
         ax3.set_xlim(1,xmax)
