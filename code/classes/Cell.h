@@ -30,8 +30,9 @@ struct Cell
     double phi, theta;              // Orientation in x-y plane, angle from z-axis
     double cosp, sinp,
            cost, sint;
-    double x_new, y_new, z_new;     // Projections of the cell's orientation for adding
-    double phi_new, theta_new;
+    double x_new, y_new, z_new;     // Projections of the cell's orientation
+    
+    const double zeta = 16/(9*PI);  // Proportionality constant for Stoke's law in 3D
     
     vector<int> VerletList;
 };
@@ -41,6 +42,7 @@ Cell::Cell()
     L = -1.0;
     Lover2 = -1.0;
     dt = -1.0;
+    R = -1.0;
     
     box = -1;
     index = -1;
@@ -56,7 +58,6 @@ Cell::Cell()
     phi = theta = 0.0;
     cosp = sinp = cost = sint = 0.0;
     x_new = y_new = z_new = 0.0;
-    phi_new=theta_new=0.0;
     
     if(NDIM==2){
         theta = PI/2.0;
@@ -72,7 +73,10 @@ Cell::Cell()
 };
 
 void Cell::update(double CFself)
-// Update particle positions and orientations from the equations of motion.
+// Update particle positions and orientations from the equations of motion:
+// F_i = 6*pi*eta*R_i in 2D
+// F_i = (32/3)*eta*R_i in 3D
+// Let eta = 1/(6pi) in 2D, then in 3D the proportionality constant is 16/(9*pi)
 {
     if(NDIM==2)
     {
@@ -81,8 +85,8 @@ void Cell::update(double CFself)
         cosp = cos(phi);
         sinp = sin(phi);
         
-        F[0] += cosp*CFself*R;   // Self-propulsion force
-        F[1] += sinp*CFself*R;
+        F[0] += cosp*CFself;       // Self-propulsion force
+        F[1] += sinp*CFself;
         
         x_new = cosp;                // The average direction of particles in the neighborhood
         y_new = sinp;                // also includes itself
@@ -97,12 +101,9 @@ void Cell::update(double CFself)
         cost = cos(theta);
         sint = sin(theta);
         
-        F[0] += sint*cosp*CFself*R;
-        F[1] += sint*sinp*CFself*R;
-        F[2] += cost*CFself*R;
-        
-        phi_new = phi;
-        theta_new = theta;
+        F[0] += sint*cosp*CFself;
+        F[1] += sint*sinp*CFself;
+        F[2] += cost*CFself;
         
         x_new = cosp*sint;
         y_new = sinp*sint;
@@ -111,7 +112,11 @@ void Cell::update(double CFself)
     
     for(int k=0; k<NDIM; k++)
     {
-        vel[k]       = F[k] / R;
+        vel[k] = F[k];
+        
+        if(NDIM==3)
+            vel[k] /= zeta;
+        
         double dr    = vel[k]*dt;
         pos[k]      += dr;
         pos_real[k] += dr;

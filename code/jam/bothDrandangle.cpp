@@ -35,8 +35,6 @@ boost::normal_distribution<> normdist(0, 1);
 boost::variate_generator< boost::mt19937, boost::uniform_real<> > randuni(gen, unidist);
 boost::variate_generator< boost::mt19937, boost::normal_distribution<> > randnorm(gen, normdist);
 
-//3D; fix viscosity constant
-
 struct Engine
 {
     Engine(string, string, long int, long int, double, double, double);
@@ -62,8 +60,8 @@ struct Engine
     const int nSkip = 100;              // Print data every nSkip steps
     const int film  = nSkip*100;        // Make a video of the last time steps
    
-    const int timeAvg = 100;             // Number of instances to average correlation functions
-    const int tCorrelation = 100;       // Number of time steps of auto-correlation function
+    const int timeAvg = 10;             // Number of instances to average correlation functions
+    const int tCorrelation = 10;       // Number of time steps of auto-correlation function
     const int cutoff = 20;              // Cutoff distance for spatial correlation functions
     
     void start();
@@ -313,6 +311,7 @@ void Engine::topology()
     if(NDIM==2) nbox = b*b;
     if(NDIM==3) nbox = b*b*b;
     lp = L/floor(L/lp);
+    
     for (int k=0; k<nbox; k++) {
         Box *newBox = new Box;
         grid.push_back(*newBox);
@@ -445,16 +444,14 @@ void Engine::relax(Print &print)
         }
         
         calculate_next_positions();
-        //cout << cell[0].theta << endl;
-        if(t_%nSkip==0) print_video(print);
+        //if(t_%nSkip==0) print_video(print);
     }
     
     for(int t_=0; t_<tthermalize; t_++)
     {
         CFself = CFself_old - (tthermalize - t_)*CFself_old/tthermalize;
         calculate_next_positions();
-        if(t_%nSkip==0) print_video(print);
-        //cout << cell[0].theta << endl;
+        //if(t_%nSkip==0) print_video(print);
     }
     
     CFself = CFself_old;
@@ -486,7 +483,7 @@ void Engine::assignCellsToGrid()
         double r2 = lp*lp*0.25*NDIM;
         for (int j=0; j<nbox; j++)
         {
-            double d2 = 0;
+            double d2 = 0.0;
             for (int k=0; k<NDIM; k++)
             {
                 double dr = cell[i].pos[k] - grid[j].center[k];
@@ -656,28 +653,28 @@ void Engine::neighborInteractions()
             cell[i].y_new /= norm;
             cell[i].z_new /= norm;
             
-            // Random vector within a spherical cap around z-axis, defined by CTnoise
+            // Random vector v within a spherical cap around z-axis, defined by CTnoise
             double phi = randuni();
-            double z = random_projection(cos(CTnoise*PI));
-            double y = cos(phi)*sqrt(1.0-z*z);
-            double x = sin(phi)*sqrt(1.0-z*z);
+            double vz = random_projection(cos(CTnoise*PI));
+            double vy = cos(phi)*sqrt(1.0-vz*vz);
+            double vx = sin(phi)*sqrt(1.0-vz*vz);
             
             // Rotation axis from cross product: (0,0,1) x new cell orientation
-            double ux = -cell[i].y_new;
-            double uy = cell[i].x_new;
-            double crossnorm = sqrt(ux*ux+uy*uy);
-            ux /= crossnorm;
-            uy /= crossnorm;
+            double kx = -cell[i].y_new;
+            double ky = cell[i].x_new;
+            double crossnorm = sqrt(kx*kx+ky*ky);
+            kx /= crossnorm;
+            ky /= crossnorm;
             
             // Rotation angle given by dot product: cos(angle) = new_vector . (0,0,1)
             double cosa = cell[i].z_new;
             double sina = sin(acos(cell[i].z_new));
-            double diff = 1.0-cosa;
             
-            // Apply rotation matrix using axis and angle
-            cell[i].x_new = (cosa+ux*ux*diff)*x - ux*uy*diff*y + uy*sina*z;
-            cell[i].y_new = -uy*ux*diff*x + (cosa+uy*uy*diff)*y - ux*sina*z;
-            cell[i].z_new = -uy*sina*x + ux*sina*y + cosa*z;
+            // Apply Rodrigues rotation formula
+            double dot = (1.0-cosa)*(kx*vx+ky*vy);
+            cell[i].x_new = cosa*vx + sina*ky*vz + dot*kx;
+            cell[i].y_new = cosa*vy - sina*kx*vz + dot*ky;
+            cell[i].z_new = cosa*vz + sina*(kx*vy-ky*vx);
             
             cell[i].phi = atan2(cell[i].y_new, cell[i].x_new);
             cell[i].theta = acos(cell[i].z_new);
@@ -698,22 +695,24 @@ void Engine::calculateCOM(){
 
 double Engine::calculateOrderParameter()
 {
-    double x = 0.0, y = 0.0, z = 0.0;
+    vector<double> order(3,0.0);
     
-    for (int i=0; i<N; i++) {
-        x += cell[i].cosp*cell[i].sint;
-        y += cell[i].sinp*cell[i].sint;
-        z += cell[i].cost;
+    for (int i=0; i<N; i++)
+    {
+        order[0] += cell[i].cosp*cell[i].sint;
+        order[1] += cell[i].sinp*cell[i].sint;
+        if(NDIM==3) order[2] += cell[i].cost;
     }
    
-    return sqrt(x*x+y*y+z*z)/(double)N;
+    return sqrt(order[0]*order[0]+order[1]*order[1]+order[2]*order[2])/(double)N;
 }
 
 vector<double> Engine::calculateSystemOrientation()
 {
     vector<double> orientation(NDIM,0);
     
-    for (int i=0; i<N; i++) {
+    for (int i=0; i<N; i++)
+    {
         orientation[0] += cell[i].cosp*cell[i].sint;
         orientation[1] += cell[i].sinp*cell[i].sint;
         if(NDIM==3)  orientation[2] += cell[i].cost;
@@ -724,10 +723,13 @@ vector<double> Engine::calculateSystemOrientation()
     return orientation;
 }
 
-double Engine::MSD(int t){
+double Engine::MSD(int t)
+{
     double MSD = 0.0;
-    for (int i=0; i<N; i++) {
-        for (int k=0; k<NDIM; k++) {
+    for (int i=0; i<N; i++)
+    {
+        for (int k=0; k<NDIM; k++)
+        {
             double dr = cell[i].pos_real[k] - cell[i].pos0[k] - COM[k] + COM0[k];
             MSD += dr*dr;
         }
@@ -737,9 +739,11 @@ double Engine::MSD(int t){
 
 void Engine::saveOldPositions()
 {
-    for(int k=0; k<NDIM; k++) {
+    for(int k=0; k<NDIM; k++)
+    {
         COM_old[k] = COM[k];
-        for(int i=0; i<N; i++){
+        for(int i=0; i<N; i++)
+        {
             cell[i].pos_old[k]  = cell[i].pos[k];
         }
     }
@@ -755,7 +759,10 @@ void Engine::calculate_next_positions()
     
     neighborInteractions();
     
-    for(int i=0; i<N; i++) cell[i].update(CFself);
+    for(int i=0; i<N; i++)
+    {
+        cell[i].update(CFself);
+    }
     
     calculateCOM();
 }
@@ -763,7 +770,8 @@ void Engine::calculate_next_positions()
 void Engine::print_video(Print &printer)
 {
     int k=0;
-    for(int i=0; i<N; i++){
+    for(int i=0; i<N; i++)
+    {
         printer.print_Ovito(k, N, i, cell[i].R, cell[i].over, cell[i].pos, cell[i].vel);
         cell[i].over = 240;
         k=1;

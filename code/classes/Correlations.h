@@ -32,7 +32,6 @@ struct Correlations
     
     vector<double> orientation0;
     vector<double> correlationValues;
-    vector<double> correlationValuesNorm;
     vector<double> counts;
     vector<double> pairCorrelationValues;
     vector<double> autocorrelationValues;
@@ -51,7 +50,7 @@ Correlations::Correlations(double L_, double dens_, double cut, double time, lon
     correlation_time = time;
     
     dr_c = 2.0;
-    dr_p = 0.01;
+    dr_p = 0.1;
     dv = CFself_/50.0;
     np = (int)ceil(cutoff/dr_p);
     nc = (int)ceil(cutoff/dr_c);
@@ -63,7 +62,6 @@ Correlations::Correlations(double L_, double dens_, double cut, double time, lon
     orientation0.assign(NDIM,0);
     
     correlationValues.assign(nc, 0);
-    correlationValuesNorm.assign(nc,0);
     pairCorrelationValues.assign(np, 0);
     autocorrelationValues.assign(correlation_time,0);
     velocityDistributionValues.assign(noBins,0);
@@ -77,11 +75,6 @@ void Correlations::spatialCorrelations
     vector<double> pairTemp(np,0.0);
     vector<double> corrTemp(nc,0.0);
     vector<double> counts(nc,0.0);
-    
-    vector<double> tiavg(nc,0.0);
-    vector<double> tjavg(nc,0.0);
-    vector<double> piavg(nc,0.0);
-    vector<double> pjavg(nc,0.0);
 
     for (int a=0; a<boxPairs.size(); a++)
     {
@@ -97,7 +90,9 @@ void Correlations::spatialCorrelations
                 int i = grid[p].CellList[m];
                 int j = grid[q].CellList[n];
                 
-                if( p!=q || (p==q && j>i) ) // Avoid double-counting pairs in the same box
+                // Avoid double-counting pairs in the same box.
+                
+                if( p!=q || (p==q && j>i) )
                 {
                     double r = 0.0;
                     for(int k=0; k<NDIM; k++){
@@ -110,7 +105,9 @@ void Correlations::spatialCorrelations
                     int binp = (int)floor(r/dr_p);
                     int binc = (int)floor(r/dr_c);
                     
-                    if(binp < np)   // Exclude any pairs beyond cutoff, normalize
+                    // Exclude any pairs beyond cutoff, normalize.
+                    
+                    if(binp < np)
                     {
                         if(NDIM == 2) pairTemp[binp] += 1.0/r;
                         if(NDIM == 3) pairTemp[binp] += 1.0/(r*r);
@@ -123,21 +120,13 @@ void Correlations::spatialCorrelations
                         
                         if(NDIM == 2)
                         {
-                            piavg[binc] += pi;
-                            pjavg[binc] += pj;
                             corrTemp[binc] += cos(pi-pj);
                         }
                         if(NDIM == 3)
                         {
                             double ti = cell[i].theta;
                             double tj = cell[j].theta;
-                            
-                            piavg[binc] += pi;
-                            pjavg[binc] += pj;
-                            tiavg[binc] += ti;
-                            tjavg[binc] += tj;
                             corrTemp[binc] += ( cos(ti)*cos(tj) + cos(pi-pj)*sin(ti)*sin(tj) ) ;
-                            //cout << ( cos(ti)*cos(tj) + cos(pi-pj)*sin(ti)*sin(tj) ) << endl;
                         }
                         counts[binc] += 1.0;
                     }
@@ -149,23 +138,7 @@ void Correlations::spatialCorrelations
     for(int k=0; k<nc; k++)
     {
         corrTemp[k] /= counts[k];
-        //cout << k << " " << corrTemp[k] << endl;
         correlationValues[k] += corrTemp[k];
-        
-        piavg[k] /= counts[k];
-        pjavg[k] /= counts[k];
-        tiavg[k] /= counts[k];
-        tjavg[k] /= counts[k];
-        
-        //cout << k << " " << piavg[k] << " " << tiavg[k] << " " << pjavg[k] << " " << tjavg[k] << endl;
-        
-        double offset = 0.0;
-        if (NDIM==2)
-            offset = cos(piavg[k]-pjavg[k]);
-        if (NDIM==3)
-            offset = cos(tiavg[k])*cos(tjavg[k]) + cos(piavg[k]-pjavg[k])*sin(tiavg[k])*sin(tjavg[k]);
-        //cout << offset << endl;
-        correlationValuesNorm[k] += ( corrTemp[k] - offset );
     }
     
     for(int k=0; k<np; k++) { pairTemp[k] *= norm;  pairCorrelationValues[k]+=pairTemp[k]; }
