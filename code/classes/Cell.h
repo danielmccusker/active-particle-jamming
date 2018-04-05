@@ -7,7 +7,7 @@ struct Cell
 {
     Cell();
     
-    void update(double);
+    void update(double&);
     void PBC();
     void periodicAngles();
     double get_speed();
@@ -15,24 +15,30 @@ struct Cell
     double L, Lover2, dt;
     
     double R;                       // Cell radius
+    double Rinv; 					// 1/R
+    const double Zinv = (9*PI)/16;  // Proportionality constant for Stoke's law in 3D
     
     int over;    					// Overlap that cell has with neighbours: 240(blue, no overlap) to 0(red, big overlap) [Hue]
     int index;                      // Cell number
     int box;                        // Box number to which the cell belongs
     
-    vector<double> pos;             // Position in the grid
-    vector<double> pos_real;        // Real position if it weren't for periodic boundary conditions
-    vector<double> pos0;            // Initial positions
-    vector<double> pos_old;         // Old position to determine displacement during a skin interval
-    vector<double> vel;             // Velocity
-    vector<double> F;               // Force
+    vector<double> x;            	// Position in the grid
+    vector<double> x_real;        	// Real position if it weren't for periodic boundary conditions
+    vector<double> x0;            	// Initial positions
+    vector<double> x_old;         	// Old position to determine displacement during a skin interval
+	
+    double vx;						// Velocity
+    double vy;
+    double vz;
+	
+    double Fx;               		// Force
+    double Fy;
+    double Fz;
     
-    double phi, theta;              // Orientation in x-y plane, angle from z-axis
+    double phi, theta;              // Self-propulsion vector in x-y plane, angle from z-axis
     double cosp, sinp,
            cost, sint;
-    double x_new, y_new, z_new;     // Projections of the cell's orientation
-    
-    const double zeta = 16/(9*PI);  // Proportionality constant for Stoke's law in 3D
+    double x_new, y_new, z_new;     // Projections of the cell's self-propulsion vector
     
     vector<int> VerletList;
 };
@@ -43,17 +49,22 @@ Cell::Cell()
     Lover2 = -1.0;
     dt = -1.0;
     R = -1.0;
+	
+    Fx = 0.0;
+    Fy = 0.0;
+    Fz = 0.0;
+    vx = 0.0;
+    vy = 0.0;
+    vz = 0.0;
     
     box = -1;
     index = -1;
     over = 0;
     
-    pos.assign(NDIM,-100);
-    pos_old.assign(NDIM,-100);
-    pos0.assign(NDIM,-100);
-    pos_real.assign(NDIM,-100);
-    vel.assign(NDIM,0);
-    F.assign(NDIM,0);
+    x.assign(NDIM,-100);
+    x_old.assign(NDIM,-100);
+    x0.assign(NDIM,-100);
+    x_real.assign(NDIM,-100);
     
     phi = theta = 0.0;
     cosp = sinp = cost = sint = 0.0;
@@ -72,7 +83,7 @@ Cell::Cell()
     }
 };
 
-void Cell::update(double CFself)
+void Cell::update(double &CFself)
 // Update particle positions and orientations from the equations of motion:
 // F_i = 6*pi*eta*R_i in 2D
 // F_i = (32/3)*eta*R_i in 3D
@@ -85,11 +96,25 @@ void Cell::update(double CFself)
         cosp = cos(phi);
         sinp = sin(phi);
         
-        F[0] += cosp*CFself;       // Self-propulsion force
-        F[1] += sinp*CFself;
+        Fx += cosp*CFself*R;         // Self-propulsion force
+        Fy += sinp*CFself*R;
         
         x_new = cosp;                // The average direction of particles in the neighborhood
         y_new = sinp;                // also includes itself
+		
+        vx = Fx*Rinv;
+        vy = Fy*Rinv;
+		
+        double dx = vx*dt;
+        double dy = vy*dt;
+		
+		x[0] += dx;
+		x[1] += dy;
+		x_real[0] += dx;
+		x_real[1] += dy;
+		
+		Fx = 0.0;
+		Fy = 0.0;
     }
     
     if(NDIM==3)
@@ -101,26 +126,32 @@ void Cell::update(double CFself)
         cost = cos(theta);
         sint = sin(theta);
         
-        F[0] += sint*cosp*CFself;
-        F[1] += sint*sinp*CFself;
-        F[2] += cost*CFself;
+        Fx += sint*cosp*CFself*R;
+        Fy += sint*sinp*CFself*R;
+        Fz += cost*CFself*R;
         
         x_new = cosp*sint;
         y_new = sinp*sint;
         z_new = cost;
-    }
-    
-    for(int k=0; k<NDIM; k++)
-    {
-        vel[k] = F[k];
-        
-        if(NDIM==3)
-            vel[k] /= zeta;
-        
-        double dr    = vel[k]*dt;
-        pos[k]      += dr;
-        pos_real[k] += dr;
-        F[k] = 0;
+		
+        vx = Fx*Zinv*Rinv;
+        vy = Fy*Zinv*Rinv;
+        vz = Fz*Zinv*Rinv;
+		
+        double dx = vx*dt;
+        double dy = vy*dt;
+        double dz = vz*dt;
+		
+		x[0] += dx;
+		x[1] += dy;
+		x[2] += dz;
+		x_real[0] += dx;
+		x_real[1] += dy;
+		x_real[2] += dz;
+		
+		Fx = 0.0;
+		Fy = 0.0;
+		Fz = 0.0;
     }
     
     PBC();
@@ -138,14 +169,13 @@ void Cell::PBC()
 {
     for(int k=0; k<NDIM; k++)
     {
-        if(pos[k] >= Lover2)      pos[k] -= L;
-        else if(pos[k] < -Lover2) pos[k] += L;
+        if(x[k] >= Lover2)      x[k] -= L;
+        else if(x[k] < -Lover2) x[k] += L;
     }
 }
 
 double Cell::get_speed()
 {
-    double speed = 0.0;
-    for(int k=0; k<NDIM; k++) speed+=vel[k]*vel[k];
-    return sqrt(speed);
+    if(NDIM==2) 		return sqrt(vx*vx+vy*vy);
+    else if(NDIM==3) 	return sqrt(vx*vx+vy*vy+vz*vz);
 }

@@ -7,7 +7,7 @@
 
 struct Fluctuations
 {
-    Fluctuations(double, double, double, double);
+    Fluctuations(double, int, int, double);
     
     double overlap(double, double, double);
     void measureFluctuations(vector<Cell>&, vector<double>&, Print&);
@@ -30,7 +30,7 @@ struct Fluctuations
     double Lover2, L;
 };
 
-Fluctuations::Fluctuations(double L_, double totalSteps, double nSkip, double dens_)
+Fluctuations::Fluctuations(double L_, int totalSteps, int skip, double dens_)
 {
     L = L_;
     Lover2 = L/2.0;
@@ -41,7 +41,7 @@ Fluctuations::Fluctuations(double L_, double totalSteps, double nSkip, double de
     max_radius = Lover2;
     current_radius = min_radius;
     rad_interval = pow( max_radius/min_radius, 1./((double)nPoints+1.0) );
-    time_interval = (double)totalSteps/((double)nSkip*(double)nPoints);
+    time_interval = (double)totalSteps/((double)skip*(double)nPoints);
     counter = 0;
     current_value = 0;
     
@@ -64,7 +64,7 @@ void Fluctuations::measureFluctuations(vector<Cell> &cell, vector<double> &COM, 
             double sumR = cell[i].R+current_radius;
             double d2 = 0.0;
             for (int k=0; k<NDIM; k++) {
-                double dr = delta_norm(cell[i].pos_real[k]-COM[k]);
+                double dr = delta_norm(cell[i].x_real[k]-COM[k]);
                 d2 += dr*dr;
             }
             

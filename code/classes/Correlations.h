@@ -31,8 +31,8 @@ struct Correlations
     double norm;
     
     vector<double> orientation0;
-    vector<double> correlationValues;
-    vector<double> counts;
+    vector<double> orientationCorrelation;
+    vector<double> velocityCorrelation;
     vector<double> pairCorrelationValues;
     vector<double> autocorrelationValues;
     vector<double> velocityDistributionValues;
@@ -61,7 +61,8 @@ Correlations::Correlations(double L_, double dens_, double cut, double time, lon
     
     orientation0.assign(NDIM,0);
     
-    correlationValues.assign(nc, 0);
+    orientationCorrelation.assign(nc, 0);
+    velocityCorrelation.assign(nc,0);
     pairCorrelationValues.assign(np, 0);
     autocorrelationValues.assign(correlation_time,0);
     velocityDistributionValues.assign(noBins,0);
@@ -74,6 +75,7 @@ void Correlations::spatialCorrelations
 {
     vector<double> pairTemp(np,0.0);
     vector<double> corrTemp(nc,0.0);
+    vector<double> velTemp(nc,0.0);
     vector<double> counts(nc,0.0);
 
     for (int a=0; a<boxPairs.size(); a++)
@@ -96,7 +98,7 @@ void Correlations::spatialCorrelations
                 {
                     double r = 0.0;
                     for(int k=0; k<NDIM; k++){
-                        double dk = delta_norm(cell[j].pos[k]-cell[i].pos[k]);
+                        double dk = delta_norm(cell[j].x[k]-cell[i].x[k]);
                         r += dk*dk;
                     }
                     
@@ -115,20 +117,34 @@ void Correlations::spatialCorrelations
                     
                     if(binc < nc)
                     {
-                        double pi = cell[i].phi;
-                        double pj = cell[j].phi;
+                    	counts[binc] += 1.0;
+						
+                        double vxi = cell[i].vx;
+                        double vyi = cell[i].vy;
+                        double vxj = cell[j].vx;
+                        double vyj = cell[j].vy;
                         
                         if(NDIM == 2)
                         {
-                            corrTemp[binc] += cos(pi-pj);
+                            corrTemp[binc] += cell[i].cosp*cell[j].cosp
+											+ cell[i].sinp*cell[j].sinp;
+                            velTemp[binc] +=
+                            		(vxi*vxj+vyi*vyj)/(cell[i].get_speed()*cell[j].get_speed());
                         }
                         if(NDIM == 3)
                         {
-                            double ti = cell[i].theta;
-                            double tj = cell[j].theta;
+                        	double ti = cell[i].theta;
+                        	double tj = cell[j].theta;
+                        	double pi = cell[i].phi;
+                        	double pj = cell[i].phi;
+							
                             corrTemp[binc] += ( cos(ti)*cos(tj) + cos(pi-pj)*sin(ti)*sin(tj) ) ;
+							
+							double vzi = cell[i].vz;
+                            double vzj = cell[j].vz;
+                            velTemp[binc] +=
+                                (vxi*vxj+vyi*vyj+vzi*vzj)/(cell[i].get_speed()*cell[j].get_speed());
                         }
-                        counts[binc] += 1.0;
                     }
                 }
             }
@@ -138,22 +154,32 @@ void Correlations::spatialCorrelations
     for(int k=0; k<nc; k++)
     {
         corrTemp[k] /= counts[k];
-        correlationValues[k] += corrTemp[k];
+        velTemp[k] /= counts[k];
+        orientationCorrelation[k] += corrTemp[k];
+        velocityCorrelation[k] += velTemp[k];
     }
     
-    for(int k=0; k<np; k++) { pairTemp[k] *= norm;  pairCorrelationValues[k]+=pairTemp[k]; }
+    for(int k=0; k<np; k++)
+    {
+    	pairTemp[k] *= norm;
+		pairCorrelationValues[k]+=pairTemp[k];
+	}
 }
 
 void Correlations::autocorrelation(int t, vector<double>&orientation)
 {
     double value = 0.0;
-    for(int k=0; k<NDIM; k++) { value += orientation0[k]*orientation[k]; }
+    for(int k=0; k<NDIM; k++)
+    {
+    	value += orientation0[k]*orientation[k];
+	}
     autocorrelationValues[t] += value;
 }
 
 void Correlations::velDist(vector<Cell> &cell)
 {
-    for(int i=0; i<N; i++){
+    for(int i=0; i<N; i++)
+    {
         double v = cell[i].get_speed();
         int binv = (int)floor(v/dv);
         if(binv < noBins) velocityDistributionValues[binv] += 1.0/(double)N;
@@ -162,11 +188,11 @@ void Correlations::velDist(vector<Cell> &cell)
 
 void Correlations::printCorrelations(int timeAvg, Print &print)
 {
-    for(int k=0; k<correlationValues.size(); k++)
-        print.print_corr(dr_c*(k+1), correlationValues[k]/timeAvg);
-    
-    for(int k=0; k<correlationValuesNorm.size(); k++)
-        print.print_corrNorm(dr_c*(k+1), correlationValuesNorm[k]/timeAvg);
+    for(int k=0; k<velocityCorrelation.size(); k++)
+        print.print_corr(dr_c*(k+1), velocityCorrelation[k]/timeAvg);
+	
+	for(int k=0; k<orientationCorrelation.size(); k++)
+        print.print_orientationCorr(dr_c*(k+1), orientationCorrelation[k]/timeAvg);
     
     for(int k=0; k<pairCorrelationValues.size(); k++)
         print.print_pairCorr(0.01*k, pairCorrelationValues[k]/timeAvg);
