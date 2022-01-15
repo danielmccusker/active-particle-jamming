@@ -7,9 +7,8 @@ NOTE: This code is © D. McCusker, 2019, and it is made available under the MIT 
 
 The code in this repository implements molecular dynamics in two dimensions for overdamped, self-propelled particles using Euler integration and a combined Verlet list/cell list algorithm for tracking neighbors. The code also computes physical quantities of interest: effective diffusion constants, velocity correlations, density fluctuations.
 
-<img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/snapshots.png?raw=true" height="100">
- ![alt text](https://github.com/danielmccusker/active-particle-jamming/blob/master/images/phase-diagram.png?raw=true)
-
+<img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/snapshots.png?raw=true" height="200">        <img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/phase-diagram.png?raw=true" height="200">
+ 
 Left: Simulation snapshots for three different parameter sets. Right: Corresponding locations in phase space
 
 Visualization produced by Ovito:
