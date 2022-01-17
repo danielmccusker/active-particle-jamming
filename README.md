@@ -3,9 +3,9 @@ Simulations of Vicsek-like dynamics with repulsive particles, associated with th
 
 **Active particle dynamics beyond the jamming density**, Daniel R. McCusker, Ruben van Drongelen, and Timon Idema 2019 [EPL 125 36001](https://dx.doi.org/10.1209/0295-5075/125/36001)
 
-NOTE: This code is © D. McCusker, 2019, and it is made available under the MIT license enclosed with the software. Over and above the legal restrictions imposed by this license, if you use this software for an academic publication then you are obliged to provide proper attribution. 
+Please cite this work if you use the code contained in this repository.
 
-The code in this repository implements molecular dynamics in two dimensions for overdamped, self-propelled particles using Euler integration and a combined Verlet list/cell list algorithm for tracking neighbors. The code also computes physical quantities of interest: effective diffusion constants, velocity correlations, density fluctuations.
+The code in this repository implements molecular dynamics in two dimensions for overdamped, self-propelled particles using Euler integration and a combined Verlet list/cell list data structure for tracking neighbors. The code also computes physical quantities of interest: effective diffusion constants, velocity correlations, density fluctuations.
 
 <img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/snapshots.png?raw=true" height="200">        <img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/phase-diagram.png?raw=true" height="200">
  
