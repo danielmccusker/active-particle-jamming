@@ -7,9 +7,9 @@ Please cite this work if you use any code contained in this repository.
 
 Motivated by many examples of high-density systems composed of actively moving units, we set out to characterize the dynamics and phase space of such systems.
 
-<img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/motivation.png?raw=true" height="300">  
+<img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/motivation.png?raw=true" height="400">  
 
-We found four distinct phases, characterized by dynamics/arrested dynamics and ordered/disordered motion. 
+We found four distinct phases, characterized by dynamics/jamming and ordered/disordered motion. 
 
 <img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/snapshots.png?raw=true" height="200">        <img src="https://github.com/danielmccusker/active-particle-jamming/blob/master/images/phase-diagram.png?raw=true" height="200">
  
